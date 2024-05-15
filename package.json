@@ -4,11 +4,13 @@
   "description": "",
   "main": ".eslintrc.js",
   "scripts": {
-    "lint": "eslint . --ext .js,.ts"
+    "lint": "eslint . --ext .js,.ts",
+    "test:aurora-plus": "playwright test --config=playwright.config.aurora-plus.ts"
   },
   "author": "Alex Mendes",
   "license": "UNLICENSED",
   "dependencies": {
+    "deepmerge": "^4.3.1",
     "playwright": "^1.44.0"
   },
   "devDependencies": {
