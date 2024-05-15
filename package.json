@@ -5,19 +5,25 @@
   "main": ".eslintrc.js",
   "scripts": {
     "lint": "eslint . --ext .js,.ts",
-    "test:aurora-plus": "playwright test --config=playwright.config.aurora-plus.ts"
+    "test": "playwright test",
+    "test:headless": "HEADLESS_MODE=1 playwright test"
   },
   "author": "Alex Mendes",
   "license": "UNLICENSED",
   "dependencies": {
-    "deepmerge": "^4.3.1",
-    "playwright": "^1.44.0"
+    "axios": "^1.6.8",
+    "fs-extra": "^11.2.0",
+    "playwright": "^1.44.0",
+    "unzipper": "^0.11.6"
   },
   "devDependencies": {
     "@playwright/test": "^1.44.0",
+    "@types/fs-extra": "^11.0.4",
     "@types/node": "^20.12.12",
+    "@types/unzipper": "^0.10.9",
     "@typescript-eslint/eslint-plugin": "^7.9.0",
     "@typescript-eslint/parser": "^7.9.0",
+    "app-root-path": "^3.1.0",
     "eslint": "^8.57.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-airbnb-typescript": "^18.0.0",

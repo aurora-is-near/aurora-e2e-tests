@@ -9,6 +9,11 @@ yarn-error.log*
 
 # TypeScript cache
 *.tsbuildinfo
+
+# Local cache
+.cache/
+
+# Playwright
 /test-results/
 /playwright-report/
 /blob-report/
