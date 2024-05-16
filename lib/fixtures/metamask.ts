@@ -5,10 +5,6 @@ type Metamask = {
   setup: () => Promise<void>
 }
 
-const PASSWORD = "password"
-const SEED_PHRASE =
-  "test test test test test test test test test test test junk"
-
 /**
  * Setup test fixtures for MetaMask.
  */
@@ -36,6 +32,18 @@ export const metamaskTest = test.extend<{
     await use(extensionId)
   },
   metamask: async ({ page, metamaskExtensionId }, use) => {
+    const password = process.env.WALLET_PASSWORD
+
+    if (!password) {
+      throw new Error("WALLET_PASSWORD is required")
+    }
+
+    const seedPhrase = process.env.WALLET_SEED_PHRASE
+
+    if (!seedPhrase) {
+      throw new Error("WALLET_SEED_PHRASE is required")
+    }
+
     const getExtensionUrl = (path: string) =>
       `chrome-extension://${metamaskExtensionId}/${path.replace(/^\//, "")}`
 
@@ -47,14 +55,14 @@ export const metamaskTest = test.extend<{
         await page.getByTestId("onboarding-import-wallet").click()
         await page.getByTestId("metametrics-i-agree").click()
 
-        for (const [index, word] of SEED_PHRASE.split(" ").entries()) {
+        for (const [index, word] of seedPhrase.split(" ").entries()) {
           // eslint-disable-next-line no-await-in-loop
           await page.getByTestId(`import-srp__srp-word-${index}`).fill(word)
         }
 
         await page.getByTestId("import-srp-confirm").click()
-        await page.getByTestId("create-password-new").fill(PASSWORD)
-        await page.getByTestId("create-password-confirm").fill(PASSWORD)
+        await page.getByTestId("create-password-new").fill(password)
+        await page.getByTestId("create-password-confirm").fill(password)
         await page.getByTestId("create-password-terms").click()
         await page.getByTestId("create-password-import").click()
         await page.getByTestId("onboarding-complete-done").click()

@@ -12,9 +12,7 @@ const BASE_URL_ENV_VAR_NAMES: Record<AppName, string> = {
 }
 
 /**
- * Setup test fixtures for Chrome extensions.
- *
- * @see https://playwright.dev/docs/chrome-extensions
+ * Setup test fixtures for our apps.
  */
 export const appsTest = test.extend<{
   getApp: (appName: AppName) => App
