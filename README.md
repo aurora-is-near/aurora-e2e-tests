@@ -3,10 +3,6 @@
 A set of end-to-end tests for Aurora applications, written with
 [Playwright](https://playwright.dev/).
 
-The MetaMask extension is used for testing wallet functionality. The version we
-currently use is defined against the `METAMASK_VERSION` variable at
-[lib/constants/metamask.ts](./lib/constants/metamask.ts).
-
 ## Installation
 
 Install dependencies:
@@ -29,15 +25,24 @@ Or, to run in headless mode:
 yarn test:headless
 ```
 
-## Environment
+## Wallet configuration
 
-Various environment variables are configured with their production defaults in
-the `.env.production` file. If you want to override any of these defaults
-locally you can make a copy of this file and modify accordingly:
+The MetaMask extension is used for testing wallet functionality. The version we
+currently use is defined against the `METAMASK_VERSION` variable at
+[lib/constants/metamask.ts](./lib/constants/metamask.ts).
+
+By default, a test wallet will be created using the seed phrase:
 
 ```text
-cp .env.production .env
+test test test test test test test test test test test junk
 ```
+
+However, some tests will require a wallet that contains assets. You can set the
+seed phrase for the wallet you want to use for testing via the
+`WALLET_SEED_PHRASE` environment variable.
+
+If you want to set a MetaMask password you can do so via the `WALLET_PASSWORD`
+environment variable. If you choose not to a random password will be generated.
 
 ## Tags
 
@@ -64,4 +69,10 @@ set the relevant environment variable before running the tests, like so:
 AURORA_PLUS_BASE_URL=http://localhost:3000 yarn test
 ```
 
-Alternatively, create a local `.env` file (see [environment](#environment)).
+## Environment variables
+
+A sample `.env` file can be generated as follows:
+
+```text
+cp .env.sample .env
+```

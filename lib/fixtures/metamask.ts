@@ -1,9 +1,13 @@
 // eslint-disable-next-line no-restricted-imports
 import { test } from "@playwright/test"
+import generatePassword from "generate-password"
 
 type Metamask = {
   setup: () => Promise<void>
 }
+
+const DEFAULT_WALLET_SEED_PHRASE =
+  "test test test test test test test test test test test junk"
 
 /**
  * Setup test fixtures for MetaMask.
@@ -32,17 +36,18 @@ export const metamaskTest = test.extend<{
     await use(extensionId)
   },
   metamask: async ({ page, metamaskExtensionId }, use) => {
-    const password = process.env.WALLET_PASSWORD
+    const password =
+      process.env.WALLET_PASSWORD ??
+      generatePassword.generate({
+        length: 12,
+        numbers: true,
+        symbols: true,
+        uppercase: true,
+        strict: true,
+      })
 
-    if (!password) {
-      throw new Error("WALLET_PASSWORD is required")
-    }
-
-    const seedPhrase = process.env.WALLET_SEED_PHRASE
-
-    if (!seedPhrase) {
-      throw new Error("WALLET_SEED_PHRASE is required")
-    }
+    const seedPhrase =
+      process.env.WALLET_SEED_PHRASE ?? DEFAULT_WALLET_SEED_PHRASE
 
     const getExtensionUrl = (path: string) =>
       `chrome-extension://${metamaskExtensionId}/${path.replace(/^\//, "")}`

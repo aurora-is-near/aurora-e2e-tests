@@ -1,14 +1,10 @@
 // eslint-disable-next-line no-restricted-imports
 import { test } from "@playwright/test"
-
-type AppName = "aurora-plus"
+import type { AppName } from "../types/app"
+import { BASE_URLS } from "../base-urls"
 
 type App = {
   goto: (url: string) => Promise<void>
-}
-
-const BASE_URL_ENV_VAR_NAMES: Record<AppName, string> = {
-  "aurora-plus": "AURORA_PLUS_BASE_URL",
 }
 
 /**
@@ -20,7 +16,7 @@ export const appsTest = test.extend<{
   getApp: async ({ page }, use) => {
     await use((appName: AppName) => ({
       goto: async (url: string) => {
-        const envVarName = BASE_URL_ENV_VAR_NAMES[appName]
+        const envVarName = BASE_URLS[appName]
         const baseUrl = process.env[envVarName]
 
         if (!baseUrl) {

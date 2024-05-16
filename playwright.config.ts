@@ -1,8 +1,14 @@
 import { defineConfig, devices } from "@playwright/test"
 import dotenv from "dotenv"
+import { BASE_URLS } from "./lib/base-urls"
 
 dotenv.config({ path: ".env" })
 dotenv.config({ path: ".env.production" })
+
+console.log(`Base URLs:`)
+Object.entries(BASE_URLS).forEach(([key, value]) => {
+  console.log(`> ${key}: ${value}`)
+})
 
 /**
  * See https://playwright.dev/docs/test-configuration.
