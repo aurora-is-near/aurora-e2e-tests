@@ -72,12 +72,7 @@ test.describe("Aurora Plus: Staking", { tag: AURORA_PLUS_TAG }, () => {
     await expect(page.getByTestId("connected-indicator")).toBeVisible()
   })
 
-  test.only("stakes some tokens", async ({
-    getApp,
-    metamask,
-    page,
-    context,
-  }) => {
+  test("stakes some tokens", async ({ getApp, metamask, page, context }) => {
     await metamask.setup()
 
     const app = getApp("aurora-plus")
