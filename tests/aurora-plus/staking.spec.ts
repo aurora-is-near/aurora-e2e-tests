@@ -44,6 +44,21 @@ const connectWallet = async (page: Page, context: BrowserContext) => {
   await page.bringToFront()
 }
 
+const getWalletValues = async (page: Page) => {
+  // Wait for the numbers animation to finish
+  await page.waitForTimeout(1000)
+
+  const balance = Number(
+    await page.getByTestId("aurora-balance-value").textContent(),
+  )
+
+  const stakedAmount = Number(
+    await page.getByTestId("aurora-staked-value").textContent(),
+  )
+
+  return { balance, stakedAmount }
+}
+
 test.describe("Aurora Plus: Staking", { tag: AURORA_PLUS_TAG }, () => {
   test("connects a wallet", async ({ getApp, page, metamask, context }) => {
     await metamask.setup()
@@ -71,13 +86,10 @@ test.describe("Aurora Plus: Staking", { tag: AURORA_PLUS_TAG }, () => {
 
     await connectWallet(page, context)
 
-    const originalStakedAmount = Number(
-      await page.getByTestId("aurora-staked-value").textContent(),
-    )
+    // Wait for the numbers animation to finish
+    await page.waitForTimeout(1000)
 
-    const originalBalance = Number(
-      await page.getByTestId("aurora-balance-value").textContent(),
-    )
+    const originalWalletValues = await getWalletValues(page)
 
     await page.getByRole("button", { name: "Stake", exact: true }).click()
 
@@ -140,22 +152,17 @@ test.describe("Aurora Plus: Staking", { tag: AURORA_PLUS_TAG }, () => {
       confirmModalButton.getByTestId("loading-spinner"),
     ).not.toBeVisible({ timeout: 60000 })
 
-    await page.pause()
+    // Wait for the numbers animation to finish
+    await page.waitForTimeout(1000)
 
-    const newStakedAmount = Number(
-      await page.getByTestId("aurora-staked-value").textContent(),
+    const newWalletValues = await getWalletValues(page)
+
+    expect(newWalletValues.stakedAmount.toFixed(1)).toBe(
+      (originalWalletValues.stakedAmount + 0.1).toFixed(1),
     )
 
-    const newBalance = Number(
-      await page.getByTestId("aurora-balance-value").textContent(),
+    expect(newWalletValues.balance.toFixed(1)).toBe(
+      (originalWalletValues.balance - 0.1).toFixed(1),
     )
-
-    console.log("originalStakedAmount", originalStakedAmount)
-    console.log("originalBalance", originalBalance)
-    console.log("newStakedAmount", newStakedAmount)
-    console.log("newBalance", newBalance)
-
-    expect(newStakedAmount).toBe(originalStakedAmount + 0.1)
-    expect(newBalance).toBe(originalBalance - 0.1)
   })
 })
