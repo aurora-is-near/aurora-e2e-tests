@@ -5,11 +5,15 @@
   "main": ".eslintrc.js",
   "scripts": {
     "lint": "eslint . --ext .js,.ts",
+    "typecheck": "tsc --noEmit",
     "test": "playwright test",
     "test:headless": "HEADLESS_MODE=1 playwright test"
   },
   "author": "Alex Mendes",
   "license": "UNLICENSED",
+  "engines": {
+    "node": "20.x"
+  },
   "dependencies": {
     "axios": "^1.6.8",
     "dotenv": "^16.4.5",
