@@ -1,9 +1,9 @@
 // eslint-disable-next-line no-restricted-imports
-import { test as base, type BrowserContext, chromium } from "@playwright/test"
+import { type BrowserContext, chromium, test } from "@playwright/test"
 import path from "path"
 import appRoot from "app-root-path"
-import { CACHE_DIR } from "./constants/cache"
-import { METAMASK_EXTENSION_NAME } from "./constants/metamask"
+import { CACHE_DIR } from "../constants/cache"
+import { METAMASK_EXTENSION_NAME } from "../constants/metamask"
 
 const METAMASK_EXTENSION_PATH = path.join(
   appRoot.path,
@@ -12,13 +12,14 @@ const METAMASK_EXTENSION_PATH = path.join(
 )
 
 /**
- * Setup test fixtures.
+ * Setup test fixtures for Chrome extensions.
  *
  * @see https://playwright.dev/docs/chrome-extensions
  */
-export const test = base.extend<{
+export const extensionsTest = test.extend<{
   context: BrowserContext
-  extensionId: string
+  metamaskExtensionId: string
+  baseUrl: string
 }>({
   // eslint-disable-next-line no-empty-pattern
   context: async ({}, use) => {
@@ -44,16 +45,6 @@ export const test = base.extend<{
 
     await use(context)
     await context.close()
-  },
-  extensionId: async ({ context }, use) => {
-    let [background] = context.serviceWorkers()
-
-    if (!background) {
-      background = await context.waitForEvent("serviceworker")
-    }
-
-    const extensionId = background.url().split("/")[2]
-    await use(extensionId)
   },
 })
 

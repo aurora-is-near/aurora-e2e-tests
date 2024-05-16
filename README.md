@@ -3,6 +3,10 @@
 A set of end-to-end tests for Aurora applications, written with
 [Playwright](https://playwright.dev/).
 
+The MetaMask extension is used for testing wallet functionality. The version we
+currently use is defined against the `METAMASK_VERSION` variable at
+[lib/constants/metamask.ts](./lib/constants/metamask.ts).
+
 ## Usage
 
 Install dependencies:

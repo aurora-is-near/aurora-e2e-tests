@@ -4,10 +4,12 @@ import { AURORA_PLUS_BASE_URL } from "../../lib/constants/base-urls"
 import { test } from "../../lib/fixtures"
 
 test.describe("Aurora Plus", { tag: AURORA_PLUS_TAG }, () => {
-  test("has title", async ({ page }) => {
+  test("connects a wallet", async ({ page, setupMetaMask }) => {
+    await setupMetaMask()
     await page.goto(`${AURORA_PLUS_BASE_URL}/dashboard`)
 
-    await page.waitForTimeout(30000)
+    await page.getByText("Connect wallet").click()
+    await page.getByTestId("connect-modal").getByText("Connect wallet").click()
 
     // Expect a title "to contain" a substring.
     await expect(page).toHaveTitle(/Playwright/)

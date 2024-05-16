@@ -83,6 +83,7 @@ module.exports = {
     "global-require": "off",
     "class-methods-use-this": "off",
     "no-shadow": "off",
+    "no-restricted-syntax": "off",
     "@typescript-eslint/no-shadow": "error",
     "@typescript-eslint/prefer-for-of": "error",
     "@typescript-eslint/prefer-optional-chain": "error",
