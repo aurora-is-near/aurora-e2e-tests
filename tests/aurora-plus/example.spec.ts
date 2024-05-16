@@ -1,12 +1,14 @@
 import { expect } from "playwright/test"
 import { AURORA_PLUS_TAG } from "../../lib/constants/tags"
-import { AURORA_PLUS_BASE_URL } from "../../lib/constants/base-urls"
 import { test } from "../../lib/fixtures"
 
 test.describe("Aurora Plus", { tag: AURORA_PLUS_TAG }, () => {
-  test("connects a wallet", async ({ page, setupMetaMask }) => {
+  test("connects a wallet", async ({ getApp, page, setupMetaMask }) => {
     await setupMetaMask()
-    await page.goto(`${AURORA_PLUS_BASE_URL}/dashboard`)
+
+    const app = getApp("aurora-plus")
+
+    await app.goto("/dashboard")
 
     await page.getByText("Connect wallet").click()
     await page.getByTestId("connect-modal").getByText("Connect wallet").click()

@@ -1,4 +1,8 @@
 import { defineConfig, devices } from "@playwright/test"
+import dotenv from "dotenv"
+
+dotenv.config({ path: ".env.production" })
+dotenv.config({ path: ".env" })
 
 /**
  * See https://playwright.dev/docs/test-configuration.
