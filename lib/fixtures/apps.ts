@@ -1,10 +1,13 @@
-// eslint-disable-next-line no-restricted-imports
 import { test } from "@playwright/test"
-import type { AppName } from "../types/app"
-import { BASE_URLS } from "../base-urls"
+
+type AppName = "aurora-plus"
 
 type App = {
   goto: (url: string) => Promise<void>
+}
+
+const BASE_URLS: Record<AppName, string> = {
+  "aurora-plus": process.env.AURORA_PLUS_BASE_URL ?? "https://aurora.plus",
 }
 
 /**
@@ -16,11 +19,10 @@ export const appsTest = test.extend<{
   getApp: async ({ page }, use) => {
     await use((appName: AppName) => ({
       goto: async (url: string) => {
-        const envVarName = BASE_URLS[appName]
-        const baseUrl = process.env[envVarName]
+        const baseUrl = BASE_URLS[appName]
 
         if (!baseUrl) {
-          throw new Error(`Missing ${envVarName} environment variable`)
+          throw new Error(`No URL set for app: ${appName}`)
         }
 
         await page.goto(new URL(url, baseUrl).href)

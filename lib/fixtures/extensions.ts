@@ -1,4 +1,3 @@
-// eslint-disable-next-line no-restricted-imports
 import { type BrowserContext, chromium, test } from "@playwright/test"
 import path from "path"
 import appRoot from "app-root-path"

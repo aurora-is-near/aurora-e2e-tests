@@ -1,4 +1,3 @@
-// eslint-disable-next-line no-restricted-imports
 import { test } from "@playwright/test"
 import generatePassword from "generate-password"
 

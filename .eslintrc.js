@@ -122,23 +122,28 @@ module.exports = {
     ],
     "@typescript-eslint/no-non-null-assertion": "off",
     "@typescript-eslint/strict-boolean-expressions": "off",
-    "no-restricted-imports": [
-      "error",
-      {
-        paths: [
-          {
-            name: "@playwright/test",
-            importNames: ["test", "expect"],
-            message: "Please use the exports from lib/fixtures instead.",
-          },
-        ],
-      },
-    ],
   },
   overrides: [
     {
       extends: ["plugin:@typescript-eslint/disable-type-checked"],
       files: ["./**/*.js"],
+    },
+    {
+      files: ["**/*.{test,spec}.{js,ts}"],
+      rules: {
+        "no-restricted-imports": [
+          "error",
+          {
+            paths: [
+              {
+                name: "@playwright/test",
+                importNames: ["test", "expect"],
+                message: "Please use the exports from lib/fixtures instead.",
+              },
+            ],
+          },
+        ],
+      },
     },
   ],
 }
