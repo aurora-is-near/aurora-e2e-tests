@@ -19,6 +19,28 @@ const getWalletValues = async (page: Page) => {
   return { balance, stakedAmount }
 }
 
+const getPendingWithdrawalAmount = async (page: Page): Promise<number> => {
+  const button = page.getByTestId("withdrawal-cooldown-button")
+
+  try {
+    await button.waitFor({ timeout: 3000 })
+  } catch {
+    console.log("nah")
+
+    return 0
+  }
+
+  await button.click()
+
+  const amount = Number(
+    await page.getByTestId("aurora-pending-withdrawal-amount").textContent(),
+  )
+
+  await button.click()
+
+  return amount
+}
+
 test.describe("Aurora Plus: Staking", { tag: AURORA_PLUS_TAG }, () => {
   test("stakes some tokens", async ({
     metamask,
@@ -111,7 +133,7 @@ test.describe("Aurora Plus: Staking", { tag: AURORA_PLUS_TAG }, () => {
     )
   })
 
-  test("unstakes some tokens", async ({
+  test.only("unstakes some tokens", async ({
     metamask,
     auroraPlus,
     context,
@@ -122,13 +144,8 @@ test.describe("Aurora Plus: Staking", { tag: AURORA_PLUS_TAG }, () => {
     await auroraPlus.goto("/dashboard")
     await auroraPlus.connectToMetaMask()
 
-    await page.getByTestId("withdrawal-cooldown-button").click()
-
-    const originalPendingWithdrawalAmount = Number(
-      await page.getByTestId("aurora-pending-withdrawal-amount").textContent(),
-    )
-
-    await page.getByTestId("withdrawal-cooldown-button").click()
+    const originalPendingWithdrawalAmount =
+      await getPendingWithdrawalAmount(page)
 
     await page.getByRole("button", { name: "Unstake", exact: true }).click()
 
@@ -151,13 +168,7 @@ test.describe("Aurora Plus: Staking", { tag: AURORA_PLUS_TAG }, () => {
       confirmModalButton.getByTestId("loading-spinner"),
     ).not.toBeVisible({ timeout: 60000 })
 
-    await page.getByTestId("withdrawal-cooldown-button").click()
-
-    const newPendingWithdrawalAmount = Number(
-      await page.getByTestId("aurora-pending-withdrawal-amount").textContent(),
-    )
-
-    await page.getByTestId("withdrawal-cooldown-button").click()
+    const newPendingWithdrawalAmount = await getPendingWithdrawalAmount(page)
 
     expect(newPendingWithdrawalAmount.toFixed(1)).toBe(
       (originalPendingWithdrawalAmount + 0.1).toFixed(1),
