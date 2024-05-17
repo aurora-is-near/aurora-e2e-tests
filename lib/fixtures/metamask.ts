@@ -3,7 +3,6 @@ import generatePassword from "generate-password"
 
 type Metamask = {
   setup: () => Promise<void>
-  connect: () => Promise<void>
 }
 
 const DEFAULT_WALLET_SEED_PHRASE =
@@ -35,7 +34,7 @@ export const metamaskTest = test.extend<{
 
     await use(extensionId)
   },
-  metamask: async ({ context, page, metamaskExtensionId }, use) => {
+  metamask: async ({ page, metamaskExtensionId }, use) => {
     const password =
       process.env.WALLET_PASSWORD ??
       generatePassword.generate({
@@ -73,49 +72,6 @@ export const metamaskTest = test.extend<{
         await page.getByTestId("onboarding-complete-done").click()
         await page.getByTestId("pin-extension-next").click()
         await page.getByTestId("pin-extension-done").click()
-      },
-      connect: async () => {
-        await page.evaluate(() => {
-          localStorage.setItem("ap-promo-hidden", "1")
-        })
-
-        await page.getByRole("button", { name: "Connect wallet" }).click()
-        await page
-          .getByTestId("connect-modal")
-          .getByRole("button", { name: "Connect wallet" })
-          .click()
-
-        const connectPopupPromise = context.waitForEvent("page")
-
-        await page.getByRole("button", { name: "MetaMask" }).click()
-        await page.waitForSelector("w3m-connecting-external-view")
-
-        const connectPage = await connectPopupPromise
-
-        await connectPage.waitForLoadState("domcontentloaded")
-
-        await connectPage.getByRole("button", { name: "Next" }).click()
-        await connectPage.getByRole("button", { name: "Connect" }).click()
-        await connectPage.getByRole("button", { name: "Approve" }).click()
-        await connectPage
-          .getByRole("button", { name: "Switch network" })
-          .click()
-
-        await page.bringToFront()
-
-        const signPopupPromise = context.waitForEvent("page")
-
-        await page
-          .getByTestId("connect-modal")
-          .getByRole("button", { name: "Accept and sign" })
-          .click()
-
-        const signPage = await signPopupPromise
-
-        await signPage.getByTestId("popover-close").click()
-        await signPage.getByRole("button", { name: "Sign" }).click()
-
-        await page.bringToFront()
       },
     })
   },

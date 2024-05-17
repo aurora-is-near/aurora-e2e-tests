@@ -1,8 +1,8 @@
 import { mergeTests } from "playwright/test"
 import { metamaskTest } from "./metamask"
 import { extensionsTest } from "./extensions"
-import { appsTest } from "./apps"
+import { auroraPlusTest } from "./aurora-plus"
 
-export const test = mergeTests(metamaskTest, extensionsTest, appsTest)
+export const test = mergeTests(metamaskTest, extensionsTest, auroraPlusTest)
 
 export const { expect } = test

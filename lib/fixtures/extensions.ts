@@ -46,5 +46,3 @@ export const extensionsTest = test.extend<{
     await context.close()
   },
 })
-
-export const { expect } = test

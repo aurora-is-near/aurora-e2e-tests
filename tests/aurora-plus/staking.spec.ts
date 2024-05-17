@@ -20,26 +20,25 @@ const getWalletValues = async (page: Page) => {
 }
 
 test.describe("Aurora Plus: Staking", { tag: AURORA_PLUS_TAG }, () => {
-  test("connects a wallet", async ({ getApp, page, metamask }) => {
+  test("connects a wallet", async ({ auroraPlus, metamask, page }) => {
     await metamask.setup()
 
-    const app = getApp("aurora-plus")
-
-    await app.goto("/dashboard")
-
-    await metamask.connect()
+    await auroraPlus.goto("/dashboard")
+    await auroraPlus.connectToMetaMask()
 
     await expect(page.getByTestId("connected-indicator")).toBeVisible()
   })
 
-  test("stakes some tokens", async ({ getApp, metamask, page, context }) => {
+  test("stakes some tokens", async ({
+    metamask,
+    auroraPlus,
+    context,
+    page,
+  }) => {
     await metamask.setup()
 
-    const app = getApp("aurora-plus")
-
-    await app.goto("/dashboard")
-
-    await metamask.connect()
+    await auroraPlus.goto("/dashboard")
+    await auroraPlus.connectToMetaMask()
 
     // Wait for the numbers animation to finish
     await page.waitForTimeout(1000)
