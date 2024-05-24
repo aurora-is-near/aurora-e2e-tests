@@ -133,7 +133,7 @@ test.describe("Aurora Plus: Staking", { tag: AURORA_PLUS_TAG }, () => {
     )
   })
 
-  test.only("unstakes some tokens", async ({
+  test("unstakes some tokens", async ({
     metamask,
     auroraPlus,
     context,
