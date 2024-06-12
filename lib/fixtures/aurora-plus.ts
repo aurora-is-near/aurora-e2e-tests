@@ -52,7 +52,7 @@ export const auroraPlusTest = test.extend<{
 
         const signPage = await signPopupPromise
 
-        await signPage.getByTestId("popover-close").click()
+        // await signPage.getByTestId("popover-close").click()
         await signPage.getByRole("button", { name: "Sign" }).click()
 
         await page.bringToFront()

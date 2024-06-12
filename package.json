@@ -3,10 +3,11 @@
   "version": "1.0.0",
   "description": "",
   "main": ".eslintrc.js",
+  "license": "UNLICENSED",
   "scripts": {
     "lint": "eslint . --ext .js,.ts",
     "typecheck": "tsc --noEmit",
-    "test": "playwright test",
+    "test": "playwright test --workers=1",
     "test:headless": "HEADLESS_MODE=1 playwright test"
   },
   "author": "Alex Mendes",

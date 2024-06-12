@@ -1,4 +1,4 @@
-import { test } from "@playwright/test"
+import { expect, test } from "@playwright/test"
 import generatePassword from "generate-password"
 
 type Metamask = {
@@ -45,8 +45,9 @@ export const metamaskTest = test.extend<{
         strict: true,
       })
 
-    const seedPhrase =
-      process.env.WALLET_SEED_PHRASE ?? DEFAULT_WALLET_SEED_PHRASE
+    const seedPhrase = process.env.WALLET_SEED_PHRASE
+      ? process.env.WALLET_SEED_PHRASE
+      : DEFAULT_WALLET_SEED_PHRASE
 
     const getExtensionUrl = (path: string) =>
       `chrome-extension://${metamaskExtensionId}/${path.replace(/^\//, "")}`
@@ -70,10 +71,15 @@ export const metamaskTest = test.extend<{
         await page.getByTestId("create-password-terms").click()
         await page.getByTestId("create-password-import").click()
 
-        await page.waitForTimeout(1000)
+        await page.waitForTimeout(2000)
 
+        await expect(page.getByTestId("onboarding-complete-done")).toBeEnabled()
         await page.getByTestId("onboarding-complete-done").click()
+
+        await expect(page.getByTestId("pin-extension-next")).toBeEnabled()
         await page.getByTestId("pin-extension-next").click()
+
+        await expect(page.getByTestId("pin-extension-done")).toBeEnabled()
         await page.getByTestId("pin-extension-done").click()
       },
     })
