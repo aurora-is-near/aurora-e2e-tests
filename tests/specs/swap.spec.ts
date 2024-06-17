@@ -28,7 +28,7 @@ test.describe("Aurora Plus: Swapping", { tag: AURORA_PLUS_TAG }, () => {
     await swapPage.confirmSwapPageLoaded("/swap")
     await swapPage.selectTokenWithBalance(tokenWithBalance)
     await swapPage.selectDestinationSupportedToken(destinationToken)
-    await swapPage.enterSwapFromValue(0.1)
+    await swapPage.enterSwapFromAmount(0.1)
     await swapPage.clickReviewSwapButton()
     await swapPage.confirmThatReviewYourSwapModalVisible()
     await swapPage.clickApproveSwapButton()

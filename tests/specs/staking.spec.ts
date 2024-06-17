@@ -28,7 +28,7 @@ test.describe("Aurora Plus: Staking", { tag: AURORA_PLUS_TAG }, () => {
 
     // Test
     const initialAuroraBalance = await dashboardPage.getAuroraBalance()
-    const initialStakedValue = await dashboardPage.getStakedBalance()
+    const initialStakedBalance = await dashboardPage.getStakedBalance()
 
     await dashboardPage.clickStakeButton()
     await dashboardPage.stakeModal_enterAmount(0.1)
@@ -41,11 +41,11 @@ test.describe("Aurora Plus: Staking", { tag: AURORA_PLUS_TAG }, () => {
 
     await dashboardPage.confirmStakeModalGone()
 
-    const updatedAuroraValue = await dashboardPage.getAuroraBalance()
-    const updatedStakedValue = await dashboardPage.getStakedBalance()
+    const updatedAuroraBalance = await dashboardPage.getAuroraBalance()
+    const updatedStakedBalance = await dashboardPage.getStakedBalance()
 
-    expect(initialAuroraBalance).toBeGreaterThan(updatedAuroraValue)
-    expect(initialStakedValue).toBeLessThan(updatedStakedValue)
+    expect(initialAuroraBalance).toBeGreaterThan(updatedAuroraBalance)
+    expect(initialStakedBalance).toBeLessThan(updatedStakedBalance)
   })
 
   test("Confirm that user can't stake more than balance allows", async ({
@@ -89,7 +89,7 @@ test.describe("Aurora Plus: Staking", { tag: AURORA_PLUS_TAG }, () => {
 
     await dashboardPage.clickUnstakeButton()
 
-    await dashboardPage.enterUnstakeValue(0.1)
+    await dashboardPage.enterUnstakeAmount(0.1)
     await dashboardPage.clickUnstakeModalConfirmButton()
 
     const metamaskContext = metamaskActions.switchContextToExtension(context)

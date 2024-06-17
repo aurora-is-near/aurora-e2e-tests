@@ -55,7 +55,7 @@ export class SwapPage extends BasePage {
     await supportedToken.click()
   }
 
-  async enterSwapFromValue(amount: number) {
+  async enterSwapFromAmount(amount: number) {
     const messageOnFail = '"From" input field not visible'
     await expect(this.swapFromInput, messageOnFail).toBeVisible()
 

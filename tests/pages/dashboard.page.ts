@@ -18,8 +18,8 @@ export class DashboardPage extends BasePage {
   unstakeConfirmModalButton: Locator
   withdrawalCooldownButton: Locator
   auroraPendingWithdrawalAmount: Locator
-  auroraBalanceValue: Locator
-  auroraStakedValue: Locator
+  auroraBalance: Locator
+  auroraStakedBalance: Locator
   gettingStartedTitle: Locator
   stakeAmountInput: Locator
   unstakeConfirmModal: Locator
@@ -62,8 +62,8 @@ export class DashboardPage extends BasePage {
     this.auroraPendingWithdrawalAmount = page.getByTestId(
       "aurora-pending-withdrawal-amount",
     )
-    this.auroraBalanceValue = page.getByTestId("aurora-balance-value")
-    this.auroraStakedValue = page.getByTestId("aurora-staked-value")
+    this.auroraBalance = page.getByTestId("aurora-balance-value")
+    this.auroraStakedBalance = page.getByTestId("aurora-staked-value")
     this.unstakeConfirmModal = page.getByTestId("unstake-confirm-modal")
     this.unstakeConfirmModalButton = this.unstakeConfirmModal.getByRole(
       "button",
@@ -145,16 +145,16 @@ export class DashboardPage extends BasePage {
 
   async getAuroraBalance() {
     const messageOnFail = "Aurora balance is not visible"
-    await expect(this.auroraBalanceValue, messageOnFail).toBeVisible()
-    const balance = await this.auroraBalanceValue.innerText()
+    await expect(this.auroraBalance, messageOnFail).toBeVisible()
+    const balance = await this.auroraBalance.innerText()
 
     return parseFloat(balance)
   }
 
   async getStakedBalance() {
     const messageOnFail = "Aurora staked balance is not visible"
-    await expect(this.auroraStakedValue, messageOnFail).toBeVisible()
-    const balance = await this.auroraStakedValue.innerText()
+    await expect(this.auroraStakedBalance, messageOnFail).toBeVisible()
+    const balance = await this.auroraStakedBalance.innerText()
 
     return parseFloat(balance)
   }
@@ -173,7 +173,7 @@ export class DashboardPage extends BasePage {
     await this.unstakeConfirmModalButton.click()
   }
 
-  async enterUnstakeValue(amount: number) {
+  async enterUnstakeAmount(amount: number) {
     const messageOnFail = "Unstake amount input field is not visible"
     await expect(this.unstakeAmountInput, messageOnFail).toBeVisible()
 
