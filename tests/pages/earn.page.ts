@@ -1,4 +1,3 @@
-/* eslint-disable no-await-in-loop */
 // eslint-disable-next-line eslint-comments/disable-enable-pair
 /* eslint-disable @typescript-eslint/lines-between-class-members */
 import { expect, type Locator, type Page } from "playwright/test"
@@ -58,11 +57,10 @@ export class EarnPage extends BasePage {
   }
 
   async skipOnboarding() {
-    let isNextSlideVisible = true
-
-    while (isNextSlideVisible) {
+    // eslint-disable-next-line no-await-in-loop
+    while (await this.nextSlideButton.isVisible()) {
+      // eslint-disable-next-line no-await-in-loop
       await this.nextSlideButton.click()
-      isNextSlideVisible = await this.nextSlideButton.isVisible()
     }
 
     const messageOnFail = "Button 'Get Started' not visible"
