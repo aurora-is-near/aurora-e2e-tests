@@ -18,7 +18,7 @@ test.describe("Aurora Plus: Swapping", { tag: AURORA_PLUS_TAG }, () => {
   const tokenWithBalance = "Aurora"
   const destinationToken = "BRRR"
 
-  test.only(`Confirm that user can swap tokens from ${tokenWithBalance} to ${destinationToken}`, async ({
+  test(`Confirm that user can swap tokens from ${tokenWithBalance} to ${destinationToken}`, async ({
     context,
     page,
   }) => {
