@@ -1,4 +1,4 @@
-import type { Locator, Page } from "playwright/test"
+import { expect, type Locator, type Page } from "playwright/test"
 import { BasePage } from "./base.page"
 
 export class ForwarderPage extends BasePage {
@@ -28,33 +28,41 @@ export class ForwarderPage extends BasePage {
     this.transfersContainerTitle = page.getByText("Deposit tokens to Aurora")
     this.transferTab = page.getByRole("button", { name: "Transfer" })
     this.myPointsAmount = page.getByText("My points").locator("//div/span")
-    // this.auroraDepositCodeHint =
     this.auroraDepositCodeCopyButton = page.getByRole("button", {
       name: "Copy",
     })
-    // this.auroraDepositQrCode =
-    //   this.walletHint =
-    //   this.transferFee =
     this.historyTab = page.getByRole("button", { name: "History" })
     this.refreshHistryButton = page.locator("//div[2]/img")
   }
 
+  async confirmForwarderPageLoaded(url: string, page = this.page) {
+    await this.confirmCorrectPageLoaded(page, url)
+  }
+
   async switchToTransferTab() {
+    const messageOnFail = "Transfer tab button not visible"
+    await expect(this.transferTab, messageOnFail).toBeVisible()
     await this.transferTab.click()
   }
 
   async switchToHistoryTab() {
+    const messageOnFail = "History tab button not visible"
+    await expect(this.historyTab, messageOnFail).toBeVisible()
     await this.historyTab.click()
   }
 
   async refreshTransactionsHistory() {
+    const messageOnFail = "Refresh transation button history button not visible"
+    await expect(this.refreshHistryButton, messageOnFail).toBeVisible()
     await this.refreshHistryButton.click()
   }
 
-  selectTransaction(transaction: number) {
+  async selectTransaction(transaction: number) {
     const transactionContainer = this.page.locator(
       `//div/div[2]/div/div[2]/a[${transaction}]`,
     )
+    const messageOnFail = `${transaction} transaction not visible`
+    await expect(transactionContainer, messageOnFail).toBeVisible()
 
     return transactionContainer
   }

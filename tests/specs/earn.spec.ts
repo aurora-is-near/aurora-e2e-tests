@@ -1,3 +1,4 @@
+import { setTimeout } from "node:timers/promises"
 import { AURORA_PLUS_TAG } from "../../lib/constants/tags"
 import { test } from "../../lib/fixtures"
 import { MetamaskActions } from "../helpers/metamask.actions"
@@ -22,19 +23,30 @@ test.describe("Aurora Plus: Earning", { tag: AURORA_PLUS_TAG }, () => {
     const earnPage = new EarnPage(page)
     const metamaskActions = new MetamaskActions()
 
-    earnPage.confirmEarnPageLoaded()
+    await earnPage.confirmEarnPageLoaded("/earn")
 
     if (await earnPage.isOnboardingVisible()) {
       await earnPage.skipOnboarding()
     }
 
-    await earnPage.selectAuroraToDeposit()
+    const depositAlradyExists = await earnPage.isAnyDepositsExist()
+
+    await setTimeout(5000)
+
+    if (depositAlradyExists) {
+      await earnPage.clickDepositMoreButton()
+    } else {
+      await earnPage.selectAuroraToDeposit()
+    }
+
     await earnPage.enterAmountToDeposit(0.1)
     await earnPage.confirmDeposit()
+
     const metamaskContext = metamaskActions.switchContextToExtension(context)
     await metamaskActions.clickNext(metamaskContext)
     await metamaskActions.clickApprove(metamaskContext)
     await metamaskActions.switchContextToPage(page)
+
     await earnPage.confirmSuccessfullyDepositedNotificationVisible()
   })
 })

@@ -1,3 +1,5 @@
+import fs from "fs-extra"
+
 import {
   METAMASK_EXTENSION_NAME,
   METAMASK_VERSION,
@@ -11,11 +13,17 @@ export const EXTENSION_DOWNLOAD_URL = `https://github.com/MetaMask/metamask-exte
 export const prepareMetaMaskExtension = async () => {
   const cacheDirPath = ensureCacheDirExists()
 
-  const downloadPath = await downloadFile({
+  const extensionDetails = {
     url: EXTENSION_DOWNLOAD_URL,
     outputDir: cacheDirPath,
     fileName: `${METAMASK_EXTENSION_NAME}.zip`,
-  })
+  }
 
-  return unzipArchive(downloadPath)
+  const filePath = `${extensionDetails.outputDir}/${extensionDetails.fileName}`
+
+  if (!fs.existsSync(filePath)) {
+    await downloadFile(extensionDetails)
+  }
+
+  return unzipArchive(filePath)
 }

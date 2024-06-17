@@ -30,7 +30,7 @@ export class DashboardPage extends BasePage {
     super(page)
     this.page = page
     this.stakeAmountInput = page.locator("#stake-amount")
-    this.unstakeAmountInput = page.locator("#stake-amount")
+    this.unstakeAmountInput = page.locator("#unstake-amount")
     this.gettingStartedTitle = page.getByText("Get started with Aurora")
     this.stakeButton = page.getByRole("button", { name: "Stake", exact: true })
     this.onboardingModal = page.getByTestId("stake-onboarding-modal")
@@ -67,91 +67,138 @@ export class DashboardPage extends BasePage {
     this.unstakeConfirmModal = page.getByTestId("unstake-confirm-modal")
     this.unstakeConfirmModalButton = this.unstakeConfirmModal.getByRole(
       "button",
-      {
-        name: "Unstake now",
-      },
+      { name: "Unstake now" },
     )
   }
 
-  getWalletValues = async () => {
-    const balance = Number(await this.auroraBalanceValue.textContent())
-    const stakedAmount = Number(await this.auroraStakedValue.textContent())
+  async confirmDashboardPageLoaded(url: string, page = this.page) {
+    await this.confirmCorrectPageLoaded(page, url)
+  }
 
-    return { balance, stakedAmount }
+  async isAnyPendingWithdrawals() {
+    const isVisible = this.withdrawalCooldownButton.isVisible()
+
+    return isVisible
   }
 
   getPendingWithdrawalAmount = async (): Promise<number> => {
-    await expect(this.withdrawalCooldownButton).toBeVisible({ timeout: 3000 })
+    let messageOnFail = "Withdrawal cooldown button is not visible"
+    await expect(this.withdrawalCooldownButton, messageOnFail).toBeVisible(
+      this.timeouts.midTimeout,
+    )
     await this.withdrawalCooldownButton.click()
+
+    messageOnFail = "Withdrawal cooldown amount is not visible"
+    await expect(
+      this.auroraPendingWithdrawalAmount,
+      messageOnFail,
+    ).toBeVisible()
 
     const amount = Number(
       await this.auroraPendingWithdrawalAmount.textContent(),
     )
-
     await this.withdrawalCooldownButton.click()
 
     return amount
   }
 
   async isOnboardingVisible() {
-    const isVisible = await this.onboardingModal.isVisible({ timeout: 20000 })
+    const isVisible = await this.onboardingModal.isVisible(
+      this.timeouts.shortTimeout,
+    )
 
     return isVisible
   }
 
   async skipOnboarding() {
+    let messageOnFail = 'Button "Got it, Continue" is not visible'
+    await expect(this.gotItContinueButton, messageOnFail).toBeVisible()
     await this.gotItContinueButton.click()
+
+    messageOnFail = 'Button "All clear, Next" is not visible'
+    await expect(this.allClearNextButton, messageOnFail).toBeVisible()
     await this.allClearNextButton.click()
+
+    messageOnFail = 'Button "OK, Lets stake" is not visible'
+    await expect(this.okLetsStakeButton, messageOnFail).toBeVisible()
     await this.okLetsStakeButton.click()
   }
 
-  confirmDashboardPageLoaded() {
-    expect(this.page.url()).toBe("https://aurora.plus/dashboard")
-  }
-
   async clickStakeButton() {
+    const messageOnFail = "Stake button is not visible"
+    await expect(this.stakeButton, messageOnFail).toBeVisible()
     await this.stakeButton.click()
   }
 
   async stakeModal_enterAmount(amount: number) {
+    const messageOnFail =
+      "Stake amount input field in stake modal is not visible"
+    await expect(this.stakeAmountInput, messageOnFail).toBeVisible()
     await this.stakeAmountInput.fill(amount.toString())
   }
 
   async stakeModal_confirmStake() {
+    const messageOnFail = "Stake confirm button in stake modal is not visible"
+    await expect(this.stakeConfirmModalButton, messageOnFail).toBeVisible()
     await this.stakeConfirmModalButton.click()
   }
 
   async getAuroraBalance() {
+    const messageOnFail = "Aurora balance is not visible"
+    await expect(this.auroraBalanceValue, messageOnFail).toBeVisible()
     const balance = await this.auroraBalanceValue.innerText()
 
     return parseFloat(balance)
   }
 
   async getStakedBalance() {
+    const messageOnFail = "Aurora staked balance is not visible"
+    await expect(this.auroraStakedValue, messageOnFail).toBeVisible()
     const balance = await this.auroraStakedValue.innerText()
 
     return parseFloat(balance)
   }
 
-  async confirmStakeModalGone() {
-    await expect(this.stakeConfirmModal).not.toBeVisible({
-      timeout: 60000,
-    })
-  }
-
   async clickUnstakeButton() {
+    const messageOnFail = "Unstake button is not visible"
+    await expect(this.unstakeButton, messageOnFail).toBeVisible()
+
     await this.unstakeButton.click()
   }
 
   async clickUnstakeModalConfirmButton() {
+    const messageOnFail = "Unstake confirm modal button is not visible"
+    await expect(this.unstakeConfirmModalButton, messageOnFail).toBeVisible()
+
     await this.unstakeConfirmModalButton.click()
   }
 
   async enterUnstakeValue(amount: number) {
+    const messageOnFail = "Unstake amount input field is not visible"
+    // await this.page.pause()
+    await expect(this.unstakeAmountInput, messageOnFail).toBeVisible()
+
     await this.unstakeAmountInput.fill(amount.toString())
   }
 
+  async confirmStakeModalGone() {
+    const messageOnFail =
+      "Stake confirm modal should disappear, but it's still visible after 60s"
+    await expect(this.stakeConfirmModal, messageOnFail).not.toBeVisible(
+      this.timeouts.midTimeout,
+    )
+  }
+
   async confirmLoadingSpinnedDisappear() {
-    await expect(this.loadingModalSpinner).not.toBeVisible({ timeout: 60000 })
+    const messageOnFail =
+      "Modal loading spinner should disappear, but it's still visible after 60s"
+    await expect(this.loadingModalSpinner, messageOnFail).not.toBeVisible(
+      this.timeouts.midTimeout,
+    )
+  }
+
+  async confirmThatConfirmButtonDisabled() {
+    const messageOnFail = "Stake confirm button in stake modal is not visible"
+    await expect(this.stakeConfirmModalButton, messageOnFail).toBeDisabled()
   }
 }

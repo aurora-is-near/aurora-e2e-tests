@@ -10,7 +10,7 @@ test.describe("Aurora Plus: Swapping", { tag: AURORA_PLUS_TAG }, () => {
     "Setup Metamask extension:",
     async ({ metamask, auroraPlus }) => {
       await metamask.setup()
-      await auroraPlus.goto("/earn")
+      await auroraPlus.goto("/swap")
       await auroraPlus.connectToMetaMask()
     },
   )
@@ -18,14 +18,14 @@ test.describe("Aurora Plus: Swapping", { tag: AURORA_PLUS_TAG }, () => {
   const tokenWithBalance = "Aurora"
   const destinationToken = "BRRR"
 
-  test(`Confirm that user can swap tokens from ${tokenWithBalance} to ${destinationToken}`, async ({
+  test.only(`Confirm that user can swap tokens from ${tokenWithBalance} to ${destinationToken}`, async ({
     context,
     page,
   }) => {
     const swapPage = new SwapPage(page)
     const metamaskActions = new MetamaskActions()
 
-    swapPage.confirmSwapPageLoaded()
+    await swapPage.confirmSwapPageLoaded("/swap")
     await swapPage.selectTokenWithBalance(tokenWithBalance)
     await swapPage.selectDestinationSupportedToken(destinationToken)
     await swapPage.enterSwapFromValue(0.1)
@@ -35,7 +35,15 @@ test.describe("Aurora Plus: Swapping", { tag: AURORA_PLUS_TAG }, () => {
 
     const metamaskContext =
       await metamaskActions.switchContextToExtension(context)
-    await metamaskActions.clickNext(metamaskContext)
+
+    await page.pause()
+
+    if (await metamaskActions.isButtonVisible(metamaskContext, "Confirm")) {
+      await metamaskActions.clickConfirm(metamaskContext)
+    } else {
+      await metamaskActions.clickNext(metamaskContext)
+    }
+
     await metamaskActions.clickApprove(metamaskContext)
     await metamaskActions.switchContextToPage(page)
   })

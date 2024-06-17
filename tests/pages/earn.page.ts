@@ -12,8 +12,10 @@ export class EarnPage extends BasePage {
   auroraDepositButton: Locator
   firstOnboardingMessage: Locator
   nextSlideButton: Locator
-  getStartEarning: Locator
+  getStartButton: Locator
   approveDepositButton: Locator
+  depositMoreButton: Locator
+  depositButton: Locator
 
   constructor(page: Page) {
     super(page)
@@ -22,26 +24,34 @@ export class EarnPage extends BasePage {
     this.depositInputField = page.locator("//input[@id='deposit-amount']")
     this.confirmDepositButton = page.getByText("Deposit and Enable Collateral")
     this.approveDepositButton = page.getByRole("button", { name: "Approve" })
+    this.depositButton = page.getByRole("button", { name: "Deposit" })
     this.depositSuccessfullNotificationInPopup = page.getByText(
       "Deposit Successful!",
     )
     this.depositSuccessfullNotificationInPage = page.getByText(
-      "Successfully deposited",
+      '//*[text()="Successfully deposited"]',
     )
     this.auroraDepositButton = page.getByRole("button", {
       name: "AURORA",
     })
     this.firstOnboardingMessage = page.getByText("Earn More With Your Crypto")
     this.nextSlideButton = page.getByRole("button", { name: "Nextslide" })
-    this.getStartEarning = page.getByRole("button", { name: "Get Started" })
+    this.getStartButton = page.getByRole("button", {
+      name: "Get Started",
+    })
+    this.depositMoreButton = page.getByRole("button", {
+      name: "Deposit More",
+    })
   }
 
-  confirmEarnPageLoaded() {
-    expect(this.page.url()).toBe("https://aurora.plus/earn")
+  async confirmEarnPageLoaded(url: string, page = this.page) {
+    await this.confirmCorrectPageLoaded(page, url)
   }
 
   async isOnboardingVisible() {
-    const isVisible = this.firstOnboardingMessage.isVisible({ timeout: 20000 })
+    const isVisible = this.firstOnboardingMessage.isVisible(
+      this.timeouts.shortTimeout,
+    )
 
     return isVisible
   }
@@ -53,14 +63,23 @@ export class EarnPage extends BasePage {
       await this.nextSlideButton.click()
     }
 
-    await this.getStartEarning.click()
+    const messageOnFail = "Button 'Get Started' not visible"
+    await expect(this.getStartButton, messageOnFail).toBeVisible()
+
+    await this.getStartButton.click()
   }
 
   async selectAuroraToDeposit() {
+    const messageOnFail = "AURORA deposit button not visible"
+    await expect(this.auroraDepositButton, messageOnFail).toBeVisible()
+
     await this.auroraDepositButton.click()
   }
 
   async enterAmountToDeposit(amount: number) {
+    const messageOnFail = "Deposit input field not visible"
+    await expect(this.depositInputField, messageOnFail).toBeVisible()
+
     await this.depositInputField.fill(amount.toString())
   }
 
@@ -69,18 +88,26 @@ export class EarnPage extends BasePage {
       await this.confirmDepositButton.click()
     } else if (await this.approveDepositButton.isVisible()) {
       await this.approveDepositButton.click()
+    } else if (await this.depositButton.isVisible()) {
+      await this.depositButton.click()
     }
   }
 
-  async confirmDepositWasSuccessfullPopUpVisible() {
-    await expect(this.depositSuccessfullNotificationInPopup).toBeVisible({
-      timeout: 20000,
-    })
+  async confirmSuccessfullyDepositedNotificationVisible() {
+    const messageOnFail = "Successful deposit notification do not appeared"
+    await expect(
+      this.depositSuccessfullNotificationInPage,
+      messageOnFail,
+    ).toBeVisible(this.timeouts.longTimeout)
   }
 
-  async confirmSuccessfullyDepositedNotificationVisible() {
-    await expect(this.depositSuccessfullNotificationInPage).toBeVisible({
-      timeout: 20000,
-    })
+  async clickDepositMoreButton() {
+    await this.depositMoreButton.click()
+  }
+
+  async isAnyDepositsExist() {
+    const isVisible = await this.depositMoreButton.isVisible()
+
+    return isVisible
   }
 }
