@@ -22,12 +22,6 @@ module.exports = {
     "import/resolver": { typescript: {} },
   },
   rules: {
-    "prettier/prettier": [
-      "error",
-      {
-        endOfLine: "auto",
-      },
-    ],
     curly: ["error", "all"],
     eqeqeq: ["error", "smart"],
     "import/extensions": [

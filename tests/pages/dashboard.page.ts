@@ -175,7 +175,6 @@ export class DashboardPage extends BasePage {
 
   async enterUnstakeValue(amount: number) {
     const messageOnFail = "Unstake amount input field is not visible"
-    // await this.page.pause()
     await expect(this.unstakeAmountInput, messageOnFail).toBeVisible()
 
     await this.unstakeAmountInput.fill(amount.toString())
