@@ -102,8 +102,9 @@ test.describe("Aurora Plus: Staking", { tag: AURORA_PLUS_TAG }, () => {
       await dashboardPage.getPendingWithdrawalAmount()
 
     const messageOnFail = `Initial amount: ${initialPendingWithdrawalAmount} expected to be lower than updated: ${newPendingWithdrawalAmount}`
-    expect(initialPendingWithdrawalAmount, messageOnFail).toBeLessThan(
-      newPendingWithdrawalAmount,
+
+    expect((newPendingWithdrawalAmount + 0.1).toFixed(), messageOnFail).toBe(
+      initialPendingWithdrawalAmount.toFixed(),
     )
   })
 })

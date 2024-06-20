@@ -36,8 +36,6 @@ test.describe("Aurora Plus: Swapping", { tag: AURORA_PLUS_TAG }, () => {
     const metamaskContext =
       await metamaskActions.switchContextToExtension(context)
 
-    await page.pause()
-
     if (await metamaskActions.isButtonVisible(metamaskContext, "Confirm")) {
       await metamaskActions.clickConfirm(metamaskContext)
     } else {
