@@ -6,7 +6,10 @@
   "scripts": {
     "lint": "eslint . --ext .js,.ts",
     "typecheck": "tsc --noEmit",
-    "test": "playwright test",
+    "test": "playwright test --workers=1",
+    "debug": "playwright test --workers=1 --debug",
+    "test-aurora": "playwright test --workers=1 --grep @aurora-plus",
+    "test-web-wallet": "playwright test --workers=1 --grep @web3-wallet",
     "test:headless": "HEADLESS_MODE=1 playwright test"
   },
   "author": "Alex Mendes",

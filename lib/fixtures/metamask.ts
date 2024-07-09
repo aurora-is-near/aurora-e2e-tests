@@ -73,6 +73,7 @@ export const metamaskTest = test.extend<{
         await page.waitForTimeout(1000)
 
         await page.getByTestId("onboarding-complete-done").click()
+        await page.getByTestId("onboarding-complete-done").click()
         await page.getByTestId("pin-extension-next").click()
         await page.getByTestId("pin-extension-done").click()
       },
