@@ -15,9 +15,7 @@ test.beforeEach(
 )
 
 test.describe("NEAR Web3 Wallet: Swapping", { tag: WEB3_WALLET_TAG }, () => {
-  test.only(`Confirm that user can swap some tokens`, async ({
-    page,
-  }, testInfo) => {
+  test(`Confirm that user can swap some tokens`, async ({ page }, testInfo) => {
     console.log(testInfo.title)
     const homePage = new HomePage(page)
     // const metamaskActions = new MetamaskActions()
@@ -25,7 +23,5 @@ test.describe("NEAR Web3 Wallet: Swapping", { tag: WEB3_WALLET_TAG }, () => {
     await homePage.confirmSwapPageLoaded("/")
 
     await homePage.scrollToSwapContainer()
-
-    await page.pause()
   })
 })
