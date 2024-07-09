@@ -13,8 +13,11 @@ export default defineConfig({
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
   workers: process.env.CI ? 1 : undefined,
-  timeout: 120000,
-  reporter: "dot",
+  timeout: 2 * 60 * 1000,
+  reporter: [
+    ["list"],
+    ["json", { outputFile: "playwright-report/test-results.json" }],
+  ],
   use: {
     trace: "on-first-retry",
   },
