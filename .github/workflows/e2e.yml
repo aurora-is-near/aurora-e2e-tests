@@ -36,5 +36,6 @@ jobs:
           DISPLAY: :0.0
 
       - run: yarn install --immutable
+      - run: yarn add web3
       - run: yarn playwright install --with-deps
       - run: xvfb-run yarn test-web-wallet
