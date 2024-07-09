@@ -14,6 +14,11 @@ jobs:
           node-version: 20
           cache: "npm"
 
+      - uses: browser-actions/setup-chrome@v1
+        with:
+          chrome-version: 120
+          install-chromedriver: true
+
       - name: Install Yarn
         run: npm install -g yarn
 
