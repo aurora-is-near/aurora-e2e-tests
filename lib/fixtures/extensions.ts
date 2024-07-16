@@ -21,16 +21,16 @@ export const extensionsTest = test.extend<{
   baseUrl: string
 }>({
   // eslint-disable-next-line no-empty-pattern
-  context: async ({}, use) => {
+  context: async ({ }, use) => {
     const browserArgs = [
       `--disable-extensions-except=${METAMASK_EXTENSION_PATH}`,
       `--load-extension=${METAMASK_EXTENSION_PATH}`,
       "--remote-debugging-port=9222",
     ]
 
-    if (process.env.CI) {
-      browserArgs.push("--disable-gpu")
-    }
+    // if (process.env.CI) {
+    //   browserArgs.push("--disable-gpu")
+    // }
 
     if (process.env.HEADLESS_MODE) {
       browserArgs.push("--headless=new")
