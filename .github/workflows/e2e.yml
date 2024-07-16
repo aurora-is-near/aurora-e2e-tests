@@ -25,6 +25,7 @@ jobs:
       - name: Install linux deps
         run: |
           sudo apt-get install --no-install-recommends -y \
+          dbus-x11 \
           fluxbox \
           xvfb
 
