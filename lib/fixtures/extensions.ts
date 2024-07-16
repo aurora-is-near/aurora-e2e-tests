@@ -17,32 +17,39 @@ const METAMASK_EXTENSION_PATH = path.join(
  */
 export const extensionsTest = test.extend<{
   context: BrowserContext
-  metamaskExtensionId: string
+  extensionId: string
   baseUrl: string
 }>({
   // eslint-disable-next-line no-empty-pattern, prettier/prettier
   context: async ({ }, use) => {
-    const browserArgs = [
-      `--disable-extensions-except=${METAMASK_EXTENSION_PATH}`,
-      `--load-extension=${METAMASK_EXTENSION_PATH}`,
-      // "--remote-debugging-port=9222",
-    ]
-
-    // if (process.env.CI) {
-    //   browserArgs.push("--disable-gpu")
-    // }
-
-    // if (process.env.HEADLESS_MODE) {
-    //   browserArgs.push("--headless=new")
-    // }
-
-    // launch browser
+    // const pathToExtension = path.join(__dirname, 'my-extension');
     const context = await chromium.launchPersistentContext("", {
       headless: false,
-      args: browserArgs,
+      args: [
+        `--disable-extensions-except=${METAMASK_EXTENSION_PATH}`,
+        `--load-extension=${METAMASK_EXTENSION_PATH}`,
+      ],
     })
-
     await use(context)
     await context.close()
   },
+  extensionId: async ({ context }, use) => {
+    /*
+    // for manifest v2:
+    let [background] = context.backgroundPages()
+    if (!background)
+      background = await context.waitForEvent('backgroundpage')
+    */
+
+    // for manifest v3:
+    let [background] = context.serviceWorkers()
+
+    if (!background) {
+      background = await context.waitForEvent("serviceworker")
+    }
+
+    const extensionId = background.url().split("/")[2]
+    await use(extensionId)
+  },
 })
+export const { expect } = test

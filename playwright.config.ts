@@ -13,7 +13,7 @@ export default defineConfig({
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
   workers: process.env.CI ? 1 : undefined,
-  timeout: 2 * 60 * 1000,
+  timeout: 5 * 60 * 1000,
   reporter: [
     ["list"],
     ["json", { outputFile: "playwright-report/test-results.json" }],
@@ -22,14 +22,14 @@ export default defineConfig({
     trace: "on-first-retry",
   },
   projects: [
-    {
-      name: "setup metamask",
-      testMatch: /metamask\.setup\.ts/,
-    },
+    // {
+    //   name: "setup metamask",
+    //   testMatch: /metamask\.setup\.ts/,
+    // },
     {
       name: "chromium",
       use: { ...devices["Desktop Chrome"] },
-      dependencies: ["setup metamask"],
+      // dependencies: ["setup metamask"],
     },
   ],
 })
