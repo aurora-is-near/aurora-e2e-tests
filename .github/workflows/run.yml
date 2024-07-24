@@ -28,7 +28,6 @@ jobs:
         run: yarn install --frozen-lockfile --non-interactive --prefer-offline
       - name: Install Playwright browsers
         run: yarn playwright install --with-deps
-      - run: xvfb-run yarn synpress
       - run: xvfb-run yarn playwright test
 
   merge-reports:
