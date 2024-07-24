@@ -18,19 +18,23 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version-file: package.json
+      - name: Install linux deps
+        run: |
+          sudo apt-get install --no-install-recommends -y \
+          fluxbox \
+          xvfb
+      - name: Run xvfb and fluxbox
+        run: |
+          Xvfb :0 -screen 0 1920x1080x24 -listen tcp -ac &
+          fluxbox -display :0.0 &
+        env:
+          DISPLAY: :0.0
       - name: Install
         run: yarn install --frozen-lockfile --non-interactive --prefer-offline
       - name: Install Playwright browsers
-        run: npx playwright install --with-deps
-      - name: Run Playwright tests
-        run: npx playwright test --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
-      - name: Upload blob report to GitHub Actions Artifacts
-        if: ${{ !cancelled() }}
-        uses: actions/upload-artifact@v4
-        with:
-          name: blob-report-${{ matrix.shardIndex }}
-          path: blob-report
-          retention-days: 1
+        run: yarn playwright install --with-deps
+      - run: xvfb-run yarn synpress
+      - run: xvfb-run yarn playwright test
 
   merge-reports:
     if: ${{ !cancelled() }}
