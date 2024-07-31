@@ -2,7 +2,8 @@
 /* eslint-disable @typescript-eslint/lines-between-class-members */
 import { expect, type Locator, type Page } from "@playwright/test"
 import { BasePage } from "./base.page"
-import { midTimeout, shortTimeout } from "../../../lib/constants/timouts"
+import { longTimeout, midTimeout, shortTimeout } from "../../helpers/constants/timeouts"
+import { setTimeout } from "timers/promises"
 
 export class DashboardPage extends BasePage {
   page: Page
@@ -35,7 +36,8 @@ export class DashboardPage extends BasePage {
     this.unstakeButton = page.getByTestId("unstake-button")
     this.onboardingModal = page.getByTestId("stake-onboarding-modal")
     this.stakeAmountInput = page.locator("#stake-amount")
-    this.unstakeAmountInput = page.locator("#unstake-amount")
+    this.unstakeAmountInput = page.getByPlaceholder('0.00')
+    // this.unstakeAmountInput = page.locator("#unstake-amount")
     this.stakeConfirmModal = page.getByTestId("stake-confirm-modal")
     this.stakeRewardsModal = page.getByTestId("stake-rewards-modal")
     this.gotItContinueButton = page.getByTestId("got-it-button")
@@ -43,7 +45,8 @@ export class DashboardPage extends BasePage {
     this.okLetsStakeButton = page.getByTestId("lets-stake-button")
     this.stakeConfirmModalAmountInput =
       this.stakeConfirmModal.getByLabel("Amount")
-    this.stakeConfirmModalButton = page.getByTestId("confirm-button")
+    this.stakeConfirmModalButton = page.getByRole('button', { name: 'Confirm' })
+    // this.stakeConfirmModalButton = page.getByTestId("confirm-button")
     this.loadingModalSpinner =
       this.stakeConfirmModalButton.getByTestId("loading-spinner")
     this.withdrawalCooldownButton = page.getByTestId(
@@ -58,8 +61,8 @@ export class DashboardPage extends BasePage {
     this.unstakeConfirmModalButton = page.getByTestId("unstake-now-button")
   }
 
-  async confirmDashboardPageLoaded(url: string, page = this.page) {
-    await this.confirmCorrectPageLoaded(page, url)
+  async confirmDashboardPageLoaded(page: Page) {
+    await expect(page).toHaveURL('https://aurora.plus/dashboard')
   }
 
   async isAnyPendingWithdrawals() {
@@ -166,23 +169,38 @@ export class DashboardPage extends BasePage {
   }
 
   async confirmStakeModalGone() {
+    // await setTimeout(15000)
     const messageOnFail =
-      "Stake confirm modal should disappear, but it's still visible after 60s"
-    await expect(this.stakeConfirmModal, messageOnFail).not.toBeVisible(
-      midTimeout,
-    )
+      "Stake confirm modal should disappear"
+    await expect(this.stakeConfirmModal, messageOnFail).toHaveCount(0)
+  }
+
+  async waitForAuroraBalanceUpdate(balance: number) {
+    const retries = 50
+    let newBalance = balance
+    while (balance === newBalance && retries > 0) {
+      newBalance = await this.getAuroraBalance()
+      await setTimeout(200);
+    }
   }
 
   async confirmLoadingSpinnedDisappear() {
+    // await setTimeout(15000)
     const messageOnFail =
-      "Modal loading spinner should disappear, but it's still visible after 60s"
-    await expect(this.loadingModalSpinner, messageOnFail).not.toBeVisible(
-      midTimeout,
-    )
+      "Modal loading spinner should disappear"
+    await expect(this.loadingModalSpinner, messageOnFail).toHaveCount(0)
   }
 
   async confirmThatConfirmButtonDisabled() {
-    const messageOnFail = "Stake confirm button in stake modal is not visible"
+    const messageOnFail = "Stake confirm button in stake modal is not disabled"
     await expect(this.stakeConfirmModalButton, messageOnFail).toBeDisabled()
+  }
+
+  async confirmValuesIsCorrectAfterTransfer(initialAuroraBalance: number, updatedAuroraBalance: number, transferAmount: number) {
+    const messageOnFail = `Initial Aurora balance: ${initialAuroraBalance} expected to be higher than updated: ${updatedAuroraBalance}`
+
+    expect((initialAuroraBalance - transferAmount).toFixed(), messageOnFail).toBe(
+      updatedAuroraBalance.toFixed(),
+    )
   }
 }

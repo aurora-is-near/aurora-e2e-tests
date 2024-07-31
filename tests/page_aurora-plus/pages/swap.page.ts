@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/lines-between-class-members */
 import { expect, type Locator, type Page } from "playwright/test"
 import { BasePage } from "./base.page"
-import { midTimeout } from "../../../lib/constants/timouts"
+import { midTimeout } from "../../helpers/constants/timeouts"
 
 export class SwapPage extends BasePage {
   swapFromContainer: Locator

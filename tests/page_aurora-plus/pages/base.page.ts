@@ -17,17 +17,17 @@ export class BasePage {
     this.page = page
     this.svgLogo = page.getByTestId("aurora-logo")
     this.auroraLogo = page.locator("a").filter({ has: this.svgLogo })
-    this.homeTab = page.getByRole("link", { name: "Home" })
-    this.forwarderTab = page.getByRole("link", { name: "Forwarder" })
-    this.swapTab = page.getByRole("link", { name: "Swap" })
-    this.earnTab = page.getByRole("link", { name: "Earn" })
-    this.appsTab = page.getByRole("link", { name: "Apps" })
+    this.homeTab = page.getByTestId('home-tab-button')
+    this.forwarderTab = page.getByTestId('forwarder-tab-button')
+    this.swapTab = page.getByTestId('swap-tab-button')
+    this.earnTab = page.getByTestId('earn-tab-button')
+    this.appsTab = page.getByTestId('apps-tab-button')
     this.bridgeDropdown = page.getByRole("link", { name: "Bridge" })
   }
 
   async confirmCorrectPageLoaded(page: Page, url: string) {
     await expect(page, `Loaded page is not ${url}`).toHaveURL(
-      `http://localhost:3000${url}`,
+      `https://aurora.plus${url}`,
     )
   }
 
