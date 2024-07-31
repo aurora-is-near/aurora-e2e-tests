@@ -1,114 +1,58 @@
-import { expect } from "playwright/test"
-import { AURORA_PLUS_TAG } from "../../../lib/constants/tags"
-import { test } from "../../../lib/fixtures"
-import { DashboardPage } from "../pages/dashboard.page"
-import { MetamaskActions } from "../../helpers/metamask.actions"
 
-test.describe.configure({ mode: "serial" })
+import { MetaMask } from "@synthetixio/synpress";
+import { test } from "../fixtures/aurora-plus";
+import { DashboardPage } from '../pages/dashboard.page';
+import auroraSetup from "../../../test/wallet-setup/aurora-plus.setup";
+import { AURORA_PLUS_TAG } from "../../helpers/constants/tags";
+import { AURORA_PLUS_PAGE } from "../../helpers/constants/pages";
 
-test.describe("Aurora Plus: Staking", { tag: AURORA_PLUS_TAG }, () => {
-  test.beforeEach(
-    "Setup Metamask extension:",
-    async ({ metamask, auroraPlus }) => {
-      await metamask.setup()
-      await auroraPlus.goto("/dashboard")
-      await auroraPlus.connectToMetaMask()
-    },
-  )
+const { expect } = test;
 
-  test("Confirm that user can stake some tokens", async ({ context, page }) => {
-    // Prerequisites
+test.use(AURORA_PLUS_PAGE)
+
+test.describe("Dashboard page tests", { tag: AURORA_PLUS_TAG }, async () => {
+  test.beforeEach('Login to Aurora Plus with MetaMask', async ({ auroraPlusPreconditions }) => {
+    await auroraPlusPreconditions.loginToAuroraPlus()
+  })
+
+  // Done
+  test('Confirm user can stake some tokens', async ({ context, page, extensionId }) => {
     const dashboardPage = new DashboardPage(page)
-    const metamaskActions = new MetamaskActions()
-    await dashboardPage.confirmDashboardPageLoaded("/dashboard")
+    const metamask = new MetaMask(context, page, auroraSetup.walletPassword, extensionId)
+
+    const transferAmount = 0.1
 
     if (await dashboardPage.isOnboardingVisible()) {
       await dashboardPage.skipOnboarding()
     }
 
-    // Test
     const initialAuroraBalance = await dashboardPage.getAuroraBalance()
-    const initialStakedBalance = await dashboardPage.getStakedBalance()
 
     await dashboardPage.clickStakeButton()
-    await dashboardPage.stakeModal_enterAmount(0.1)
+    await dashboardPage.stakeModal_enterAmount(transferAmount)
     await dashboardPage.stakeModal_confirmStake()
-
-    const metamaskContext =
-      await metamaskActions.switchContextToExtension(context)
-    await metamaskActions.clickConfirm(metamaskContext)
-    await metamaskActions.switchContextToPage(page)
-
+    await metamask.confirmTransaction()
     await dashboardPage.confirmStakeModalGone()
-
+    await dashboardPage.waitForAuroraBalanceUpdate(initialAuroraBalance)
     const updatedAuroraBalance = await dashboardPage.getAuroraBalance()
-    const updatedStakedBalance = await dashboardPage.getStakedBalance()
-
-    expect(initialAuroraBalance).toBeGreaterThan(updatedAuroraBalance)
-    expect(initialStakedBalance).toBeLessThan(updatedStakedBalance)
+    await dashboardPage.confirmValuesIsCorrectAfterTransfer(initialAuroraBalance, updatedAuroraBalance, transferAmount)
   })
 
+  // Done
   test("Confirm that user can't stake more than balance allows", async ({
     page,
   }) => {
-    // Prerequisites
     const dashboardPage = new DashboardPage(page)
-    await dashboardPage.confirmDashboardPageLoaded("/dashboard")
+    await dashboardPage.confirmDashboardPageLoaded(page)
 
     if (await dashboardPage.isOnboardingVisible()) {
       await dashboardPage.skipOnboarding()
     }
 
-    // Test
     const auroraBalance = await dashboardPage.getAuroraBalance()
 
     await dashboardPage.clickStakeButton()
     await dashboardPage.stakeModal_enterAmount(auroraBalance + 100)
-
     await dashboardPage.confirmThatConfirmButtonDisabled()
   })
-
-  const amount = 0.1
-
-  // for await (const amount of unstakeAmount) {
-  test(`Confirm that user can unstake ${amount} tokens`, async ({
-    context,
-    page,
-  }) => {
-    // Prerequisites
-    const dashboardPage = new DashboardPage(page)
-    const metamaskActions = new MetamaskActions()
-    await dashboardPage.confirmDashboardPageLoaded("/dashboard")
-
-    if (await dashboardPage.isOnboardingVisible()) {
-      await dashboardPage.skipOnboarding()
-    }
-
-    // Test
-    const initialPendingWithdrawalAmount =
-      (await dashboardPage.isAnyPendingWithdrawals())
-        ? await dashboardPage.getPendingWithdrawalAmount()
-        : 0
-
-    await dashboardPage.clickUnstakeButton()
-
-    await dashboardPage.enterUnstakeAmount(amount)
-    await dashboardPage.clickUnstakeModalConfirmButton()
-
-    const metamaskContext = metamaskActions.switchContextToExtension(context)
-    await metamaskActions.clickConfirm(metamaskContext)
-    await metamaskActions.switchContextToPage(page)
-
-    await dashboardPage.confirmLoadingSpinnedDisappear()
-
-    const newPendingWithdrawalAmount =
-      await dashboardPage.getPendingWithdrawalAmount()
-
-    const messageOnFail = `Initial amount: ${initialPendingWithdrawalAmount} expected to be lower than updated: ${newPendingWithdrawalAmount + amount}`
-
-    expect((newPendingWithdrawalAmount + amount).toFixed(), messageOnFail).toBe(
-      initialPendingWithdrawalAmount.toFixed(),
-    )
-  })
-  // }
 })

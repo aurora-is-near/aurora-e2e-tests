@@ -1,54 +1,36 @@
-import { AURORA_PLUS_TAG } from "../../../lib/constants/tags"
-import { test } from "../../../lib/fixtures"
-import { MetamaskActions } from "../../helpers/metamask.actions"
+import { MetaMask } from "@synthetixio/synpress"
+import auroraSetup from "../../../test/wallet-setup/aurora-plus.setup"
+import { AURORA_PLUS_TAG } from "../../helpers/constants/tags"
+import { test } from "../fixtures/aurora-plus"
 import { SwapPage } from "../pages/swap.page"
+import { DashboardPage } from "../pages/dashboard.page"
+import { AURORA_PLUS_PAGE } from "../../helpers/constants/pages"
 
-test.describe.configure({ mode: "serial" })
+test.use(AURORA_PLUS_PAGE)
 
 test.describe("Aurora Plus: Swapping", { tag: AURORA_PLUS_TAG }, () => {
-  test.beforeEach(
-    "Setup Metamask extension:",
-    async ({ metamask, auroraPlus }) => {
-      await metamask.setup()
-      await auroraPlus.goto("/swap")
-      await auroraPlus.connectToMetaMask()
-    },
-  )
+    test.beforeEach('Login to Aurora Plus with MetaMask', async ({ auroraPlusPreconditions }) => {
+        await auroraPlusPreconditions.loginToAuroraPlus()
+    })
 
-  // const tokensWithBalance =
-  // ["AURORA", "BRRR"]
+    const tokenWithBalance = "AURORA"
+    const destinationToken = "BRRR"
+    const amount = 0.1
 
-  // const supportedTokens = ["AAVE", "AURORA", "BAT", "BRRR", "BSTN", "DAI"]
+    // Done
+    test(`Confirm that user can swap ${amount} from ${tokenWithBalance} to ${destinationToken}`, async ({ context, page, extensionId }) => {
+        const dashboardPage = new DashboardPage(page)
+        const swapPage = new SwapPage(page)
+        const metamask = new MetaMask(context, page, auroraSetup.walletPassword, extensionId)
 
-  const tokenWithBalance = "AURORA"
-  const destinationToken = "BRRR"
-  const amount = 0.1
+        await dashboardPage.navigateToSwapPage()
+        await swapPage.selectTokenWithBalance(tokenWithBalance)
+        await swapPage.selectDestinationSupportedToken(destinationToken)
+        await swapPage.enterSwapFromAmount(0.1)
+        await swapPage.clickReviewSwapButton()
+        await swapPage.confirmThatReviewYourSwapModalVisible()
+        await swapPage.clickApproveSwapButton()
 
-  test(`Confirm that user can swap ${amount} from ${tokenWithBalance} to ${destinationToken}`, async ({
-    context,
-    page,
-  }) => {
-    const swapPage = new SwapPage(page)
-    const metamaskActions = new MetamaskActions()
-
-    await swapPage.confirmSwapPageLoaded("/swap")
-    await swapPage.selectTokenWithBalance(tokenWithBalance)
-    await swapPage.selectDestinationSupportedToken(destinationToken)
-    await swapPage.enterSwapFromAmount(0.1)
-    await swapPage.clickReviewSwapButton()
-    await swapPage.confirmThatReviewYourSwapModalVisible()
-    await swapPage.clickApproveSwapButton()
-
-    const metamaskContext =
-      await metamaskActions.switchContextToExtension(context)
-
-    if (await metamaskActions.isButtonVisible(metamaskContext, "Confirm")) {
-      await metamaskActions.clickConfirm(metamaskContext)
-    } else {
-      await metamaskActions.clickNext(metamaskContext)
-    }
-
-    await metamaskActions.clickApprove(metamaskContext)
-    await metamaskActions.switchContextToPage(page)
-  })
+        await metamask.confirmTransaction()
+    })
 })
