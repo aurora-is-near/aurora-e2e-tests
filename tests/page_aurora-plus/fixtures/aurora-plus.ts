@@ -1,66 +1,65 @@
-import { type Response, test } from "@playwright/test"
-import { prepareMetaMaskExtension } from "../../../lib/metamask/prepare-metamask-extension"
 
-const BASE_URL = process.env.AURORA_PLUS_BASE_URL ?? "http://localhost:3000/"
+import { MetaMask, metaMaskFixtures, testWithSynpress } from '@synthetixio/synpress';
+import auroraSetup from '../../../test/wallet-setup/aurora-plus.setup';
+import { expect } from '@playwright/test';
+import { shortTimeout } from '../../helpers/constants/timeouts';
 
-/**
- * Setup test fixtures for our apps.
- */
-export const auroraPlusTest = test.extend<{
-  auroraPlus: {
-    goto: (url: string) => Promise<null | Response>
-    installMetaMask: () => Promise<void>
-    connectToMetaMask: () => Promise<void>
-  }
+export const test = testWithSynpress(metaMaskFixtures(auroraSetup)).extend<{
+    auroraPlusPreconditions: {
+        loginToAuroraPlus: () => Promise<void>
+    }
 }>({
-  auroraPlus: async ({ page, context }, use) => {
-    await use({
-      goto: async (url: string) => page.goto(new URL(url, BASE_URL).href),
-      installMetaMask: async () => {
-        await prepareMetaMaskExtension()
-      },
-      connectToMetaMask: async () => {
-        await page.evaluate(() => {
-          localStorage.setItem("ap-promo-hidden", "1")
+    auroraPlusPreconditions: async ({ page, context, extensionId }, use) => {
+
+        const metamask = new MetaMask(context, page, auroraSetup.walletPassword, extensionId)
+        const launchAppButton = page.getByRole('link', { name: 'Launch app' })
+        const connectWalletButton = page.getByRole('button', { name: 'Connect wallet' })
+        const modalConnectWalletButton = page.getByLabel('Connect and authenticate').getByRole('button', { name: 'Connect wallet' })
+        const skipIHaveWalletButton = page.getByRole('button', { name: 'Skip, I have a wallet' })
+        const modalMetamaskButton = page.locator('wui-list-wallet', { hasText: 'MetaMask' })
+        const acceptAndSignButton = page.getByRole('button', { name: 'Accept and sign' })
+
+        const loginSteps = async () => {
+            await expect(launchAppButton, '"Launch app" button is not visible').toBeVisible(shortTimeout)
+            await launchAppButton.click();
+
+            await expect(connectWalletButton, '"Connect wallet" button is not visible').toBeVisible(shortTimeout)
+            await connectWalletButton.click();
+
+            await expect(modalConnectWalletButton, '"Connect wallet" button in modal not visible').toBeVisible(shortTimeout)
+            await modalConnectWalletButton.click();
+
+            let retries = 100;
+            let isElementVisible = false;
+
+            while (!isElementVisible && retries > 0) {
+                isElementVisible = await skipIHaveWalletButton.isVisible()
+                retries--;
+                await page.waitForTimeout(100)
+            }
+
+            if (await skipIHaveWalletButton.isVisible()) {
+                await skipIHaveWalletButton.click();
+            }
+
+            await expect(modalMetamaskButton, '"MetaMask" wallet button not visible in modal').toBeVisible(shortTimeout)
+            await modalMetamaskButton.click();
+
+            await metamask.connectToDapp();
+
+            await expect(acceptAndSignButton, '"Accept and sign" button not visible').toBeVisible(shortTimeout)
+            await acceptAndSignButton.click();
+
+            await page.waitForTimeout(10000)
+            await metamask.confirmSignature();
+
+            await expect(page, 'Incorrect page is loaded').toHaveURL('https://aurora.plus/dashboard')
+        }
+
+        await use({
+            loginToAuroraPlus: async () => {
+                await loginSteps()
+            },
         })
-
-        await page.getByRole("button", { name: "Connect wallet" }).click()
-        await page
-          .getByTestId("connect-modal")
-          .getByRole("button", { name: "Connect wallet" })
-          .click()
-
-        const connectPopupPromise = context.waitForEvent("page")
-
-        await page.getByRole("button", { name: "MetaMask" }).click()
-        await page.waitForSelector("w3m-connecting-external-view")
-
-        const connectPage = await connectPopupPromise
-
-        await connectPage.waitForLoadState("domcontentloaded")
-
-        await connectPage.getByRole("button", { name: "Next" }).click()
-        await connectPage.getByRole("button", { name: "Connect" }).click()
-        await connectPage.getByRole("button", { name: "Approve" }).click()
-        await connectPage
-          .getByRole("button", { name: "Switch network" })
-          .click()
-
-        await page.bringToFront()
-
-        const signPopupPromise = context.waitForEvent("page")
-
-        await page
-          .getByTestId("connect-modal")
-          .getByRole("button", { name: "Accept and sign" })
-          .click()
-
-        const signPage = await signPopupPromise
-
-        await signPage.getByRole("button", { name: "Sign" }).click()
-
-        await page.bringToFront()
-      },
-    })
-  },
+    }
 })
