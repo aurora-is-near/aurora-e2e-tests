@@ -38,5 +38,5 @@ jobs:
 
       - run: yarn install --immutable
       - run: yarn playwright install --with-deps
-      - run: xvfb-run yarn synpress
+      - run: xvfb-run yarn synpress --headed
       - run: xvfb-run yarn test-aurora --headed
