@@ -34,7 +34,7 @@ jobs:
         run: npm install -g yarn
 
       - name: Print variable
-        run: echo "${{ vars.AURORA_MAINNET_CHAIN_ID }}"
+        run: echo ${{ vars.AURORA_MAINNET_CHAIN_ID }}
 
       - name: Install linux deps
         run: |
