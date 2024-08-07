@@ -14,18 +14,12 @@ jobs:
           node-version: 20
           cache: "npm"
 
-      - uses: browser-actions/setup-chrome@v1
-        with:
-          chrome-version: 120
-          install-chromedriver: true
-
       - name: Install Yarn
         run: npm install -g yarn
 
       - name: Install linux deps
         run: |
           sudo apt-get install --no-install-recommends -y \
-          dbus-x11 \
           fluxbox \
           xvfb
 
@@ -38,5 +32,5 @@ jobs:
 
       - run: yarn install --immutable
       - run: yarn playwright install --with-deps
-      - run: xvfb-run yarn synpress --headed
-      - run: xvfb-run yarn test-aurora --headed
+      - run: xvfb-run yarn synpress
+      - run: xvfb-run yarn playwright-aurora test
