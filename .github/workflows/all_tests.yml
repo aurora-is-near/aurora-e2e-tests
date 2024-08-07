@@ -4,6 +4,8 @@ on: push
 
 jobs:
   build:
+    runs-on: ubuntu-latest
+
     env:
       MM_SEED_PHRASE: ${{ secrets.MM_SEED_PHRASE }}
       MM_PASSWORD: ${{ secrets.MM_PASSWORD }}
@@ -19,8 +21,6 @@ jobs:
       NEAR_TESTNET_NETWORK_URL: ${{ vars.NEAR_TESTNET_NETWORK_URL }}
       NEAR_TESTNET_CHAIN_ID: ${{ vars.NEAR_TESTNET_CHAIN_ID }}
       PW_TEST_HTML_REPORT_OPEN: ${{ vars.PW_TEST_HTML_REPORT_OPEN }}
-
-    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
