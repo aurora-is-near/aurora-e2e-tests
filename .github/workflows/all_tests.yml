@@ -50,4 +50,4 @@ jobs:
       - run: yarn install --immutable
       - run: yarn playwright install --with-deps
       - run: xvfb-run yarn synpress
-      - run: xvfb-run yarn playwright-aurora test
+      - run: xvfb-run yarn test-aurora

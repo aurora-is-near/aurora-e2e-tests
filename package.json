@@ -27,5 +27,6 @@
     "debug": "yarn playwright test --debug",
     "console": "PWDEBUG=console yarn playwright test",
     "report": "yarn playwright show-report"
-  }
+  },
+  "license": "UNLICENSED"
 }
