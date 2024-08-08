@@ -12,8 +12,8 @@ export default defineWalletSetup(PASSWORD, async (context, walletPage) => {
 
   await metamask.addNetwork({
     symbol: CURRENCY_ETHEREUM,
-    name: process.env.AURORA_MAINNET_NETWORK_NAME as string,
-    rpcUrl: process.env.AURORA_MAINNET_NETWORK_URL as string,
-    chainId: parseInt(process.env.AURORA_MAINNET_CHAIN_ID as string)
+    name: process.env.NETWORK_NAME as string,
+    rpcUrl: process.env.NETWORK_URL as string,
+    chainId: parseInt(process.env.CHAIN_ID as string)
   })
 })
