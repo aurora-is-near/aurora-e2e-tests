@@ -14,7 +14,7 @@ export default defineWalletSetup(PASSWORD, async (context, walletPage) => {
         symbol: CURRENCY_NEAR,
         name: process.env.NEAR_MAINNET_NETWORK_NAME as string,
         rpcUrl: process.env.NEAR_MAINNET_NETWORK_URL as string,
-        chainId: parseInt(process.env.NEAR_MAINNET_CHAIN_ID as string),
+        chainId: parseInt(process.env.NEAR_TESTNET_CHAIN_ID as string),
         blockExplorerUrl: process.env.NEAR_MAINNET_BLOCK_EXPLORER_URL as string
     })
 
