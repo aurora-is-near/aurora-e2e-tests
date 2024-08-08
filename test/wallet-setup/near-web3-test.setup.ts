@@ -17,6 +17,6 @@ export default defineWalletSetup(PASSWORD, async (context, walletPage) => {
         chainId: parseInt(process.env.TESTNET_CHAIN_ID as string)
     })
 
-    await metamask.switchNetwork(process.env.NEAR_TESTNET_NETWORK_NAME as string)
+    await metamask.switchNetwork(process.env.TESTNET_NETWORK_NAME as string)
 
 })
