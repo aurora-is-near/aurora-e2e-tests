@@ -62,8 +62,10 @@ export class SwapPage extends BasePage {
   }
 
   async clickReviewSwapButton() {
-    const messageOnFail = "Review swap button not visible"
+    let messageOnFail = "Review swap button not visible"
     await expect(this.reviewSwapButton, messageOnFail).toBeVisible()
+    messageOnFail = "Review swap button not enabled"
+    await expect(this.reviewSwapButton, messageOnFail).toBeEnabled()
 
     await this.reviewSwapButton.click()
   }
