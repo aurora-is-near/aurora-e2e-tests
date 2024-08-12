@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/lines-between-class-members */
 import { expect, type Locator, type Page } from "@playwright/test"
 import { BasePage } from "./base.page"
-import { longTimeout, midTimeout, shortTimeout } from "../../helpers/constants/timeouts"
+import { midTimeout, shortTimeout } from "../../helpers/constants/timeouts"
 import { setTimeout } from "timers/promises"
 
 export class DashboardPage extends BasePage {
@@ -169,7 +169,12 @@ export class DashboardPage extends BasePage {
   }
 
   async confirmStakeModalGone() {
-    // await setTimeout(15000)
+    let retries = 30
+    let isModalVisible = true
+    while (isModalVisible && retries >= 0) {
+      await setTimeout(200)
+      isModalVisible = await this.stakeConfirmModal.isVisible()
+    }
     const messageOnFail =
       "Stake confirm modal should disappear"
     await expect(this.stakeConfirmModal, messageOnFail).toHaveCount(0)
