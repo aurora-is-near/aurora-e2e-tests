@@ -47,7 +47,18 @@ jobs:
         env:
           DISPLAY: :0.0
 
-      - run: yarn install --immutable
-      - run: yarn playwright install --with-deps
-      - run: xvfb-run yarn synpress
-      - run: xvfb-run yarn test-aurora
+      - name: Install NodeJS dependencies
+        run: yarn install --immutable
+
+      - name: Install Playwright
+        run: yarn playwright install
+
+      - name: Create Synpress cache
+        run: xvfb-run yarn synpress
+        retry:
+          command: xvfb-run yarn synpress
+          max_attempts: 3
+          retry_wait_seconds: 10
+
+      - name: Run Aurora Plus tests
+        run: xvfb-run yarn test-aurora
