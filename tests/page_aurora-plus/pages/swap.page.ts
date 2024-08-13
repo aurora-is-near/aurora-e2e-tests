@@ -28,10 +28,6 @@ export class SwapPage extends BasePage {
     this.swapFromInput = page.locator("#input-amount")
   }
 
-  async confirmSwapPageLoaded(url: string, page = this.page) {
-    await this.confirmCorrectPageLoaded(page, url)
-  }
-
   async selectTokenWithBalance(token: string) {
     const tokenWithBalance = this.swapFromContainer.getByTestId(
       `${token}-swap-button`,

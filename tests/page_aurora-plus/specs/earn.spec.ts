@@ -49,9 +49,7 @@ test.describe("Aurora Plus: Earning", { tag: AURORA_PLUS_TAG }, () => {
 
         await setTimeout(15000)
         await page.reload()
-        await page.pause()
         const depositAfterTransaction = await earnPage.getDepositedTokenBalance()
-        console.log('Depositas', depositAfterTransaction);
 
         expect(depositBeforeTransaction).toBeLessThan(depositAfterTransaction)
     })
