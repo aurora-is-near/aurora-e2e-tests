@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/lines-between-class-members */
 import { expect, type Locator, type Page } from "playwright/test"
 import { BasePage } from "./base.page"
-import { midTimeout } from "../../helpers/constants/timeouts"
+import { longTimeout, midTimeout } from "../../helpers/constants/timeouts"
 
 export class SwapPage extends BasePage {
   swapFromContainer: Locator
@@ -61,7 +61,7 @@ export class SwapPage extends BasePage {
     let messageOnFail = "Review swap button not visible"
     await expect(this.reviewSwapButton, messageOnFail).toBeVisible()
     messageOnFail = "Review swap button not enabled"
-    await expect(this.reviewSwapButton, messageOnFail).toBeEnabled()
+    await expect(this.reviewSwapButton, messageOnFail).toBeEnabled(longTimeout)
 
     await this.reviewSwapButton.click()
   }

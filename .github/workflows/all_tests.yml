@@ -55,10 +55,7 @@ jobs:
 
       - name: Create Synpress cache
         run: xvfb-run yarn synpress
-        retry:
-          command: xvfb-run yarn synpress
-          max_attempts: 3
-          retry_wait_seconds: 10
+        max_attempts: 3
 
       - name: Run Aurora Plus tests
         run: xvfb-run yarn test-aurora
