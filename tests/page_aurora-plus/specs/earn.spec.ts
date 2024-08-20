@@ -18,7 +18,7 @@ test.describe("Aurora Plus: Earning", { tag: AURORA_PLUS_TAG }, () => {
 
     const amount = 0.2
 
-    test.skip(`Confirm that user can deposit ${amount} tokens`, async ({ context, page, extensionId }) => {
+    test(`Confirm that user can deposit ${amount} tokens`, async ({ context, page, extensionId }) => {
         const dashboardPage = new DashboardPage(page)
         const earnPage = new EarnPage(page)
         const metamask = new MetaMask(context, page, auroraSetup.walletPassword, extensionId)
