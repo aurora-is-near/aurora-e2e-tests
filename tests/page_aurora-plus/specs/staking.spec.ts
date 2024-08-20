@@ -37,7 +37,7 @@ test.describe("Dashboard page tests", { tag: AURORA_PLUS_TAG }, async () => {
   })
 
   // Done
-  test.only("Confirm that user can't stake more than balance allows", async ({
+  test("Confirm that user can't stake more than balance allows", async ({
     page,
   }) => {
     const dashboardPage = new DashboardPage(page)
