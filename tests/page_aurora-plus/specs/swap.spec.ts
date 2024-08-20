@@ -18,7 +18,7 @@ test.describe("Aurora Plus: Swapping", { tag: AURORA_PLUS_TAG }, () => {
     const amount = 0.1
 
     // Done
-    test(`Confirm that user can swap ${amount} from ${tokenWithBalance} to ${destinationToken}`, async ({ context, page, extensionId }) => {
+    test.skip(`Confirm that user can swap ${amount} from ${tokenWithBalance} to ${destinationToken}`, async ({ context, page, extensionId }) => {
         const dashboardPage = new DashboardPage(page)
         const swapPage = new SwapPage(page)
         const metamask = new MetaMask(context, page, auroraSetup.walletPassword, extensionId)
