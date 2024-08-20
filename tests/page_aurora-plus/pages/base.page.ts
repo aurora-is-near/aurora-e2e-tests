@@ -1,5 +1,3 @@
-// eslint-disable-next-line eslint-comments/disable-enable-pair
-/* eslint-disable @typescript-eslint/lines-between-class-members */
 import { expect, type Locator, type Page } from "@playwright/test"
 
 export class BasePage {

@@ -1,10 +1,10 @@
-import { MetaMask } from "@synthetixio/synpress"
 import auroraSetup from "../../../test/wallet-setup/aurora-plus.setup"
 import { AURORA_PLUS_TAG } from "../../helpers/constants/tags"
 import { test } from "../fixtures/aurora-plus"
 import { SwapPage } from "../pages/swap.page"
 import { DashboardPage } from "../pages/dashboard.page"
 import { AURORA_PLUS_PAGE } from "../../helpers/constants/pages"
+import { MetaMask } from "@synthetixio/synpress/playwright"
 
 test.use(AURORA_PLUS_PAGE)
 

@@ -1,9 +1,9 @@
 // eslint-disable-next-line eslint-comments/disable-enable-pair
 /* eslint-disable @typescript-eslint/lines-between-class-members */
-import { expect, type Locator, type Page } from "playwright/test"
 import { BasePage } from "./base.page"
 import { longTimeout, midTimeout, shortTimeout } from "../../helpers/constants/timeouts"
 import { setTimeout } from "timers/promises"
+import { expect, type Locator, type Page } from "@playwright/test"
 
 export class EarnPage extends BasePage {
   earnPageTitle: Locator
@@ -45,7 +45,7 @@ export class EarnPage extends BasePage {
     this.getStartButton = page.getByRole('button', { name: 'Get Started' })
     // this.getStartButton = page.getByTestId("get-started-button")
     this.depositMoreButton = page.getByTestId('deposit-more-button')
-    this.depositedTokenBalance = page.getByTestId('deposited-token-balance')
+    this.depositedTokenBalance = page.getByTestId('deposited-token-value')
   }
 
   async confirmEarnPageLoaded(url: string, page = this.page) {
@@ -126,6 +126,6 @@ export class EarnPage extends BasePage {
 
   async getDepositedTokenBalance() {
     const balance = await this.depositedTokenBalance.innerText()
-    return parseFloat(balance)
+    return parseFloat(balance.replace('$', ''))
   }
 }

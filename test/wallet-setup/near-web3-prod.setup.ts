@@ -1,14 +1,16 @@
-import { MetaMask, defineWalletSetup, getExtensionId } from '@synthetixio/synpress';
+import { defineWalletSetup } from '@synthetixio/synpress';
 import 'dotenv/config';
 import { CURRENCY_NEAR } from '../../tests/helpers/constants/currencies';
+import { getExtensionId, MetaMask } from '@synthetixio/synpress/playwright';
 
 const PASSWORD = process.env.MM_PASSWORD as string;
 
 export default defineWalletSetup(PASSWORD, async (context, walletPage) => {
     const extensionId = await getExtensionId(context, 'MetaMask')
-    const metamask = new MetaMask(context, walletPage, PASSWORD, extensionId);
 
-    await metamask.importWallet(process.env.MM_SEED_PHRASE as string);
+    const metamask = new MetaMask(context, walletPage, PASSWORD, extensionId)
+
+    await metamask.importWallet(process.env.MM_SEED_PHRASE as string)
 
     await metamask.addNetwork({
         symbol: CURRENCY_NEAR,
@@ -18,5 +20,5 @@ export default defineWalletSetup(PASSWORD, async (context, walletPage) => {
         blockExplorerUrl: process.env.MAINNET_BLOCK_EXPLORER_URL as string
     })
 
-    await metamask.switchNetwork(process.env.MAINNET_NETWORK_NAME as string)
+    await metamask.switchNetwork('NEAR Protocol')
 })

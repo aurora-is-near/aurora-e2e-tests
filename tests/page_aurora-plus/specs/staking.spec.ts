@@ -1,10 +1,10 @@
 
-import { MetaMask } from "@synthetixio/synpress";
 import { test } from "../fixtures/aurora-plus";
 import { DashboardPage } from '../pages/dashboard.page';
 import auroraSetup from "../../../test/wallet-setup/aurora-plus.setup";
 import { AURORA_PLUS_TAG } from "../../helpers/constants/tags";
 import { AURORA_PLUS_PAGE } from "../../helpers/constants/pages";
+import { MetaMask } from "@synthetixio/synpress/playwright";
 
 const { expect } = test;
 
@@ -22,9 +22,7 @@ test.describe("Dashboard page tests", { tag: AURORA_PLUS_TAG }, async () => {
 
     const transferAmount = 0.1
 
-    if (await dashboardPage.isOnboardingVisible()) {
-      await dashboardPage.skipOnboarding()
-    }
+    await dashboardPage.skipOnboardingIfVisible()
 
     const initialAuroraBalance = await dashboardPage.getAuroraBalance()
 
@@ -45,9 +43,7 @@ test.describe("Dashboard page tests", { tag: AURORA_PLUS_TAG }, async () => {
     const dashboardPage = new DashboardPage(page)
     await dashboardPage.confirmDashboardPageLoaded(page)
 
-    if (await dashboardPage.isOnboardingVisible()) {
-      await dashboardPage.skipOnboarding()
-    }
+    await dashboardPage.skipOnboardingIfVisible()
 
     const auroraBalance = await dashboardPage.getAuroraBalance()
 

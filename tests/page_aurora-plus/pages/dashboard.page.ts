@@ -92,24 +92,30 @@ export class DashboardPage extends BasePage {
     return amount
   }
 
-  async isOnboardingVisible() {
-    const isVisible = await this.onboardingModal.isVisible(shortTimeout)
 
-    return isVisible
-  }
+  async skipOnboardingIfVisible() {
+    let retries = 30
+    let isVisible = false
 
-  async skipOnboarding() {
-    let messageOnFail = 'Button "Got it, Continue" is not visible'
-    await expect(this.gotItContinueButton, messageOnFail).toBeVisible()
-    await this.gotItContinueButton.click()
+    while (isVisible == false && retries > 0) {
+      isVisible = await this.onboardingModal.isVisible()
+      retries = retries - 1
+      await setTimeout(200)
+    }
 
-    messageOnFail = 'Button "All clear, Next" is not visible'
-    await expect(this.allClearNextButton, messageOnFail).toBeVisible()
-    await this.allClearNextButton.click()
+    if (isVisible) {
+      let messageOnFail = 'Button "Got it, Continue" is not visible'
+      await expect(this.gotItContinueButton, messageOnFail).toBeVisible()
+      await this.gotItContinueButton.click()
 
-    messageOnFail = 'Button "OK, Lets stake" is not visible'
-    await expect(this.okLetsStakeButton, messageOnFail).toBeVisible()
-    await this.okLetsStakeButton.click()
+      messageOnFail = 'Button "All clear, Next" is not visible'
+      await expect(this.allClearNextButton, messageOnFail).toBeVisible()
+      await this.allClearNextButton.click()
+
+      messageOnFail = 'Button "OK, Lets stake" is not visible'
+      await expect(this.okLetsStakeButton, messageOnFail).toBeVisible()
+      await this.okLetsStakeButton.click()
+    }
   }
 
   async clickStakeButton() {
@@ -175,6 +181,7 @@ export class DashboardPage extends BasePage {
       await setTimeout(200)
       isModalVisible = await this.stakeConfirmModal.isVisible()
     }
+
     const messageOnFail =
       "Stake confirm modal should disappear"
     await expect(this.stakeConfirmModal, messageOnFail).toHaveCount(0)

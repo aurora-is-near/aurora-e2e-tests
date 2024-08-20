@@ -2,10 +2,10 @@ import { setTimeout } from "node:timers/promises"
 import { EarnPage } from "../pages/earn.page"
 import { AURORA_PLUS_TAG } from "../../helpers/constants/tags"
 import { test } from "../fixtures/aurora-plus"
-import { MetaMask } from "@synthetixio/synpress"
 import auroraSetup from "../../../test/wallet-setup/aurora-plus.setup"
 import { DashboardPage } from "../pages/dashboard.page"
 import { AURORA_PLUS_PAGE } from "../../helpers/constants/pages"
+import { MetaMask } from "@synthetixio/synpress/playwright"
 
 const { expect } = test;
 
@@ -30,12 +30,9 @@ test.describe("Aurora Plus: Earning", { tag: AURORA_PLUS_TAG }, () => {
         }
 
         const depositAlradyExists = await earnPage.isAnyDepositsExist()
-
         const depositBeforeTransaction = depositAlradyExists ? await earnPage.getDepositedTokenBalance() : 0
-        console.log('Depositas', depositBeforeTransaction);
 
         await setTimeout(5000)
-
         if (depositAlradyExists) {
             await earnPage.clickDepositMoreButton()
         } else {
@@ -44,11 +41,9 @@ test.describe("Aurora Plus: Earning", { tag: AURORA_PLUS_TAG }, () => {
 
         await earnPage.enterAmountToDeposit(amount)
         await earnPage.confirmDeposit()
-
         await metamask.approveTokenPermission()
 
         await setTimeout(15000)
-        await page.reload()
         const depositAfterTransaction = await earnPage.getDepositedTokenBalance()
 
         expect(depositBeforeTransaction).toBeLessThan(depositAfterTransaction)

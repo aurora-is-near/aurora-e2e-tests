@@ -1,8 +1,9 @@
-
-import { MetaMask, metaMaskFixtures, testWithSynpress } from '@synthetixio/synpress';
+import { testWithSynpress } from "@synthetixio/synpress"
+import { MetaMask, metaMaskFixtures } from "@synthetixio/synpress/playwright"
 import auroraSetup from '../../../test/wallet-setup/aurora-plus.setup';
-import { expect } from '@playwright/test';
 import { shortTimeout } from '../../helpers/constants/timeouts';
+import { expect } from "@playwright/test";
+import { setTimeout } from "timers/promises";
 
 export const test = testWithSynpress(metaMaskFixtures(auroraSetup)).extend<{
     auroraPlusPreconditions: {
@@ -16,7 +17,7 @@ export const test = testWithSynpress(metaMaskFixtures(auroraSetup)).extend<{
         const connectWalletButton = page.getByRole('button', { name: 'Connect wallet' })
         const modalConnectWalletButton = page.getByLabel('Connect and authenticate').getByRole('button', { name: 'Connect wallet' })
         const skipIHaveWalletButton = page.getByRole('button', { name: 'Skip, I have a wallet' })
-        const modalMetamaskButton = page.locator('wui-list-wallet', { hasText: 'MetaMask' })
+        const modalMetamaskButton = page.getByRole('button', { name: 'MetaMask MetaMask' })
         const acceptAndSignButton = page.getByRole('button', { name: 'Accept and sign' })
 
         const loginSteps = async () => {
@@ -35,7 +36,7 @@ export const test = testWithSynpress(metaMaskFixtures(auroraSetup)).extend<{
             while (!isElementVisible && retries > 0) {
                 isElementVisible = await skipIHaveWalletButton.isVisible()
                 retries--;
-                await page.waitForTimeout(100)
+                await setTimeout(100)
             }
 
             if (await skipIHaveWalletButton.isVisible()) {
@@ -50,7 +51,7 @@ export const test = testWithSynpress(metaMaskFixtures(auroraSetup)).extend<{
             await expect(acceptAndSignButton, '"Accept and sign" button not visible').toBeVisible(shortTimeout)
             await acceptAndSignButton.click();
 
-            await page.waitForTimeout(10000)
+            await setTimeout(10000)
             await metamask.confirmSignature();
 
             await expect(page, 'Incorrect page is loaded').toHaveURL('https://aurora.plus/dashboard')

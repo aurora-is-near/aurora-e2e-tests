@@ -1,8 +1,9 @@
 // eslint-disable-next-line eslint-comments/disable-enable-pair
 /* eslint-disable @typescript-eslint/lines-between-class-members */
-import { expect, type Locator, type Page } from "playwright/test"
+import { expect, type Locator, type Page } from "@playwright/test"
+
 import { BasePage } from "./base.page"
-import { longTimeout, midTimeout, shortTimeout } from "../../helpers/constants/timeouts"
+import { midTimeout } from "../../helpers/constants/timeouts"
 
 export class SwapPage extends BasePage {
   swapFromContainer: Locator
@@ -12,7 +13,6 @@ export class SwapPage extends BasePage {
   approveSwapButton: Locator
   swapNowButton: Locator
   swapFromInput: Locator
-  loadingIndicator: Locator
 
   constructor(page: Page) {
     super(page)
@@ -27,7 +27,10 @@ export class SwapPage extends BasePage {
     })
     this.swapNowButton = page.getByTestId("swap-now-button")
     this.swapFromInput = page.locator("#input-amount")
-    this. loadingIndicator = page.getByText('Loading...')
+  }
+
+  async confirmHomePageLoaded(url: string, page = this.page) {
+    await this.confirmCorrectPageLoaded(page, url)
   }
 
   async selectTokenWithBalance(token: string) {
@@ -62,18 +65,8 @@ export class SwapPage extends BasePage {
   async clickReviewSwapButton() {
     let messageOnFail = "Review swap button not visible"
     await expect(this.reviewSwapButton, messageOnFail).toBeVisible()
-
-    let retries = 30
-    let isIndicatorVisible = true
-    while (isIndicatorVisible && retries > 0) {
-      isIndicatorVisible = await this.loadingIndicator.isVisible(shortTimeout)
-      retries = retries - 1
-    }
-
-    await expect(this.loadingIndicator).not.toBeVisible()
-
     messageOnFail = "Review swap button not enabled"
-    await expect(this.reviewSwapButton, messageOnFail).toBeEnabled(longTimeout)
+    await expect(this.reviewSwapButton, messageOnFail).toBeEnabled()
 
     await this.reviewSwapButton.click()
   }
