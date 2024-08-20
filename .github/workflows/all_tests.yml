@@ -54,11 +54,7 @@ jobs:
         run: yarn playwright install
 
       - name: Create Synpress cache
-      - uses: nick-fields/retry@v3
-        with:
-          timeout_minutes: 10
-          max_attempts: 3
-          command: xvfb-run yarn synpress
+        run: xvfb-run yarn synpress
 
       - name: Run Aurora Plus tests
         run: xvfb-run yarn test-aurora
