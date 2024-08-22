@@ -10,7 +10,7 @@
     "isolatedModules": true,
     "lib": ["es6", "dom"],
     "module": "ES2022",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "noEmit": true,
     "noFallthroughCasesInSwitch": true,
     "noImplicitReturns": true,

@@ -21,3 +21,4 @@ yarn-error.log*
 
 # Env
 .env
+my-report/index.html
