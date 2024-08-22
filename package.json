@@ -5,6 +5,8 @@
   "main": ".eslintrc.js",
   "type": "module",
   "scripts": {
+    "lint": "eslint . --ext .js,.ts",
+    "typecheck": "tsc --noEmit",
     "cache": "yarn synpress",
     "test": "yarn playwright test",
     "test-aurora": "playwright test --workers=1 --grep @aurora-plus",

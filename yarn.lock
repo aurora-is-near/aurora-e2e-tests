@@ -1025,7 +1025,7 @@ asynckit@^0.4.0:
   version "1.0.0"
   dependencies:
     "@synthetixio/synpress" "4.0.0-alpha.9"
-    aurora-e2e-tests "file:../../AppData/Local/Yarn/Cache/v6/npm-aurora-e2e-tests-1.0.0-2e10f76a-b0f9-43f8-9157-8b249378d8b7-1724306733202/node_modules/aurora-e2e-tests"
+    aurora-e2e-tests "file:../../AppData/Local/Yarn/Cache/v6/npm-aurora-e2e-tests-1.0.0-34603e0e-be8d-4bdc-bc28-b6ac1ede7b1c-1724308956594/node_modules/aurora-e2e-tests"
     dotenv "16.4.5"
     eslint-config-airbnb-base "15.0.0"
     eslint-config-airbnb-typescript "18.0.0"

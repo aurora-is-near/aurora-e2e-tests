@@ -8,7 +8,6 @@ const PASSWORD = process.env.MM_PASSWORD as string;
 
 export default defineWalletSetup(PASSWORD, async (context, walletPage) => {
 
-
   const extensionId = await getExtensionId(context, 'MetaMask')
 
   const metamask = new MetaMask(context, walletPage, PASSWORD, extensionId)
