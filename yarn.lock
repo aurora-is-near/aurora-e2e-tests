@@ -1102,23 +1102,6 @@ asynckit@^0.4.0:
   resolved "https://registry.yarnpkg.com/asynckit/-/asynckit-0.4.0.tgz#c79ed97f7f34cb8f2ba1bc9790bcc366474b4b79"
   integrity sha512-Oei9OH4tRh0YqU3GxhX79dM/mwVgvbZJaSNaRk+bshkj0S5cfHcgYakreBjrHwatXKbz+IoIdYLxrKim2MjW0Q==
 
-"aurora-e2e-tests@file:.":
-  version "1.0.0"
-  dependencies:
-    "@synthetixio/synpress" "4.0.0-alpha.9"
-    aurora-e2e-tests "file:../.cache/yarn/v6/npm-aurora-e2e-tests-1.0.0-24e6af96-c8bd-49b7-9a7e-0e7897203045-1724313587859/node_modules/aurora-e2e-tests"
-    dotenv "16.4.5"
-    eslint-config-airbnb-base "15.0.0"
-    eslint-config-airbnb-typescript "18.0.0"
-    eslint-config-prettier "9.1.0"
-    eslint-import-resolver-typescript "3.6.1"
-    eslint-plugin-eslint-comments "3.2.0"
-    eslint-plugin-import "2.29.1"
-    eslint-plugin-prettier "5.2.1"
-    playwright "1.44.0"
-    prettier "3.3.3"
-    typescript "5.5.4"
-
 available-typed-arrays@^1.0.7:
   version "1.0.7"
   resolved "https://registry.yarnpkg.com/available-typed-arrays/-/available-typed-arrays-1.0.7.tgz#a5cc375d6a03c2efc87a553f3e0b1522def14846"
@@ -1746,7 +1729,7 @@ eslint-visitor-keys@^4.0.0:
   resolved "https://registry.yarnpkg.com/eslint-visitor-keys/-/eslint-visitor-keys-4.0.0.tgz#e3adc021aa038a2a8e0b2f8b0ce8f66b9483b1fb"
   integrity sha512-OtIRv/2GyiF6o/d8K7MYKKbXrOUBIK6SfkIRM4Z0dY3w+LiQ0vy3F57m0Z71bjbyeiWFiHJ8brqnmE6H6/jEuw==
 
-eslint@^9.9.0:
+eslint@9.9.0:
   version "9.9.0"
   resolved "https://registry.yarnpkg.com/eslint/-/eslint-9.9.0.tgz#8d214e69ae4debeca7ae97daebbefe462072d975"
   integrity sha512-JfiKJrbx0506OEerjK2Y1QlldtBxkAlLxT5OEcRF8uaQ86noDe2k31Vw9rnSWv+MXZHj7OOUV/dA0AhdLFcyvA==

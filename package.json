@@ -17,9 +17,11 @@
   },
   "author": "Alex Mendes",
   "license": "UNLICENSED",
+  "engines": {
+    "node": "20.x"
+  },
   "dependencies": {
     "@synthetixio/synpress": "4.0.0-alpha.9",
-    "aurora-e2e-tests": "file:",
     "dotenv": "16.4.5",
     "eslint": "9.9.0",
     "eslint-config-airbnb-base": "15.0.0",
