@@ -13,7 +13,6 @@ test.describe("Dashboard page tests", { tag: AURORA_PLUS_TAG }, async () => {
     await auroraPlusPreconditions.loginToAuroraPlus()
   })
 
-  // Done
   test("Confirm that user can't stake more than balance allows", async ({
     page,
   }) => {

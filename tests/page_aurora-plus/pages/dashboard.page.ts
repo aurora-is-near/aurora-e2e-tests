@@ -1,5 +1,3 @@
-// eslint-disable-next-line eslint-comments/disable-enable-pair
-/* eslint-disable @typescript-eslint/lines-between-class-members */
 import { expect, type Locator, type Page } from "@playwright/test"
 import { BasePage } from "./base.page"
 import { midTimeout } from "../../helpers/constants/timeouts"
@@ -195,7 +193,6 @@ export class DashboardPage extends BasePage {
   }
 
   async confirmLoadingSpinnedDisappear() {
-    // await setTimeout(15000)
     const messageOnFail =
       "Modal loading spinner should disappear"
     await expect(this.loadingModalSpinner, messageOnFail).toHaveCount(0)
