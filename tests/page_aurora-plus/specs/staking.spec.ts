@@ -4,8 +4,6 @@ import { DashboardPage } from '../pages/dashboard.page';
 import { AURORA_PLUS_TAG } from "../../helpers/constants/tags";
 import { AURORA_PLUS_PAGE } from "../../helpers/constants/pages";
 
-const { expect } = test;
-
 test.use(AURORA_PLUS_PAGE)
 
 test.describe("Dashboard page tests", { tag: AURORA_PLUS_TAG }, async () => {
