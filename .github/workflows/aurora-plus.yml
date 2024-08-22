@@ -1,0 +1,66 @@
+name: Metamask CI
+
+on: push
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    env:
+      MM_SEED_PHRASE: ${{ secrets.MM_SEED_PHRASE }}
+      MM_PASSWORD: ${{ secrets.MM_PASSWORD }}
+      NETWORK_NAME: ${{ vars.NETWORK_NAME }}
+      NETWORK_URL: ${{ vars.NETWORK_URL }}
+      CHAIN_ID: ${{ vars.CHAIN_ID }}
+      NETWORK_ENVIRONMENT: ${{ vars.NETWORK_ENVIRONMENT }}
+      MAINNET_NETWORK_NAME: ${{ vars.MAINNET_NETWORK_NAME }}
+      MAINNET_NETWORK_URL: ${{ vars.MAINNET_NETWORK_URL }}
+      MAINNET_CHAIN_ID: ${{ vars.MAINNET_CHAIN_ID }}
+      MAINNET_BLOCK_EXPLORER_URL: ${{ vars.MAINNET_BLOCK_EXPLORER_URL }}
+      TESTNET_NETWORK_NAME: ${{ vars.TESTNET_NETWORK_NAME }}
+      TESTNET_NETWORK_URL: ${{ vars.TESTNET_NETWORK_URL }}
+      TESTNET_CHAIN_ID: ${{ vars.TESTNET_CHAIN_ID }}
+      PW_TEST_HTML_REPORT_OPEN: ${{ vars.PW_TEST_HTML_REPORT_OPEN }}
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "npm"
+
+      - name: Install Yarn
+        run: npm install -g yarn
+
+      - name: Install linux deps
+        run: |
+          sudo apt-get install --no-install-recommends -y \
+          fluxbox \
+          xvfb
+
+      - name: Run xvfb and fluxbox
+        run: |
+          Xvfb :0 -screen 0 1920x1080x24 -listen tcp -ac &
+          fluxbox -display :0.0 &
+        env:
+          DISPLAY: :0.0
+
+      - name: Install NodeJS dependencies
+        run: yarn install --immutable
+
+      - name: Install Playwright
+        run: yarn playwright install
+
+      - name: Create Synpress cache
+        run: xvfb-run yarn synpress
+
+      - name: Run Aurora Plus tests
+        run: xvfb-run yarn test-aurora
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report
+          path: my-report/
+          retention-days: 1
