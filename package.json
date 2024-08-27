@@ -5,7 +5,7 @@
   "main": ".eslintrc.js",
   "type": "module",
   "scripts": {
-    "lint": "eslint . --ext .js,.ts",
+    "lint": "eslint . --c .js,.ts",
     "typecheck": "tsc --noEmit",
     "cache": "yarn synpress",
     "test": "yarn playwright test",
