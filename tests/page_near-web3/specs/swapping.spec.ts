@@ -16,7 +16,7 @@ test.beforeEach('Login to Near Web3 wallet with MetaMask', async ({ nearWeb3Prec
 test.describe("NEAR Web3 Wallet: Swapping", { tag: WEB3_WALLET_TAG }, () => {
     const tokenFrom = 'NEAR';
 
-    test(`Confirm that user cannot swap more than the balance contains`, async ({ page, context, extensionId }) => {
+    test(`Confirm that user cannot swap more than the balance contains`, async ({ page }) => {
         const transferAmount = 9999;
         const homePage = new HomePage(page)
         await homePage.confirmHomePageLoaded("/")
