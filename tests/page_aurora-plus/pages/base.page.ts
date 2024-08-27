@@ -2,24 +2,32 @@ import { expect, type Locator, type Page } from "@playwright/test"
 
 export class BasePage {
   page: Page
+
   auroraLogo: Locator
+
   homeTab: Locator
+
   forwarderTab: Locator
+
   swapTab: Locator
+
   earnTab: Locator
+
   appsTab: Locator
+
   bridgeDropdown: Locator
+
   svgLogo: Locator
 
   constructor(page: Page) {
     this.page = page
     this.svgLogo = page.getByTestId("aurora-logo")
     this.auroraLogo = page.locator("a").filter({ has: this.svgLogo })
-    this.homeTab = page.getByTestId('home-tab-button')
-    this.forwarderTab = page.getByTestId('forwarder-tab-button')
-    this.swapTab = page.getByTestId('swap-tab-button')
-    this.earnTab = page.getByTestId('earn-tab-button')
-    this.appsTab = page.getByTestId('apps-tab-button')
+    this.homeTab = page.getByTestId("home-tab-button")
+    this.forwarderTab = page.getByTestId("forwarder-tab-button")
+    this.swapTab = page.getByTestId("swap-tab-button")
+    this.earnTab = page.getByTestId("earn-tab-button")
+    this.appsTab = page.getByTestId("apps-tab-button")
     this.bridgeDropdown = page.getByRole("link", { name: "Bridge" })
   }
 
