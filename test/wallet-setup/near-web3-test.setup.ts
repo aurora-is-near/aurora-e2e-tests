@@ -1,7 +1,7 @@
 import { defineWalletSetup } from "@synthetixio/synpress"
 import "dotenv/config"
-import { CURRENCY_NEAR } from "../../tests/helpers/constants/currencies"
 import { getExtensionId, MetaMask } from "@synthetixio/synpress/playwright"
+import { CURRENCY_NEAR } from "../../tests/helpers/constants/currencies"
 
 const PASSWORD = process.env.MM_PASSWORD as string
 
@@ -16,7 +16,7 @@ export default defineWalletSetup(PASSWORD, async (context, walletPage) => {
     symbol: CURRENCY_NEAR,
     name: process.env.TESTNET_NETWORK_NAME as string,
     rpcUrl: process.env.TESTNET_NETWORK_URL as string,
-    chainId: parseInt(process.env.TESTNET_CHAIN_ID as string),
+    chainId: parseInt(process.env.TESTNET_CHAIN_ID as string, 10),
   })
 
   await metamask.switchNetwork("NEAR wallet playground")

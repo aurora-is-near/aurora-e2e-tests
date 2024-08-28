@@ -1,10 +1,10 @@
 import { expect } from "@playwright/test"
-import { shortTimeout } from "../../helpers/constants/timeouts"
-
-import nearWeb3TestSetup from "../../../test/wallet-setup/near-web3-test.setup"
-import nearWeb3ProdSetup from "../../../test/wallet-setup/near-web3-prod.setup"
 import { MetaMask, metaMaskFixtures } from "@synthetixio/synpress/playwright"
 import { testWithSynpress } from "@synthetixio/synpress"
+
+import { shortTimeout } from "../../helpers/constants/timeouts"
+import nearWeb3TestSetup from "../../../test/wallet-setup/near-web3-test.setup"
+import nearWeb3ProdSetup from "../../../test/wallet-setup/near-web3-prod.setup"
 
 const isTestNet = (process.env.NEAR_NETWORK as string) === "testnet"
 

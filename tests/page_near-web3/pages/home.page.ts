@@ -1,20 +1,32 @@
 import { expect, type Locator, type Page } from "@playwright/test"
-import { BasePage } from "./base.page"
 import { setTimeout } from "timers/promises"
+import { BasePage } from "./base.page"
 
 export class HomePage extends BasePage {
   swapContainer: Locator
+
   swapFromWallet: Locator
+
   swapToWallet: Locator
+
   fromAmountInputField: Locator
+
   toAmountInputField: Locator
+
   firstDropdownArrow: Locator
+
   secondDropdownArrow: Locator
+
   amountInputField: Locator
+
   swapButton: Locator
+
   popUpConfirmTransactionButton: Locator
+
   balance: Locator
+
   successNotificationTitle: Locator
+
   successNotificationCloseButton: Locator
 
   constructor(page: Page) {
@@ -59,6 +71,7 @@ export class HomePage extends BasePage {
     const messageOnFail = '"From" token balance is not visible'
     await expect(this.balance, messageOnFail).toBeVisible()
     const balanceText = await this.balance.innerText()
+
     return balanceText
   }
 
@@ -111,17 +124,6 @@ export class HomePage extends BasePage {
     await expect(this.successNotificationTitle, messageOnFail).toBeVisible()
     await this.successNotificationCloseButton.click()
     await this.page.reload()
-  }
-
-  async confirmTransactionWasCorrect(
-    balanceBeforeString: string,
-    balanceAfterString: string,
-    transfer: number,
-  ) {
-    const balanceBefore = Number(balanceBeforeString.replace("Balance: ", ""))
-    const balanceAfter = Number(balanceAfterString.replace("Balance: ", ""))
-
-    expect((balanceBefore - transfer).toFixed()).toBe(balanceAfter)
   }
 
   async confirmSwapButtonNotAvailable() {

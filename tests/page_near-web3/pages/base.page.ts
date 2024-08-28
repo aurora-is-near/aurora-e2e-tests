@@ -2,9 +2,13 @@ import { expect, type Locator, type Page } from "@playwright/test"
 
 export class BasePage {
   page: Page
+
   homeTab: Locator
+
   portfolioTab: Locator
+
   stakingTab: Locator
+
   exploreTab: Locator
 
   constructor(page: Page) {
