@@ -1,15 +1,17 @@
-
-import { test } from "../fixtures/aurora-plus";
-import { DashboardPage } from '../pages/dashboard.page';
-import { AURORA_PLUS_TAG } from "../../helpers/constants/tags";
-import { AURORA_PLUS_PAGE } from "../../helpers/constants/pages";
+import { test } from "../fixtures/aurora-plus"
+import { DashboardPage } from "../pages/dashboard.page"
+import { AURORA_PLUS_TAG } from "../../helpers/constants/tags"
+import { AURORA_PLUS_PAGE } from "../../helpers/constants/pages"
 
 test.use(AURORA_PLUS_PAGE)
 
-test.describe("Dashboard page tests", { tag: AURORA_PLUS_TAG }, async () => {
-  test.beforeEach('Login to Aurora Plus with MetaMask', async ({ auroraPlusPreconditions }) => {
-    await auroraPlusPreconditions.loginToAuroraPlus()
-  })
+test.describe("Dashboard page tests", { tag: AURORA_PLUS_TAG }, () => {
+  test.beforeEach(
+    "Login to Aurora Plus with MetaMask",
+    async ({ auroraPlusPreconditions }) => {
+      await auroraPlusPreconditions.loginToAuroraPlus()
+    },
+  )
 
   test("Confirm that user can't stake more than balance allows", async ({
     page,

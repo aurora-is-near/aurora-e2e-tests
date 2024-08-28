@@ -1,66 +1,101 @@
 import { testWithSynpress } from "@synthetixio/synpress"
 import { MetaMask, metaMaskFixtures } from "@synthetixio/synpress/playwright"
-import auroraSetup from '../../../test/wallet-setup/aurora-plus.setup';
-import { shortTimeout } from '../../helpers/constants/timeouts';
-import { expect } from "@playwright/test";
-import { setTimeout } from "timers/promises";
+import { expect } from "@playwright/test"
+import { setTimeout } from "timers/promises"
+import auroraSetup from "../../../test/wallet-setup/aurora-plus.setup"
+import { shortTimeout } from "../../helpers/constants/timeouts"
 
 export const test = testWithSynpress(metaMaskFixtures(auroraSetup)).extend<{
-    auroraPlusPreconditions: {
-        loginToAuroraPlus: () => Promise<void>
-    }
+  auroraPlusPreconditions: {
+    loginToAuroraPlus: () => Promise<void>
+  }
 }>({
-    auroraPlusPreconditions: async ({ page, context, extensionId }, use) => {
+  auroraPlusPreconditions: async ({ page, context, extensionId }, use) => {
+    const metamask = new MetaMask(
+      context,
+      page,
+      auroraSetup.walletPassword,
+      extensionId,
+    )
+    const launchAppButton = page.getByRole("link", { name: "Launch app" })
+    const connectWalletButton = page.getByRole("button", {
+      name: "Connect wallet",
+    })
+    const modalConnectWalletButton = page
+      .getByLabel("Connect and authenticate")
+      .getByRole("button", { name: "Connect wallet" })
+    const skipIHaveWalletButton = page.getByRole("button", {
+      name: "Skip, I have a wallet",
+    })
+    const modalMetamaskButton = page.getByRole("button", {
+      name: "MetaMask MetaMask",
+    })
+    const acceptAndSignButton = page.getByRole("button", {
+      name: "Accept and sign",
+    })
 
-        const metamask = new MetaMask(context, page, auroraSetup.walletPassword, extensionId)
-        const launchAppButton = page.getByRole('link', { name: 'Launch app' })
-        const connectWalletButton = page.getByRole('button', { name: 'Connect wallet' })
-        const modalConnectWalletButton = page.getByLabel('Connect and authenticate').getByRole('button', { name: 'Connect wallet' })
-        const skipIHaveWalletButton = page.getByRole('button', { name: 'Skip, I have a wallet' })
-        const modalMetamaskButton = page.getByRole('button', { name: 'MetaMask MetaMask' })
-        const acceptAndSignButton = page.getByRole('button', { name: 'Accept and sign' })
+    const loginSteps = async () => {
+      await expect(
+        launchAppButton,
+        '"Launch app" button is not visible',
+      ).toBeVisible(shortTimeout)
+      await launchAppButton.click()
 
-        const loginSteps = async () => {
-            await expect(launchAppButton, '"Launch app" button is not visible').toBeVisible(shortTimeout)
-            await launchAppButton.click();
+      await expect(
+        connectWalletButton,
+        '"Connect wallet" button is not visible',
+      ).toBeVisible(shortTimeout)
+      await connectWalletButton.click()
 
-            await expect(connectWalletButton, '"Connect wallet" button is not visible').toBeVisible(shortTimeout)
-            await connectWalletButton.click();
+      await expect(
+        modalConnectWalletButton,
+        '"Connect wallet" button in modal not visible',
+      ).toBeVisible(shortTimeout)
+      await modalConnectWalletButton.click()
 
-            await expect(modalConnectWalletButton, '"Connect wallet" button in modal not visible').toBeVisible(shortTimeout)
-            await modalConnectWalletButton.click();
+      let retries = 100
+      let isElementVisible = false
 
-            let retries = 100;
-            let isElementVisible = false;
+      while (!isElementVisible && retries > 0) {
+        // eslint-disable-next-line no-await-in-loop
+        isElementVisible = await skipIHaveWalletButton.isVisible()
 
-            while (!isElementVisible && retries > 0) {
-                isElementVisible = await skipIHaveWalletButton.isVisible()
-                retries--;
-                await setTimeout(100)
-            }
+        retries -= 1
 
-            if (await skipIHaveWalletButton.isVisible()) {
-                await skipIHaveWalletButton.click();
-            }
+        // eslint-disable-next-line no-await-in-loop
+        await setTimeout(100)
+      }
 
-            await expect(modalMetamaskButton, '"MetaMask" wallet button not visible in modal').toBeVisible(shortTimeout)
-            await modalMetamaskButton.click();
+      if (await skipIHaveWalletButton.isVisible()) {
+        await skipIHaveWalletButton.click()
+      }
 
-            await metamask.connectToDapp();
+      await expect(
+        modalMetamaskButton,
+        '"MetaMask" wallet button not visible in modal',
+      ).toBeVisible(shortTimeout)
+      await modalMetamaskButton.click()
 
-            await expect(acceptAndSignButton, '"Accept and sign" button not visible').toBeVisible(shortTimeout)
-            await acceptAndSignButton.click();
+      await metamask.connectToDapp()
 
-            await setTimeout(10000)
-            await metamask.confirmSignature();
+      await expect(
+        acceptAndSignButton,
+        '"Accept and sign" button not visible',
+      ).toBeVisible(shortTimeout)
+      await acceptAndSignButton.click()
 
-            await expect(page, 'Incorrect page is loaded').toHaveURL('https://aurora.plus/dashboard')
-        }
+      await setTimeout(10000)
+      await metamask.confirmSignature()
 
-        await use({
-            loginToAuroraPlus: async () => {
-                await loginSteps()
-            },
-        })
+      await expect(page, "Incorrect page is loaded").toHaveURL(
+        "https://aurora.plus/dashboard",
+      )
     }
+
+    await use({
+      loginToAuroraPlus: async () => {
+        await loginSteps()
+      },
+    })
+  },
 })
