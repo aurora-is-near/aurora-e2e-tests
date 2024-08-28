@@ -2,21 +2,13 @@ import { expect, type Locator, type Page } from "@playwright/test"
 
 export class BasePage {
   page: Page
-
   auroraLogo: Locator
-
   homeTab: Locator
-
   forwarderTab: Locator
-
   swapTab: Locator
-
   earnTab: Locator
-
   appsTab: Locator
-
   bridgeDropdown: Locator
-
   svgLogo: Locator
 
   constructor(page: Page) {

@@ -5,45 +5,25 @@ import { midTimeout } from "../../helpers/constants/timeouts"
 
 export class DashboardPage extends BasePage {
   page: Page
-
   stakeButton: Locator
-
   onboardingModal: Locator
-
   stakeConfirmModal: Locator
-
   stakeRewardsModal: Locator
-
   gotItContinueButton: Locator
-
   allClearNextButton: Locator
-
   okLetsStakeButton: Locator
-
   stakeConfirmModalAmountInput: Locator
-
   stakeConfirmModalButton: Locator
-
   loadingModalSpinner: Locator
-
   unstakeConfirmModalButton: Locator
-
   withdrawalCooldownButton: Locator
-
   auroraPendingWithdrawalAmount: Locator
-
   auroraBalance: Locator
-
   auroraStakedBalance: Locator
-
   gettingStartedTitle: Locator
-
   stakeAmountInput: Locator
-
   unstakeConfirmModal: Locator
-
   unstakeAmountInput: Locator
-
   unstakeButton: Locator
 
   constructor(page: Page) {
