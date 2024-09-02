@@ -21,18 +21,12 @@ jobs:
       TESTNET_NETWORK_NAME: ${{ vars.TESTNET_NETWORK_NAME }}
       TESTNET_NETWORK_URL: ${{ vars.TESTNET_NETWORK_URL }}
       TESTNET_CHAIN_ID: ${{ vars.TESTNET_CHAIN_ID }}
-      PW_TEST_HTML_REPORT_OPEN: ${{ vars.PW_TEST_HTML_REPORT_OPEN }}
 
     steps:
-      - uses: actions/checkout@v4
-      - name: Use Node.js 20
+      - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
-          cache: "npm"
-
-      - name: Install Yarn
-        run: npm install -g yarn
+          node-version-file: package.json
 
       - name: Install linux deps
         run: |

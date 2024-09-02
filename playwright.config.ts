@@ -1,12 +1,12 @@
 import { defineConfig, devices } from "@playwright/test"
 
 export default defineConfig({
-  testDir: "./tests",
+  testDir: "./test",
   fullyParallel: false,
   forbidOnly: false,
   retries: process.env.CI ? 2 : 0,
   workers: 1,
-  reporter: [["html", { outputFolder: "my-report" }]],
+  reporter: [["html", { outputFolder: "my-report", open: 'never' }]],
   timeout: 2 * 60 * 1000,
   use: {
     screenshot: "only-on-failure",

@@ -2,7 +2,7 @@ import { testWithSynpress } from "@synthetixio/synpress"
 import { MetaMask, metaMaskFixtures } from "@synthetixio/synpress/playwright"
 import { expect } from "@playwright/test"
 import { setTimeout } from "timers/promises"
-import auroraSetup from "../../../test/wallet-setup/aurora-plus.setup"
+import auroraSetup from "../../wallet-setup/aurora-plus.setup"
 import { shortTimeout } from "../../helpers/constants/timeouts"
 
 export const test = testWithSynpress(metaMaskFixtures(auroraSetup)).extend<{

@@ -1,7 +1,7 @@
 import "dotenv/config"
 import { defineWalletSetup } from "@synthetixio/synpress"
 import { getExtensionId, MetaMask } from "@synthetixio/synpress/playwright"
-import { CURRENCY_ETHEREUM } from "../../tests/helpers/constants/currencies"
+import { CURRENCY_ETHEREUM } from "../helpers/constants/currencies"
 
 const PASSWORD = process.env.MM_PASSWORD as string
 
