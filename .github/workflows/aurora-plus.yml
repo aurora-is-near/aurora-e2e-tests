@@ -12,6 +12,7 @@ jobs:
       MM_PASSWORD: ${{ secrets.MM_PASSWORD }}
 
     steps:
+      - uses: actions/checkout@v4
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
