@@ -10,17 +10,6 @@ jobs:
     env:
       MM_SEED_PHRASE: ${{ secrets.MM_SEED_PHRASE }}
       MM_PASSWORD: ${{ secrets.MM_PASSWORD }}
-      NETWORK_NAME: ${{ vars.NETWORK_NAME }}
-      NETWORK_URL: ${{ vars.NETWORK_URL }}
-      CHAIN_ID: ${{ vars.CHAIN_ID }}
-      NETWORK_ENVIRONMENT: ${{ vars.NETWORK_ENVIRONMENT }}
-      MAINNET_NETWORK_NAME: ${{ vars.MAINNET_NETWORK_NAME }}
-      MAINNET_NETWORK_URL: ${{ vars.MAINNET_NETWORK_URL }}
-      MAINNET_CHAIN_ID: ${{ vars.MAINNET_CHAIN_ID }}
-      MAINNET_BLOCK_EXPLORER_URL: ${{ vars.MAINNET_BLOCK_EXPLORER_URL }}
-      TESTNET_NETWORK_NAME: ${{ vars.TESTNET_NETWORK_NAME }}
-      TESTNET_NETWORK_URL: ${{ vars.TESTNET_NETWORK_URL }}
-      TESTNET_CHAIN_ID: ${{ vars.TESTNET_CHAIN_ID }}
 
     steps:
       - name: Setup Node
