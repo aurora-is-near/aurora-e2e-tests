@@ -24,31 +24,9 @@ yarn install
 > [!IMPORTANT]
 > </br>Sensitive information must be stored locally in .env file, or as variable/ secret in repository options.
 
-Use .env template below to fill the data for local testing
-```text
-# PLAYWRIGHT SETTINGS
-PW_TEST_HTML_REPORT_OPEN='never'
-
-MM_SEED_PHRASE=""
-MM_PASSWORD=""
-
-# AURORA PLUS wallet
-AURORA_MAINNET_NETWORK_NAME=""
-AURORA_MAINNET_NETWORK_URL=""
-AURORA_MAINNET_CHAIN_ID=
-
-NEAR_NETWORK_ENVIRONMENT=""
-# NEAR_NETWORK_ENVIRONMENT="testnet"
-
-# NEAR WEB3 wallet
-NEAR_MAINNET_NETWORK_NAME=""
-NEAR_MAINNET_NETWORK_URL=""
-NEAR_MAINNET_CHAIN_ID=
-NEAR_MAINNET_BLOCK_EXPLORER_URL=""
-
-NEAR_TESTNET_NETWORK_NAME=""
-NEAR_TESTNET_NETWORK_URL=""
-NEAR_TESTNET_CHAIN_ID=
+A sample .env file can be generated as follows:
+```
+cp .env.sample .env
 ```
 
 ### Wallet configuration
@@ -66,7 +44,7 @@ yarn synpress
 
 ### Running tests
 There are tests for multiple websites.
-If required, you can run all the tests, of all websites at the same with command:
+If required, you can run all the tests, of all websites at the same time with command:
 ```bash
 yarn test
 ```
@@ -95,10 +73,9 @@ Below is the structure of folders/ files required for tests development. It does
 ├─ .github
 │  └─ workflows
 │     └─ *.yml          (Config of Github actions pipeline)
-├─ test
-│  └─ walet-setup       (Place to save wallet config files)
-│     └─ *setup.ts      (Wallet config)
-└─ tests
+└─ test
+   ├─ wallet-setup       (Place to save wallet config files)
+   │  └─ *setup.ts      (Wallet config)
    ├─ helpers           (Place to save files of shared content, e.g.: constants, methods)
    │  └─ constants
    │    └─ *.ts         (Constants for various shared info, e.g.: timeouts, urls, tags)
