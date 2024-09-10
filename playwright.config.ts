@@ -11,6 +11,10 @@ export default defineConfig({
   use: {
     screenshot: "only-on-failure",
     trace: "on-first-retry",
+    launchOptions: {
+      slowMo: 200,
+    },
+    viewport: { width: 1920, height: 1080 },
   },
   expect: {
     timeout: 5 * 60 * 1000,
