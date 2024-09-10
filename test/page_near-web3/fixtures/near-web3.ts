@@ -4,7 +4,7 @@ import { testWithSynpress } from "@synthetixio/synpress"
 
 import { shortTimeout } from "../../helpers/constants/timeouts"
 import nearWeb3TestSetup from "../../wallet-setup/near-web3-test.skip"
-import nearWeb3ProdSetup from "../../wallet-setup/near-web3-main.setup"
+import nearWeb3ProdSetup from "../../wallet-setup/near-web3-main.skip"
 
 const isTestNet = (process.env.NEAR_NETWORK as string) === "testnet"
 
