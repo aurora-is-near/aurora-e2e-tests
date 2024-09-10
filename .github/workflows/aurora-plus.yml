@@ -39,9 +39,6 @@ jobs:
 
       - name: Create Synpress cache
         run: xvfb-run yarn synpress
-
-      - name: Upload Synpress Report
-        run: xvfb-run yarn test
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -49,7 +46,7 @@ jobs:
           path: test-results/
           retention-days: 1
 
-      - name: Upload Playwright Report
+      - name: Run tests
         run: xvfb-run yarn test
       - uses: actions/upload-artifact@v4
         if: always()
