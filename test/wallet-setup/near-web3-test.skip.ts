@@ -1,7 +1,14 @@
-import "dotenv/config"
+/*
+ * TODO: rename file to near-web3-test.setup.ts
+ * instead of .skip.ts when testnet will be established
+ * and check files:
+ * swapping.spec.ts and near-web3.ts for additional comments
+ */
+
 import { defineWalletSetup } from "@synthetixio/synpress"
+import "dotenv/config"
 import { getExtensionId, MetaMask } from "@synthetixio/synpress/playwright"
-import { AURORA_PLUS_MAINNET } from "../helpers/constants/networks"
+import { NEAR_WALLET_TESTNET } from "../helpers/constants/networks"
 import {
   getPassword,
   getSeedPhrase,
@@ -17,5 +24,7 @@ export default defineWalletSetup(password, async (context, walletPage) => {
 
   await metamask.importWallet(seedPhrase)
 
-  await metamask.addNetwork(AURORA_PLUS_MAINNET)
+  await metamask.addNetwork(NEAR_WALLET_TESTNET)
+
+  await metamask.switchNetwork(NEAR_WALLET_TESTNET.name)
 })

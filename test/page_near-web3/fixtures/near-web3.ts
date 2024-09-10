@@ -3,8 +3,8 @@ import { MetaMask, metaMaskFixtures } from "@synthetixio/synpress/playwright"
 import { testWithSynpress } from "@synthetixio/synpress"
 
 import { shortTimeout } from "../../helpers/constants/timeouts"
-import nearWeb3TestSetup from "../../../test/wallet-setup/near-web3-test.setup"
-import nearWeb3ProdSetup from "../../../test/wallet-setup/near-web3-prod.setup"
+import nearWeb3TestSetup from "../../wallet-setup/near-web3-test.skip"
+import nearWeb3ProdSetup from "../../wallet-setup/near-web3-main.setup"
 
 const isTestNet = (process.env.NEAR_NETWORK as string) === "testnet"
 
@@ -30,19 +30,21 @@ export const test = testWithSynpress(
     })
 
     const loginSteps = async () => {
-      await expect(
-        loginWithEthereumButton,
-        '"Log in with Ethereum" button is not visible',
-      ).toBeVisible(shortTimeout)
+      let messageOnFail = '"Log in with Ethereum" button is not visible'
+      await expect(loginWithEthereumButton, messageOnFail).toBeVisible(
+        shortTimeout,
+      )
       await loginWithEthereumButton.click()
 
-      await expect(
-        metamaskOptionInPopUp,
-        "MetaMask login option is not visible in pop up",
-      ).toBeVisible(shortTimeout)
+      messageOnFail = "MetaMask login option is not visible in pop up"
+      await expect(metamaskOptionInPopUp, messageOnFail).toBeVisible(
+        shortTimeout,
+      )
       await metamaskOptionInPopUp.click()
 
       await metamask.connectToDapp()
+      await metamask.approveNewNetwork()
+      await metamask.approveSwitchNetwork()
     }
 
     await use({

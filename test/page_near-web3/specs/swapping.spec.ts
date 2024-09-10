@@ -1,17 +1,9 @@
-import {
-  NEAR_WEB3_PAGE,
-  NEAR_WEB3_PAGE_TESTNET,
-} from "../../helpers/constants/pages"
 import { WEB3_WALLET_TAG } from "../../helpers/constants/tags"
+import { nearEnvironment } from "../../helpers/functions/system-variables"
 import { test } from "../fixtures/near-web3"
 import { HomePage } from "../pages/home.page"
 
-const nearWebPage =
-  (process.env.NEAR_NETWORK as string) === "testnet"
-    ? NEAR_WEB3_PAGE_TESTNET
-    : NEAR_WEB3_PAGE
-
-test.use(nearWebPage)
+test.use(nearEnvironment("mainnet"))
 
 test.beforeEach(
   "Login to Near Web3 wallet with MetaMask",
