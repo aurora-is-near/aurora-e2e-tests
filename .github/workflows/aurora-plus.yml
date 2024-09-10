@@ -39,12 +39,6 @@ jobs:
 
       - name: Create Synpress cache
         run: xvfb-run yarn synpress
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: synpress-report
-          path: test-results/
-          retention-days: 1
 
       - name: Run tests
         run: xvfb-run yarn test
