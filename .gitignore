@@ -11,7 +11,7 @@ yarn-error.log*
 *.tsbuildinfo
 
 # Local cache
-.cache/
+.cache-synpress/
 
 # Playwright
 /test-results/
@@ -21,3 +21,4 @@ yarn-error.log*
 
 # Env
 .env
+my-report/

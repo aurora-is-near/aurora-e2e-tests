@@ -1,32 +1,24 @@
 import { defineConfig, devices } from "@playwright/test"
-import dotenv from "dotenv"
 
-dotenv.config({ path: ".env" })
-dotenv.config({ path: ".env.production" })
-
-/**
- * See https://playwright.dev/docs/test-configuration.
- */
 export default defineConfig({
-  testDir: "./tests",
-  fullyParallel: true,
-  forbidOnly: !!process.env.CI,
+  testDir: "./test",
+  fullyParallel: false,
+  forbidOnly: false,
   retries: process.env.CI ? 2 : 0,
-  workers: process.env.CI ? 1 : undefined,
-  timeout: 120000,
-  reporter: "dot",
+  workers: 1,
+  reporter: [["html", { outputFolder: "my-report", open: "never" }]],
+  timeout: 2 * 60 * 1000,
   use: {
+    screenshot: "only-on-failure",
     trace: "on-first-retry",
+  },
+  expect: {
+    timeout: 5 * 60 * 1000,
   },
   projects: [
     {
-      name: "setup metamask",
-      testMatch: /metamask\.setup\.ts/,
-    },
-    {
       name: "chromium",
       use: { ...devices["Desktop Chrome"] },
-      dependencies: ["setup metamask"],
     },
   ],
 })
