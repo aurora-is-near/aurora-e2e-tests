@@ -205,7 +205,9 @@ export class DashboardPage extends BasePage {
     }
 
     const messageOnFail = "Stake confirm modal should disappear"
-    await expect(this.stakeConfirmModal, messageOnFail).toHaveCount(0)
+    await expect(this.stakeConfirmModal, messageOnFail).not.toBeVisible(
+      midTimeout,
+    )
   }
 
   async waitForAuroraBalanceUpdate(balance: number) {
@@ -223,7 +225,9 @@ export class DashboardPage extends BasePage {
 
   async confirmLoadingSpinnedDisappear() {
     const messageOnFail = "Modal loading spinner should disappear"
-    await expect(this.loadingModalSpinner, messageOnFail).toHaveCount(0)
+    await expect(this.loadingModalSpinner, messageOnFail).not.toBeVisible(
+      midTimeout,
+    )
   }
 
   async confirmThatConfirmButtonDisabled() {
