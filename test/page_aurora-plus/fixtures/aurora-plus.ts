@@ -77,8 +77,8 @@ export const test = testWithSynpress(metaMaskFixtures(auroraSetup)).extend<{
       await modalMetamaskButton.click()
 
       await metamask.connectToDapp()
-      await metamask.approveNewNetwork()
-      await metamask.approveSwitchNetwork()
+      // await metamask.approveNewNetwork()
+      // await metamask.approveSwitchNetwork()
 
       await expect(
         acceptAndSignButton,

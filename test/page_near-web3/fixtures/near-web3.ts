@@ -43,8 +43,8 @@ export const test = testWithSynpress(
       await metamaskOptionInPopUp.click()
 
       await metamask.connectToDapp()
-      await metamask.approveNewNetwork()
-      await metamask.approveSwitchNetwork()
+      // await metamask.approveNewNetwork()
+      // await metamask.approveSwitchNetwork()
     }
 
     await use({
