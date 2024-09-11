@@ -2,17 +2,13 @@ import { defineWalletSetup } from "@synthetixio/synpress"
 import "dotenv/config"
 import { getExtensionId, MetaMask } from "@synthetixio/synpress/playwright"
 import { NEAR_WALLET_MAINNET } from "../helpers/constants/networks"
+import {
+  getPassword,
+  getSeedPhrase,
+} from "../helpers/functions/system-variables"
 
-const seedPhrase = process.env.MM_SEED_PHRASE
-const password = process.env.MM_PASSWORD
-
-if (!seedPhrase) {
-  throw new Error("The MM_SEED_PHRASE environment variable is required")
-}
-
-if (!password) {
-  throw new Error("The MM_PASSWORD environment variable is required")
-}
+const seedPhrase = getSeedPhrase()
+const password = getPassword()
 
 export default defineWalletSetup(password, async (context, walletPage) => {
   const extensionId = await getExtensionId(context, "MetaMask")
