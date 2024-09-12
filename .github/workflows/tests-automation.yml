@@ -1,4 +1,4 @@
-name: Metamask CI
+name: Synpress/ Playwright tests automation CI
 
 on: push
 
