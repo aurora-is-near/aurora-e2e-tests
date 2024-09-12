@@ -47,7 +47,6 @@ export const nearEnvironment = (environment = "") => {
     environmenUrl = getNearUrl(environment)
   } else {
     const network = process.env.NEAR_NETWORK
-    console.log("Network selected:", network)
 
     if (!network) {
       throw new Error("The NEAR_NETWORK environment variable is required")
