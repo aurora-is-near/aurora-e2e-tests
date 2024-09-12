@@ -39,7 +39,6 @@ export class HomePage extends BasePage {
     this.swapToWallet = page.getByText("REF", { exact: true })
     this.fromAmountInputField = page.getByText("NEAR~$").getByPlaceholder("0.0")
     this.toAmountInputField = page.getByText("REF~$").getByPlaceholder("0.0")
-    // Dropdown locators must be updated
     this.firstDropdownArrow = page
       .locator("form")
       .getByText("NEAR", { exact: true })
@@ -78,7 +77,6 @@ export class HomePage extends BasePage {
   async selectTokenToSwapFrom(tokenName: string) {
     if (tokenName !== "NEAR") {
       await this.firstDropdownArrow.click()
-      // Must be updated to IDS
       const tokenSelector = this.page.getByText(tokenName, { exact: true })
       const messageOnFail = `Token ${tokenName} was not found in token list which contains any balance`
       await expect(tokenSelector, messageOnFail).toBeVisible()

@@ -20,6 +20,12 @@ export const getSeedPhrase = () => {
   return phrase
 }
 
+/**
+ * For development purposes. Helps to override environment for web3 wallet
+ * 2 possible options: "mainnet" or "testnet"
+ * @param environment - string
+ * @returns {string} - web url for required environment
+ */
 export const nearEnvironment = (environment = "") => {
   let environmenUrl
 

@@ -21,7 +21,7 @@ export class BasePage {
   }
 
   async confirmCorrectPageLoaded(page: Page, urlExtension: string) {
-    const url = nearEnvironment("mainnet").baseURL
+    const url = nearEnvironment().baseURL
 
     await expect(page, `Loaded page is not ${urlExtension}`).toHaveURL(
       `${url}${urlExtension}`,

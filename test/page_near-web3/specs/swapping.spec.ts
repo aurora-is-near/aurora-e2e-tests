@@ -3,7 +3,7 @@ import { nearEnvironment } from "../../helpers/functions/system-variables"
 import { test } from "../fixtures/near-web3"
 import { HomePage } from "../pages/home.page"
 
-test.use(nearEnvironment("mainnet"))
+test.use(nearEnvironment())
 
 test.beforeEach(
   "Login to Near Web3 wallet with MetaMask",

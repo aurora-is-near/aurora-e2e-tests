@@ -29,7 +29,7 @@ export const test = testWithSynpress(
       name: "MetaMask MetaMask installed",
     })
 
-    const loginSteps = async () => {
+    const loginToNearWeb3 = async () => {
       let messageOnFail = '"Log in with Ethereum" button is not visible'
       await expect(loginWithEthereumButton, messageOnFail).toBeVisible(
         shortTimeout,
@@ -46,9 +46,7 @@ export const test = testWithSynpress(
     }
 
     await use({
-      loginToNearWeb3: async () => {
-        await loginSteps()
-      },
+      loginToNearWeb3,
     })
   },
 })

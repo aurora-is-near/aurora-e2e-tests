@@ -34,7 +34,7 @@ export const test = testWithSynpress(metaMaskFixtures(auroraSetup)).extend<{
       name: "Accept and sign",
     })
 
-    const loginSteps = async () => {
+    const loginToAuroraPlus = async () => {
       await expect(
         launchAppButton,
         '"Launch app" button is not visible',
@@ -77,8 +77,6 @@ export const test = testWithSynpress(metaMaskFixtures(auroraSetup)).extend<{
       await modalMetamaskButton.click()
 
       await metamask.connectToDapp()
-      // await metamask.approveNewNetwork()
-      // await metamask.approveSwitchNetwork()
 
       await expect(
         acceptAndSignButton,
@@ -95,9 +93,7 @@ export const test = testWithSynpress(metaMaskFixtures(auroraSetup)).extend<{
     }
 
     await use({
-      loginToAuroraPlus: async () => {
-        await loginSteps()
-      },
+      loginToAuroraPlus,
     })
   },
 })
