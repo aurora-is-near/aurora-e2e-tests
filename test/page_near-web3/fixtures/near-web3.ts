@@ -4,7 +4,7 @@ import { testWithSynpress } from "@synthetixio/synpress"
 
 import { shortTimeout } from "../../helpers/constants/timeouts"
 import nearWeb3TestSetup from "../../wallet-setup/near-web3-test.skip"
-import nearWeb3ProdSetup from "../../wallet-setup/near-web3-main.setup"
+import nearWeb3ProdSetup from "../../wallet-setup/near-web3-prod.setup"
 
 const isTestNet = (process.env.NEAR_NETWORK as string) === "testnet"
 
@@ -43,8 +43,6 @@ export const test = testWithSynpress(
       await metamaskOptionInPopUp.click()
 
       await metamask.connectToDapp()
-      // await metamask.approveNewNetwork()
-      // await metamask.approveSwitchNetwork()
     }
 
     await use({
