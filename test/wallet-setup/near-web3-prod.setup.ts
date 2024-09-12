@@ -18,6 +18,4 @@ export default defineWalletSetup(password, async (context, walletPage) => {
   await metamask.importWallet(seedPhrase)
 
   await metamask.addNetwork(NEAR_WALLET_MAINNET)
-
-  // await metamask.switchNetwork(NEAR_WALLET_MAINNET.name)
 })

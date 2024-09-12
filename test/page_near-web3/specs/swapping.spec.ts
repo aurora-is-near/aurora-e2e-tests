@@ -15,7 +15,7 @@ test.beforeEach(
 test.describe("NEAR Web3 Wallet: Swapping", { tag: WEB3_WALLET_TAG }, () => {
   const tokenFrom = "NEAR"
 
-  test.skip(`Confirm that user cannot swap more than the balance contains`, async ({
+  test(`Confirm that user cannot swap more than the balance contains`, async ({
     page,
   }) => {
     const transferAmount = 9999
