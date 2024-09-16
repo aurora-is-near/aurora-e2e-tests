@@ -7,13 +7,17 @@ export default defineConfig({
   retries: process.env.CI ? 2 : 0,
   workers: 1,
   reporter: [["html", { outputFolder: "my-report", open: "never" }]],
-  timeout: 2 * 60 * 1000,
+  timeout: (process.env.CI ? 10 : 2) * 60 * 1000,
   use: {
     screenshot: "only-on-failure",
     trace: "on-first-retry",
+    launchOptions: {
+      slowMo: 200,
+    },
+    viewport: { width: 1920, height: 1080 },
   },
   expect: {
-    timeout: 5 * 60 * 1000,
+    timeout: (process.env.CI ? 15 : 5) * 60 * 1000,
   },
   projects: [
     {

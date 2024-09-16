@@ -1,4 +1,4 @@
-name: Metamask CI
+name: Synpress/ Playwright tests automation CI
 
 on: push
 
@@ -10,6 +10,7 @@ jobs:
     env:
       MM_SEED_PHRASE: ${{ secrets.MM_SEED_PHRASE }}
       MM_PASSWORD: ${{ secrets.MM_PASSWORD }}
+      NEAR_NETWORK : ${{ vars.NEAR_NETWORK  }}
 
     steps:
       - uses: actions/checkout@v4
@@ -26,7 +27,7 @@ jobs:
 
       - name: Run xvfb and fluxbox
         run: |
-          Xvfb :0 -screen 0 1920x1080x24 -listen tcp -ac &
+          Xvfb :0 -screen 0 2560x1440x24 -listen tcp -ac &
           fluxbox -display :0.0 &
         env:
           DISPLAY: :0.0
@@ -40,8 +41,8 @@ jobs:
       - name: Create Synpress cache
         run: xvfb-run yarn synpress
 
-      - name: Run Aurora Plus tests
-        run: xvfb-run yarn test-aurora
+      - name: Run tests
+        run: xvfb-run yarn test
       - uses: actions/upload-artifact@v4
         if: always()
         with:
