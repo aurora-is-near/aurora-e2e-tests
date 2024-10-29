@@ -120,3 +120,12 @@ You can launch reports with the following command:
 ```bash
 yarn report
 ```
+
+## Pipelines
+All the pipeline configurations you can find in .github/workflows.
+For tests automation configuration file you can refer to tests-automation.yml
+
+Pipeline triggered on push and every 12 hours.
+
+For checking result of pipeline run, you can go to repository -> Actions -> finished Tests-Automation job.
+You can download pipeline run report in ended pipeline, by opening Upload-artifact step and clicking artifact URL.
