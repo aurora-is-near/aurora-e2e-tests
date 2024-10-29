@@ -33,8 +33,6 @@ export class EarnPage extends BasePage {
 
   depositedTokenValue: Locator
 
-  availableBalance: Locator
-
   constructor(page: Page) {
     super(page)
     this.page = page
@@ -64,7 +62,6 @@ export class EarnPage extends BasePage {
     this.depositMoreButton = page.getByTestId("deposit-more-button")
     this.depositedTokenBalance = page.getByTestId("deposited-token-balance")
     this.depositedTokenValue = page.getByTestId("deposited-token-value")
-    this.availableBalance = page.getByText("You have")
   }
 
   async confirmEarnPageLoaded(url: string, page = this.page) {
