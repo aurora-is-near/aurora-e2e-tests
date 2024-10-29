@@ -1,6 +1,9 @@
 name: Synpress/ Playwright tests automation CI
 
 on: push
+on:
+  schedule:
+    - cron: "0 0 12 * * ?"
 
 jobs:
   build:

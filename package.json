@@ -7,8 +7,8 @@
   "scripts": {
     "lint": "eslint . --ext .js,.cjs,.ts",
     "typecheck": "tsc --noEmit",
-    "cache": "yarn synpress",
-    "test": "yarn playwright test",
+    "cache": "synpress",
+    "test": "playwright test --workers=1",
     "test-aurora": "playwright test --workers=1 --grep @aurora-plus",
     "test-web-wallet": "playwright test --workers=1 --grep @web3-wallet",
     "debug": "yarn playwright test --debug",

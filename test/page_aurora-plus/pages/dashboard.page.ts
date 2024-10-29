@@ -1,7 +1,11 @@
 import { expect, type Locator, type Page } from "@playwright/test"
 import { setTimeout } from "timers/promises"
 import { BasePage } from "./base.page"
-import { midTimeout } from "../../helpers/constants/timeouts"
+import {
+  longTimeout,
+  midTimeout,
+  shortTimeout,
+} from "../../helpers/constants/timeouts"
 
 export class DashboardPage extends BasePage {
   page: Page
@@ -46,6 +50,22 @@ export class DashboardPage extends BasePage {
 
   unstakeButton: Locator
 
+  connectWalletButton: Locator
+
+  modalConnectWalletButton: Locator
+
+  skipIHaveWalletButton: Locator
+
+  modalMetamaskButton: Locator
+
+  acceptAndSignButton: Locator
+
+  availableBalance: Locator
+
+  stakeConfirmButton: Locator
+
+  unstakeConfirmButton: Locator
+
   constructor(page: Page) {
     super(page)
     this.page = page
@@ -75,10 +95,102 @@ export class DashboardPage extends BasePage {
     this.auroraStakedBalance = page.getByTestId("aurora-staked-value")
     this.unstakeConfirmModal = page.getByTestId("unstake-confirm-modal")
     this.unstakeConfirmModalButton = page.getByTestId("unstake-now-button")
+    //
+    this.connectWalletButton = page.getByRole("button", {
+      name: "Connect wallet",
+    })
+    this.modalConnectWalletButton = page
+      .getByLabel("Connect and authenticate")
+      .getByRole("button", { name: "Connect wallet" })
+
+    this.skipIHaveWalletButton = page.getByRole("button", {
+      name: "Skip, I have a wallet",
+    })
+    this.modalMetamaskButton = page.getByRole("button", {
+      name: "MetaMask MetaMask",
+    })
+    this.acceptAndSignButton = page.getByRole("button", {
+      name: "Accept and sign",
+    })
+    this.availableBalance = page.getByText("You have")
+    this.stakeConfirmButton = page.getByRole("button", { name: "Confirm" })
+    this.unstakeConfirmButton = page.getByRole("button", {
+      name: "Unstake now",
+    })
   }
 
-  async confirmDashboardPageLoaded(page: Page) {
-    await expect(page).toHaveURL("https://aurora.plus/dashboard")
+  async confirmDashboardPageLoaded() {
+    await expect(this.page).toHaveURL("https://aurora.plus/dashboard")
+  }
+
+  async waitForStakeModalToDisappear() {
+    const messageOnFail = "Unstake modal still visible after 25s"
+    await expect(this.unstakeConfirmModal, messageOnFail).not.toBeVisible(
+      longTimeout,
+    )
+  }
+
+  async waitForUnstakeModalToDisappear() {
+    const messageOnFail = "Stake modal still visible after 25s"
+    await expect(this.stakeConfirmModal, messageOnFail).not.toBeVisible(
+      longTimeout,
+    )
+  }
+
+  async clickConfirmStakeButton() {
+    const messageOnFail = "Confirm button in stake modal is not visible"
+    await expect(this.stakeConfirmButton, messageOnFail).toBeVisible()
+    await this.stakeConfirmButton.click()
+  }
+
+  async getAvailableStakeBalance() {
+    const messageOnFail = "Available balance for staking is not visible"
+    await expect(this.availableBalance, messageOnFail).toBeVisible()
+    const balance = (await this.availableBalance.innerText())
+      .replace("You have ", "")
+      .replace(" AURORA available to stake.", "")
+
+    return parseFloat(balance)
+  }
+
+  async clickConnectWalletButton() {
+    const messageOnFail = '"Connect wallet" button is not visible'
+    await expect(this.connectWalletButton, messageOnFail).toBeVisible(
+      shortTimeout,
+    )
+    await this.connectWalletButton.click()
+  }
+
+  async clickConnectWalletButtonInModal() {
+    const messageOnFail = '"Connect wallet" button in modal not visible'
+    await expect(this.modalConnectWalletButton, messageOnFail).toBeVisible(
+      shortTimeout,
+    )
+    await this.modalConnectWalletButton.click()
+  }
+
+  async clickSkipIHaveWallet() {
+    const messageOnFail = '"Skip, I have a wallet" button is not visible'
+    await expect(this.skipIHaveWalletButton, messageOnFail).toBeVisible(
+      shortTimeout,
+    )
+    await this.skipIHaveWalletButton.click()
+  }
+
+  async selectMetaMaskWalletInModal() {
+    const messageOnFail = '"MetaMask" wallet button not visible in modal'
+    await expect(this.modalMetamaskButton, messageOnFail).toBeVisible(
+      shortTimeout,
+    )
+    await this.modalMetamaskButton.click()
+  }
+
+  async clickAcceptAndSignButton() {
+    const messageOnFail = '"Accept and sign" button not visible'
+    await expect(this.acceptAndSignButton, messageOnFail).toBeVisible(
+      shortTimeout,
+    )
+    await this.acceptAndSignButton.click()
   }
 
   async isAnyPendingWithdrawals() {
@@ -87,7 +199,7 @@ export class DashboardPage extends BasePage {
     return isVisible
   }
 
-  getPendingWithdrawalAmount = async (): Promise<number> => {
+  async getPendingWithdrawalAmount() {
     let messageOnFail = "Withdrawal cooldown button is not visible"
     await expect(this.withdrawalCooldownButton, messageOnFail).toBeVisible(
       midTimeout,
@@ -142,7 +254,7 @@ export class DashboardPage extends BasePage {
     await this.stakeButton.click()
   }
 
-  async stakeModal_enterAmount(amount: number) {
+  async enterStakeAmount(amount: number) {
     const messageOnFail =
       "Stake amount input field in stake modal is not visible"
     await expect(this.stakeAmountInput, messageOnFail).toBeVisible()
@@ -235,6 +347,25 @@ export class DashboardPage extends BasePage {
     await expect(this.stakeConfirmModalButton, messageOnFail).toBeDisabled()
   }
 
+  async clickUnstakeConfirmButton() {
+    const messageOnFail =
+      "Unstake confirm button in unstake modal is not enabled"
+    await expect(this.unstakeConfirmButton, messageOnFail).toBeEnabled()
+    await this.unstakeConfirmButton.click()
+  }
+
+  async confirmThatUnstakeButtonDisabled() {
+    const messageOnFail =
+      "Unstake confirm button in unstake modal is not disabled"
+    await expect(this.unstakeConfirmButton, messageOnFail).toBeDisabled()
+  }
+
+  /**
+   *
+   * @param initialAuroraBalance {number} Initial balance
+   * @param updatedAuroraBalance {number} Balance after transaction were made
+   * @param transferAmount {number} Amount that was transfered
+   */
   confirmValuesIsCorrectAfterTransfer(
     initialAuroraBalance: number,
     updatedAuroraBalance: number,
