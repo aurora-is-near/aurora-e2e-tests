@@ -67,7 +67,8 @@ export class EarnPage extends BasePage {
   }
 
   async isOnboardingVisible(): Promise<boolean> {
-    const isVisible: boolean = await this.firstOnboardingMessage.isVisible(shortTimeout)
+    const isVisible: boolean =
+      await this.firstOnboardingMessage.isVisible(shortTimeout)
 
     return isVisible
   }
@@ -79,21 +80,21 @@ export class EarnPage extends BasePage {
       await this.nextSlideButton.click()
     }
 
-    const messageOnFail: string ="Button 'Get Started' not visible"
+    const messageOnFail: string = "Button 'Get Started' not visible"
     await expect(this.getStartButton, messageOnFail).toBeVisible()
 
     await this.getStartButton.click()
   }
 
   async selectAuroraToDeposit() {
-    const messageOnFail: string ="AURORA deposit button not visible"
+    const messageOnFail: string = "AURORA deposit button not visible"
     await expect(this.auroraDepositButton, messageOnFail).toBeVisible()
 
     await this.auroraDepositButton.click()
   }
 
   async clickDepositMoreButton() {
-    const messageOnFail: string ='"Deposit more" button not visible'
+    const messageOnFail: string = '"Deposit more" button not visible'
     await expect(this.depositMoreButton, messageOnFail).toBeVisible(
       shortTimeout,
     )
@@ -102,7 +103,7 @@ export class EarnPage extends BasePage {
   }
 
   async enterAmountToDeposit(amount: number) {
-    const messageOnFail: string ="Deposit input field not visible"
+    const messageOnFail: string = "Deposit input field not visible"
     await expect(this.depositInputField, messageOnFail).toBeVisible()
 
     await this.depositInputField.fill(amount.toString())
@@ -119,7 +120,8 @@ export class EarnPage extends BasePage {
   }
 
   async confirmSuccessfullyDepositedNotificationVisible() {
-    const messageOnFail: string ="Successful deposit notification do not appeared"
+    const messageOnFail: string =
+      "Successful deposit notification do not appeared"
     await expect(
       this.depositSuccessfullNotificationInPage,
       messageOnFail,

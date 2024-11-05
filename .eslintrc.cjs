@@ -59,7 +59,6 @@ module.exports = {
         memberSyntaxSortOrder: ["none", "all", "multiple", "single"],
       },
     ],
-    "lines-between-class-members": false,
     "max-classes-per-file": 0,
     "padding-line-between-statements": [
       "error",
@@ -129,6 +128,14 @@ module.exports = {
     ],
     "@typescript-eslint/no-non-null-assertion": "off",
     "@typescript-eslint/strict-boolean-expressions": "off",
+    "@typescript-eslint/lines-between-class-members": [
+      0,
+      "always",
+      {
+        exceptAfterOverload: true,
+        exceptAfterSingleLine: false,
+      },
+    ],
   },
   overrides: [
     {
