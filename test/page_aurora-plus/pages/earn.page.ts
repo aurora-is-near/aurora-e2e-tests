@@ -56,9 +56,7 @@ export class EarnPage extends BasePage {
     this.firstOnboardingMessage = page.getByText("Earn More With Your Crypto")
     this.previousSlideButton = page.getByTestId("previous-slide-button")
     this.nextSlideButton = page.getByRole("button", { name: "Next slide" })
-    // this.nextSlideButton = page.getByTestId("next-slide-button")
     this.getStartButton = page.getByRole("button", { name: "Get Started" })
-    // this.getStartButton = page.getByTestId("get-started-button")
     this.depositMoreButton = page.getByTestId("deposit-more-button")
     this.depositedTokenBalance = page.getByTestId("deposited-token-balance")
     this.depositedTokenValue = page.getByTestId("deposited-token-value")
@@ -68,8 +66,8 @@ export class EarnPage extends BasePage {
     await this.confirmCorrectPageLoaded(page, url)
   }
 
-  async isOnboardingVisible() {
-    const isVisible = this.firstOnboardingMessage.isVisible(shortTimeout)
+  async isOnboardingVisible(): Promise<boolean> {
+    const isVisible: boolean = await this.firstOnboardingMessage.isVisible(shortTimeout)
 
     return isVisible
   }
@@ -81,21 +79,21 @@ export class EarnPage extends BasePage {
       await this.nextSlideButton.click()
     }
 
-    const messageOnFail = "Button 'Get Started' not visible"
+    const messageOnFail: string ="Button 'Get Started' not visible"
     await expect(this.getStartButton, messageOnFail).toBeVisible()
 
     await this.getStartButton.click()
   }
 
   async selectAuroraToDeposit() {
-    const messageOnFail = "AURORA deposit button not visible"
+    const messageOnFail: string ="AURORA deposit button not visible"
     await expect(this.auroraDepositButton, messageOnFail).toBeVisible()
 
     await this.auroraDepositButton.click()
   }
 
   async clickDepositMoreButton() {
-    const messageOnFail = '"Deposit more" button not visible'
+    const messageOnFail: string ='"Deposit more" button not visible'
     await expect(this.depositMoreButton, messageOnFail).toBeVisible(
       shortTimeout,
     )
@@ -104,7 +102,7 @@ export class EarnPage extends BasePage {
   }
 
   async enterAmountToDeposit(amount: number) {
-    const messageOnFail = "Deposit input field not visible"
+    const messageOnFail: string ="Deposit input field not visible"
     await expect(this.depositInputField, messageOnFail).toBeVisible()
 
     await this.depositInputField.fill(amount.toString())
@@ -121,35 +119,29 @@ export class EarnPage extends BasePage {
   }
 
   async confirmSuccessfullyDepositedNotificationVisible() {
-    const messageOnFail = "Successful deposit notification do not appeared"
+    const messageOnFail: string ="Successful deposit notification do not appeared"
     await expect(
       this.depositSuccessfullNotificationInPage,
       messageOnFail,
     ).toBeVisible(midTimeout)
   }
 
-  async isAnyDepositsExist() {
-    let isVisible = false
+  async isAnyDepositsExist(): Promise<boolean> {
+    let isVisible: boolean = false
 
     isVisible = await this.depositMoreButton.isVisible(midTimeout)
-
-    if (isVisible) {
-      console.log("Deposit already exists")
-    }
 
     return isVisible
   }
 
-  async getDepositedTokenBalance() {
-    const balance = await this.depositedTokenBalance.innerText()
-    console.log("Depositas", balance)
+  async getDepositedTokenBalance(): Promise<number> {
+    const balance: string = await this.depositedTokenBalance.innerText()
 
     return parseFloat(balance)
   }
 
-  async getDepositedTokenValue() {
-    const value = await this.depositedTokenValue.innerText()
-    console.log("Verte", value)
+  async getDepositedTokenValue(): Promise<number> {
+    const value: string = await this.depositedTokenValue.innerText()
 
     return parseFloat(value.replace("$", ""))
   }

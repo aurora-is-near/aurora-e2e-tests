@@ -22,6 +22,12 @@ module.exports = {
     "import/resolver": { typescript: {} },
   },
   rules: {
+    "prettier/prettier": [
+      "error",
+      {
+        endOfLine: "auto",
+      },
+    ],
     curly: ["error", "all"],
     eqeqeq: ["error", "smart"],
     "import/extensions": [
@@ -53,6 +59,7 @@ module.exports = {
         memberSyntaxSortOrder: ["none", "all", "multiple", "single"],
       },
     ],
+    "lines-between-class-members": false,
     "max-classes-per-file": 0,
     "padding-line-between-statements": [
       "error",

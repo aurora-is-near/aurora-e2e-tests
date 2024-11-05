@@ -21,7 +21,6 @@ test.describe("Dashboard page tests", { tag: AURORA_PLUS_TAG }, () => {
   }) => {
     const dashboardPage = new DashboardPage(page)
     await dashboardPage.confirmDashboardPageLoaded()
-
     await dashboardPage.skipOnboardingIfVisible()
 
     const auroraBalance = await dashboardPage.getAuroraBalance()
@@ -36,17 +35,16 @@ test.describe("Dashboard page tests", { tag: AURORA_PLUS_TAG }, () => {
   }) => {
     const dashboardPage = new DashboardPage(page)
     await dashboardPage.confirmDashboardPageLoaded()
-
     await dashboardPage.skipOnboardingIfVisible()
 
-    const auroraStakedBalance = await dashboardPage.getStakedBalance()
+    const auroraStakedBalance: number = await dashboardPage.getStakedBalance()
 
     await dashboardPage.clickUnstakeButton()
     await dashboardPage.enterUnstakeAmount(auroraStakedBalance + 100)
     await dashboardPage.confirmThatUnstakeButtonDisabled()
   })
 
-  const stakeAmount = 0.1
+  const stakeAmount: number = 0.1
   test.only(`Confirm that user can stake ${stakeAmount} tokens`, async ({
     context,
     page,
@@ -62,14 +60,13 @@ test.describe("Dashboard page tests", { tag: AURORA_PLUS_TAG }, () => {
 
     await dashboardPage.skipOnboardingIfVisible()
 
-    const balanceBefore = await dashboardPage.getAuroraBalance()
+    const balanceBefore: number = await dashboardPage.getAuroraBalance()
     await dashboardPage.clickStakeButton()
     await dashboardPage.enterStakeAmount(stakeAmount)
     await dashboardPage.clickConfirmStakeButton()
     await metamask.confirmTransaction()
     await page.waitForTimeout(20000)
-    // await dashboardPage.waitForStakeModalToDisappear()
-    const balanceAfter = await dashboardPage.getAuroraBalance()
+    const balanceAfter: number = await dashboardPage.getAuroraBalance()
 
     dashboardPage.confirmValuesIsCorrectAfterTransfer(
       balanceBefore,
@@ -94,14 +91,13 @@ test.describe("Dashboard page tests", { tag: AURORA_PLUS_TAG }, () => {
 
     await dashboardPage.skipOnboardingIfVisible()
 
-    const stakedBalanceBefore = await dashboardPage.getStakedBalance()
+    const stakedBalanceBefore: number = await dashboardPage.getStakedBalance()
     await dashboardPage.clickUnstakeButton()
     await dashboardPage.enterUnstakeAmount(unstakeAmount)
     await dashboardPage.clickUnstakeConfirmButton()
     await metamask.confirmTransaction()
     await setTimeout(20000)
-    // await dashboardPage.waitForUnstakeModalToDisappear()
-    const stakedBalanceAfter = await dashboardPage.getStakedBalance()
+    const stakedBalanceAfter: number = await dashboardPage.getStakedBalance()
 
     dashboardPage.confirmValuesIsCorrectAfterTransfer(
       stakedBalanceBefore,
