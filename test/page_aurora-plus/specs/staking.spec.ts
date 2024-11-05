@@ -96,7 +96,7 @@ test.describe("Dashboard page tests", { tag: AURORA_PLUS_TAG }, () => {
     await dashboardPage.enterUnstakeAmount(unstakeAmount)
     await dashboardPage.clickUnstakeConfirmButton()
     await metamask.confirmTransaction()
-    await setTimeout(20000)
+    await page.waitForTimeout(20000)
     const stakedBalanceAfter: number = await dashboardPage.getStakedBalance()
 
     dashboardPage.confirmValuesIsCorrectAfterTransfer(
