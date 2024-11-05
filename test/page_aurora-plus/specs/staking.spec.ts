@@ -1,5 +1,4 @@
 import { MetaMask } from "@synthetixio/synpress/playwright"
-import { setTimeout } from "node:timers/promises"
 import { test } from "../fixtures/aurora-plus"
 import { DashboardPage } from "../pages/dashboard.page"
 import { AURORA_PLUS_TAG } from "../../helpers/constants/tags"
