@@ -22,6 +22,12 @@ module.exports = {
     "import/resolver": { typescript: {} },
   },
   rules: {
+    "prettier/prettier": [
+      "error",
+      {
+        endOfLine: "auto",
+      },
+    ],
     curly: ["error", "all"],
     eqeqeq: ["error", "smart"],
     "import/extensions": [
@@ -122,6 +128,14 @@ module.exports = {
     ],
     "@typescript-eslint/no-non-null-assertion": "off",
     "@typescript-eslint/strict-boolean-expressions": "off",
+    "@typescript-eslint/lines-between-class-members": [
+      0,
+      "always",
+      {
+        exceptAfterOverload: true,
+        exceptAfterSingleLine: false,
+      },
+    ],
   },
   overrides: [
     {

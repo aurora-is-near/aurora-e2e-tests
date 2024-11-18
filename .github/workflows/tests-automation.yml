@@ -1,10 +1,13 @@
 name: Synpress/ Playwright tests automation CI
 
-on: push
+on:
+    push:
+    schedule:
+      - cron: "0 0 */2 * * *"
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-8-core
     timeout-minutes: 30
 
     env:
