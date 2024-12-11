@@ -7,7 +7,7 @@ import auroraSetup from "../../wallet-setup/aurora-plus.setup"
 
 test.use(AURORA_PLUS_PAGE)
 
-test.describe("Dashboard page tests", { tag: AURORA_PLUS_TAG }, () => {
+test.describe("Aurora Plus: Staking", { tag: AURORA_PLUS_TAG }, () => {
   test.beforeEach(
     "Login to Aurora Plus with MetaMask",
     async ({ auroraPlusPreconditions }) => {
@@ -15,7 +15,7 @@ test.describe("Dashboard page tests", { tag: AURORA_PLUS_TAG }, () => {
     },
   )
 
-  test.only("Confirm that user can't stake more than balance allows", async ({
+  test("Confirm that user can't stake more than balance allows", async ({
     page,
   }) => {
     const dashboardPage = new DashboardPage(page)
@@ -29,7 +29,7 @@ test.describe("Dashboard page tests", { tag: AURORA_PLUS_TAG }, () => {
     await dashboardPage.confirmThatConfirmButtonDisabled()
   })
 
-  test.only("Confirm that user can't unstake more than staked amount", async ({
+  test("Confirm that user can't unstake more than staked amount", async ({
     page,
   }) => {
     const dashboardPage = new DashboardPage(page)
@@ -44,7 +44,7 @@ test.describe("Dashboard page tests", { tag: AURORA_PLUS_TAG }, () => {
   })
 
   const stakeAmount: number = 0.1
-  test.only(`Confirm that user can stake ${stakeAmount} tokens`, async ({
+  test(`Confirm that user can stake ${stakeAmount} tokens`, async ({
     context,
     page,
     extensionId,
@@ -72,10 +72,11 @@ test.describe("Dashboard page tests", { tag: AURORA_PLUS_TAG }, () => {
       balanceAfter,
       stakeAmount,
     )
+    // await page.pause()
   })
 
   const unstakeAmount = 0.1
-  test.only(`Confirm that user can unstake ${unstakeAmount} tokens`, async ({
+  test(`Confirm that user can unstake ${unstakeAmount} tokens`, async ({
     context,
     page,
     extensionId,

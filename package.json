@@ -21,7 +21,7 @@
     "node": "20.x"
   },
   "dependencies": {
-    "@synthetixio/synpress": "4.0.0-alpha.9",
+    "@synthetixio/synpress": "4.0.3",
     "dotenv": "16.4.5",
     "playwright": "1.44.0"
   },

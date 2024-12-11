@@ -4,34 +4,30 @@ import { midTimeout, shortTimeout } from "../../helpers/constants/timeouts"
 
 export class EarnPage extends BasePage {
   earnPageTitle: Locator
-
   depositInputField: Locator
-
   confirmDepositButton: Locator
-
   depositSuccessfullNotificationInPopup: Locator
-
   depositSuccessfullNotificationInPage: Locator
-
   auroraDepositButton: Locator
-
   firstOnboardingMessage: Locator
-
   nextSlideButton: Locator
-
   previousSlideButton: Locator
-
   getStartButton: Locator
-
   approveDepositButton: Locator
-
   depositMoreButton: Locator
-
   depositButton: Locator
-
   depositedTokenBalance: Locator
-
   depositedTokenValue: Locator
+  availableBalanceToTrade: Locator
+  insufficientFundsNotification: Locator
+  approveButton: Locator
+  borrowButton: Locator
+  borrowMoreButton: Locator
+  borrowedAmount: Locator
+  borrowInputField: Locator
+  borrowedAmountLine: Locator
+  repayButton: Locator
+  myBorrowWrapper: Locator
 
   constructor(page: Page) {
     super(page)
@@ -60,6 +56,23 @@ export class EarnPage extends BasePage {
     this.depositMoreButton = page.getByTestId("deposit-more-button")
     this.depositedTokenBalance = page.getByTestId("deposited-token-balance")
     this.depositedTokenValue = page.getByTestId("deposited-token-value")
+    this.availableBalanceToTrade = page.getByText("You have")
+    this.insufficientFundsNotification = page.getByText(
+      "Insufficient funds, you only",
+    )
+    this.approveButton = page.getByRole("button", { name: "Approve" })
+    this.borrowMoreButton = page.getByRole("button", { name: "Borrow More" })
+    this.borrowedAmount = page.locator(
+      '//*[@id="__next"]/div[1]/main/div[3]/div[2]/div[1]/div[2]/div[2]/div[2]',
+    )
+    this.borrowInputField = page.getByPlaceholder("0.00")
+    this.borrowedAmountLine = page.getByText("You need to repay")
+    this.borrowButton = page.getByRole("button", {
+      name: "Borrow",
+      exact: true,
+    })
+    this.repayButton = page.getByRole("button", { name: "Repay" })
+    this.myBorrowWrapper = page.getByRole("heading", { name: "My borrow" })
   }
 
   async confirmEarnPageLoaded(url: string, page = this.page) {
@@ -73,11 +86,15 @@ export class EarnPage extends BasePage {
     return isVisible
   }
 
-  async skipOnboarding() {
-    // eslint-disable-next-line no-await-in-loop
-    while (await this.nextSlideButton.isVisible()) {
+  async skipOnboardingIfVisible() {
+    await this.page.waitForTimeout(2000)
+
+    if (await this.isOnboardingVisible()) {
       // eslint-disable-next-line no-await-in-loop
-      await this.nextSlideButton.click()
+      while (await this.nextSlideButton.isVisible()) {
+        // eslint-disable-next-line no-await-in-loop
+        await this.nextSlideButton.click()
+      }
     }
 
     const messageOnFail: string = "Button 'Get Started' not visible"
@@ -110,12 +127,16 @@ export class EarnPage extends BasePage {
   }
 
   async confirmDeposit() {
-    if (await this.confirmDepositButton.isVisible()) {
+    await this.page.waitForTimeout(5000)
+
+    if (await this.confirmDepositButton.isVisible(midTimeout)) {
       await this.confirmDepositButton.click()
-    } else if (await this.approveDepositButton.isVisible()) {
+    } else if (await this.approveDepositButton.isVisible(midTimeout)) {
       await this.approveDepositButton.click()
-    } else if (await this.depositButton.isVisible()) {
+    } else if (await this.depositButton.isVisible(midTimeout)) {
       await this.depositButton.click()
+    } else {
+      throw new Error("None of described buttons is visible")
     }
   }
 
@@ -146,5 +167,85 @@ export class EarnPage extends BasePage {
     const value: string = await this.depositedTokenValue.innerText()
 
     return parseFloat(value.replace("$", ""))
+  }
+
+  async getAmountOfAvailableBalance(): Promise<number> {
+    const balanceString: string = await this.availableBalanceToTrade.innerText()
+    const balance: number = parseFloat(
+      balanceString
+        .replace("You have", "")
+        .replace("AURORA available to trade", ""),
+    )
+
+    return balance
+  }
+
+  async borrowExists() {
+    const isButtonVisible = await this.borrowMoreButton.isVisible(midTimeout)
+
+    return isButtonVisible
+  }
+
+  async clickBorrowButton() {
+    await this.borrowButton.click()
+  }
+
+  async clickBorrowMoreButton() {
+    await this.borrowMoreButton.click()
+  }
+
+  async getBorrowedAmount(): Promise<number> {
+    await this.borrowMoreButton.waitFor({ state: "visible" })
+    const borrowedAmountText = await this.borrowedAmount.innerText()
+    const borrowedAmount = Number(borrowedAmountText.replace("$", ""))
+
+    return borrowedAmount
+  }
+
+  async enterAmount(amount: number | string) {
+    const string = typeof amount === "string" ? amount : amount.toString()
+    await this.borrowInputField.fill(string)
+  }
+
+  confirmBorrowMoreWasSuccessfull(
+    amountBefore: number,
+    amountAfter: number,
+    transactionAmount: number,
+  ) {
+    const messageOnFail = `Expected amount is: ${amountBefore + transactionAmount}, but ${amountAfter} received`
+    expect(amountBefore + transactionAmount, messageOnFail).toBe(amountAfter)
+  }
+
+  async getBorrowedAmountToReturn(): Promise<string> {
+    const borrowedAmountTextLine = await this.borrowedAmountLine.innerText()
+    const borrowedInformation = borrowedAmountTextLine.split(",")
+    const amountCurrencyInformationString = borrowedInformation[0].replace(
+      "You need to repay ",
+      "",
+    )
+    const repayAmount = amountCurrencyInformationString.split(" ")
+
+    return repayAmount[0]
+  }
+
+  async selectTokenByTokenName(tokenName: string) {
+    await this.page.getByTestId(`${tokenName}-market-borrow-button`).click()
+  }
+
+  async clickRepayButton() {
+    await this.repayButton.click()
+  }
+
+  async clickApproveButton() {
+    await this.approveButton.click()
+  }
+
+  async confirmBorrowExists() {
+    const messageOnFail = "Borrow do not exist"
+    expect(await this.myBorrowWrapper.isVisible(), messageOnFail).toBeTruthy()
+  }
+
+  async confirmBorrowNotExists() {
+    expect(await this.borrowExists()).toBeFalsy()
   }
 }
