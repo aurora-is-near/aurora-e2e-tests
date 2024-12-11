@@ -1,6 +1,7 @@
 name: Synpress/ Playwright tests automation CI
 
 on:
+    workflow_dispatch:
     push:
     schedule:
       - cron: '* */2 * * *'
