@@ -1,4 +1,4 @@
-import { NEAR_WEB3_PAGE, NEAR_WEB3_PAGE_TESTNET } from "../constants/pages"
+import { NEAR_WEB3_PAGE } from "../constants/pages"
 
 export const getPassword = () => {
   const password = process.env.MM_PASSWORD
@@ -20,6 +20,16 @@ export const getSeedPhrase = () => {
   return phrase
 }
 
+export const getNearAccountToken = () => {
+  const token = process.env.NEAR_ACCOUNT_TOKEN
+
+  if (!token) {
+    throw new Error("The NEAR_ACCOUNT_TOKEN environment variable is required")
+  }
+
+  return token
+}
+
 /**
  * For development purposes. Helps to override environment for web3 wallet
  * 2 possible options: "mainnet" or "testnet"
@@ -29,22 +39,12 @@ export const getSeedPhrase = () => {
 export const nearEnvironment = (environment = "") => {
   let environmenUrl
 
-  const getNearUrl = (env: string) => {
-    let pageUrl
-
-    if (env === "mainnet") {
-      pageUrl = NEAR_WEB3_PAGE
-    } else if (env === "testnet") {
-      pageUrl = NEAR_WEB3_PAGE_TESTNET
-    } else {
-      throw new Error(`${env} - is not valid environment name`)
-    }
-
-    return pageUrl
+  const getNearUrl = () => {
+    return NEAR_WEB3_PAGE
   }
 
   if (environment !== "") {
-    environmenUrl = getNearUrl(environment)
+    environmenUrl = getNearUrl()
   } else {
     const network = process.env.NEAR_NETWORK
 
@@ -52,7 +52,7 @@ export const nearEnvironment = (environment = "") => {
       throw new Error("The NEAR_NETWORK environment variable is required")
     }
 
-    environmenUrl = getNearUrl(network)
+    environmenUrl = getNearUrl()
   }
 
   return environmenUrl
