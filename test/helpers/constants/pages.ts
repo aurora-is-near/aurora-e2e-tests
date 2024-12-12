@@ -3,9 +3,5 @@ export const AURORA_PLUS_PAGE = {
 }
 
 export const NEAR_WEB3_PAGE = {
-  baseURL: "https://web3-wallet-three.vercel.app",
-}
-
-export const NEAR_WEB3_PAGE_TESTNET = {
-  baseURL: "https://web3-wallet-testnet.vercel.app/",
+  baseURL: "https://welcome-to-near.org",
 }
