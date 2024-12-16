@@ -30,7 +30,7 @@ export class BasePage {
 
   async navigateToHomePage() {
     const url = "/"
-    const messageOnFail = "NEAR logo is not visible"
+    const messageOnFail: string = "NEAR logo is not visible"
     await expect(this.homeTab, messageOnFail).toBeVisible()
     await this.homeTab.click()
     await this.confirmCorrectPageLoaded(this.page, url)
@@ -38,7 +38,7 @@ export class BasePage {
 
   async navigateToPortfolioPage() {
     const url = "/portfolio"
-    const messageOnFail = "Portfolio tab button is not visible"
+    const messageOnFail: string = "Portfolio tab button is not visible"
     await expect(this.portfolioTab, messageOnFail).toBeVisible()
     await this.portfolioTab.click()
     await this.confirmCorrectPageLoaded(this.page, url)
@@ -46,7 +46,7 @@ export class BasePage {
 
   async navigateToStakingPage() {
     const url = "/staking"
-    const messageOnFail = "Staking tab button is not visible"
+    const messageOnFail: string = "Staking tab button is not visible"
     await expect(this.stakingTab, messageOnFail).toBeVisible()
     await this.stakingTab.click()
     await this.confirmCorrectPageLoaded(this.page, url)
@@ -54,7 +54,7 @@ export class BasePage {
 
   async navigateToExplorePage() {
     const url = "/explore"
-    const messageOnFail = "Explore tab button is not visible"
+    const messageOnFail: string = "Explore tab button is not visible"
     await expect(this.exploreTab, messageOnFail).toBeVisible()
     await this.exploreTab.click()
     await this.confirmCorrectPageLoaded(this.page, url)

@@ -30,12 +30,15 @@ test.describe(
       ["AURORA", "USDC.e"],
       ["AURORA", "ETH"],
       ["BRRR", "AURORA"],
+      ["ETH", "AURORA"],
+      ["USDC.e", "AURORA"],
     ]
 
     for (const element of transferFromTo) {
       const tokenWithBalance: string = element[0]
       const destinationToken: string = element[1]
 
+      // Done
       test(`Confirm that user cannot swap more from ${tokenWithBalance} to ${destinationToken} than balance allows`, async ({
         context,
         page,
@@ -52,8 +55,12 @@ test.describe(
         await dashboardPage.navigateToSwapPage()
         await swapPage.selectTokenWithBalance(tokenWithBalance)
         const amountBefore = await swapPage.getAvailableToTradeBalance()
+        test.skip(
+          amountBefore > amount,
+          `Insufficient balance for make transaction from ${tokenWithBalance}`,
+        )
         await swapPage.selectDestinationSupportedToken(destinationToken)
-        await swapPage.enterSwapFromAmount(0.1)
+        await swapPage.enterSwapFromAmount(amount)
         await swapPage.clickReviewSwapButton()
         await swapPage.confirmThatReviewYourSwapModalVisible()
         await swapPage.clickApproveSwapButton()
