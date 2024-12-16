@@ -174,4 +174,13 @@ export class SwapPage extends BasePage {
     const messageOnFail = `Balance of: ${tokenWithBalance} expected to be: ${amountBefore - amount}, but is: ${amountAfter}`
     expect(amountAfter, messageOnFail).toBe(amountBefore - amount)
   }
+
+  confirmSwapWasCompleted(
+    amountBefore: number,
+    amountAfter: number,
+    amount: number,
+  ) {
+    const messageOnFail = `Expected token balance is: ${amountBefore - amount}, but received: ${amountAfter}`
+    expect(amountAfter, messageOnFail).toBe(amountBefore - amount)
+  }
 }

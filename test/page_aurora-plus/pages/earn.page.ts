@@ -24,10 +24,13 @@ export class EarnPage extends BasePage {
   borrowButton: Locator
   borrowMoreButton: Locator
   borrowedAmount: Locator
-  borrowInputField: Locator
+  amountInputField: Locator
   borrowedAmountLine: Locator
   repayButton: Locator
   myBorrowWrapper: Locator
+  withdrawDeositButton: Locator
+  incorrectAmountNotification: Locator
+  availableBorrowAmount: Locator
 
   constructor(page: Page) {
     super(page)
@@ -65,7 +68,7 @@ export class EarnPage extends BasePage {
     this.borrowedAmount = page.locator(
       '//*[@id="__next"]/div[1]/main/div[3]/div[2]/div[1]/div[2]/div[2]/div[2]',
     )
-    this.borrowInputField = page.getByPlaceholder("0.00")
+    this.amountInputField = page.getByPlaceholder("0.00")
     this.borrowedAmountLine = page.getByText("You need to repay")
     this.borrowButton = page.getByRole("button", {
       name: "Borrow",
@@ -73,6 +76,11 @@ export class EarnPage extends BasePage {
     })
     this.repayButton = page.getByRole("button", { name: "Repay" })
     this.myBorrowWrapper = page.getByRole("heading", { name: "My borrow" })
+    this.withdrawDeositButton = page.getByTestId("withdraw-deposit-button")
+    this.incorrectAmountNotification = page.getByText(
+      "You may only withdraw up to",
+    )
+    this.availableBorrowAmount = page.getByText("You may borrow up to")
   }
 
   async confirmEarnPageLoaded(url: string, page = this.page) {
@@ -204,7 +212,7 @@ export class EarnPage extends BasePage {
 
   async enterAmount(amount: number | string) {
     const string = typeof amount === "string" ? amount : amount.toString()
-    await this.borrowInputField.fill(string)
+    await this.amountInputField.fill(string)
   }
 
   confirmBorrowMoreWasSuccessfull(
@@ -247,5 +255,42 @@ export class EarnPage extends BasePage {
 
   async confirmBorrowNotExists() {
     expect(await this.borrowExists()).toBeFalsy()
+  }
+
+  async clickWithdrawDeposit() {
+    await this.withdrawDeositButton.click()
+  }
+
+  async confirmIncorrectAmountNotificationVisible() {
+    await expect(this.incorrectAmountNotification).toBeVisible()
+  }
+
+  confirmWithdrawalSuccessfull(
+    depositedValueBefore: number,
+    depositedValueAfter: number,
+    amount: number,
+  ) {
+    const messageOnFail = `Expected depositValue: ${depositedValueBefore - amount}, but received: ${depositedValueAfter}`
+    expect(depositedValueAfter, messageOnFail).toBe(
+      depositedValueBefore - amount,
+    )
+  }
+
+  async confirmBorrowButtonIsNotClickable() {
+    const messageOnFail = "Borrow button must be disabled"
+    await expect(this.borrowButton, messageOnFail).toBeDisabled()
+  }
+
+  async confirmApproveButtonNotClickable() {
+    const messageOnFail = "Approve buttone expected to be disabled"
+    await expect(this.approveButton, messageOnFail).toBeDisabled()
+  }
+
+  async getAmountOfAvailableBorrowAmount() {
+    const balanceString = await this.availableBorrowAmount.innerText()
+    const amountInfo = balanceString.replace("You may borrow up to ", "")
+    const splitInfo = amountInfo.split(" ")
+
+    return splitInfo[0]
   }
 }

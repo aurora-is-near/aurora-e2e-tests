@@ -14,7 +14,6 @@ jobs:
     env:
       MM_SEED_PHRASE: ${{ secrets.MM_SEED_PHRASE }}
       MM_PASSWORD: ${{ secrets.MM_PASSWORD }}
-      NEAR_NETWORK : ${{ vars.NEAR_NETWORK  }}
 
     steps:
       - uses: actions/checkout@v4

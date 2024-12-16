@@ -36,24 +36,12 @@ export const getNearAccountToken = () => {
  * @param environment - string
  * @returns {string} - web url for required environment
  */
-export const nearEnvironment = (environment = "") => {
-  let environmenUrl
-
+export const nearEnvironment = () => {
   const getNearUrl = () => {
     return NEAR_WEB3_PAGE
   }
 
-  if (environment !== "") {
-    environmenUrl = getNearUrl()
-  } else {
-    const network = process.env.NEAR_NETWORK
-
-    if (!network) {
-      throw new Error("The NEAR_NETWORK environment variable is required")
-    }
-
-    environmenUrl = getNearUrl()
-  }
+  const environmenUrl = getNearUrl()
 
   return environmenUrl
 }

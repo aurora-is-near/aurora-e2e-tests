@@ -20,6 +20,11 @@ After downloading code from repository, you must install dependencies with comma
 yarn install
 ```
 
+Once you have depencdencies installed, please install Playwright
+```bash
+yarn install playwright
+```
+
 ### Environmental variables
 > [!IMPORTANT]
 > </br>Sensitive information must be stored locally in .env file, or as variable/ secret in repository options.
