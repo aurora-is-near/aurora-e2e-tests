@@ -220,7 +220,7 @@ export class EarnPage extends BasePage {
     amountAfter: number,
     transactionAmount: number,
   ) {
-    const messageOnFail = `Expected amount is: ${amountBefore + transactionAmount}, but ${amountAfter} received`
+    const messageOnFail: string = `Expected amount is: ${amountBefore + transactionAmount}, but ${amountAfter} received`
     expect(amountBefore + transactionAmount, messageOnFail).toBe(amountAfter)
   }
 
@@ -249,7 +249,7 @@ export class EarnPage extends BasePage {
   }
 
   async confirmBorrowExists() {
-    const messageOnFail = "Borrow do not exist"
+    const messageOnFail: string = "Borrow do not exist"
     expect(await this.myBorrowWrapper.isVisible(), messageOnFail).toBeTruthy()
   }
 
@@ -270,19 +270,19 @@ export class EarnPage extends BasePage {
     depositedValueAfter: number,
     amount: number,
   ) {
-    const messageOnFail = `Expected depositValue: ${depositedValueBefore - amount}, but received: ${depositedValueAfter}`
+    const messageOnFail: string = `Expected depositValue: ${depositedValueBefore - amount}, but received: ${depositedValueAfter}`
     expect(depositedValueAfter, messageOnFail).toBe(
       depositedValueBefore - amount,
     )
   }
 
   async confirmBorrowButtonIsNotClickable() {
-    const messageOnFail = "Borrow button must be disabled"
+    const messageOnFail: string = "Borrow button must be disabled"
     await expect(this.borrowButton, messageOnFail).toBeDisabled()
   }
 
   async confirmApproveButtonNotClickable() {
-    const messageOnFail = "Approve buttone expected to be disabled"
+    const messageOnFail: string = "Approve buttone expected to be disabled"
     await expect(this.approveButton, messageOnFail).toBeDisabled()
   }
 

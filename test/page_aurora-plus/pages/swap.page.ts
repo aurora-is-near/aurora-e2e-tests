@@ -152,7 +152,7 @@ export class SwapPage extends BasePage {
     destinationToken: string,
     amount: number,
   ) {
-    let messageOnFail = `Transfer amount field with value of: "${amount.toString}" is not visible in transfer summary`
+    let messageOnFail: string = `Transfer amount field with value of: "${amount.toString}" is not visible in transfer summary`
     const amountField = this.page.getByText(amount.toString())
     await expect(amountField, messageOnFail).toBeVisible()
 
@@ -171,7 +171,7 @@ export class SwapPage extends BasePage {
     amountAfter: number,
     amount: number,
   ) {
-    const messageOnFail = `Balance of: ${tokenWithBalance} expected to be: ${amountBefore - amount}, but is: ${amountAfter}`
+    const messageOnFail: string = `Balance of: ${tokenWithBalance} expected to be: ${amountBefore - amount}, but is: ${amountAfter}`
     expect(amountAfter, messageOnFail).toBe(amountBefore - amount)
   }
 
@@ -180,7 +180,7 @@ export class SwapPage extends BasePage {
     amountAfter: number,
     amount: number,
   ) {
-    const messageOnFail = `Expected token balance is: ${amountBefore - amount}, but received: ${amountAfter}`
+    const messageOnFail: string = `Expected token balance is: ${amountBefore - amount}, but received: ${amountAfter}`
     expect(amountAfter, messageOnFail).toBe(amountBefore - amount)
   }
 }
