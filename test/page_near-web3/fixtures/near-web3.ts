@@ -3,13 +3,10 @@ import { MetaMask, metaMaskFixtures } from "@synthetixio/synpress/playwright"
 import { testWithSynpress } from "@synthetixio/synpress"
 
 import { shortTimeout } from "../../helpers/constants/timeouts"
-import nearWeb3TestSetup from "../../wallet-setup/near-web3-test.skip"
 import nearWeb3ProdSetup from "../../wallet-setup/near-web3-prod.setup"
 
-const isTestNet = (process.env.NEAR_NETWORK as string) === "testnet"
-
 export const test = testWithSynpress(
-  metaMaskFixtures(isTestNet ? nearWeb3TestSetup : nearWeb3ProdSetup),
+  metaMaskFixtures(nearWeb3ProdSetup),
 ).extend<{
   nearWeb3Preconditions: {
     loginToNearWeb3: () => Promise<void>
@@ -30,7 +27,7 @@ export const test = testWithSynpress(
     })
 
     const loginToNearWeb3 = async () => {
-      let messageOnFail = '"Log in with Ethereum" button is not visible'
+      let messageOnFail: string = '"Log in with Ethereum" button is not visible'
       await expect(loginWithEthereumButton, messageOnFail).toBeVisible(
         shortTimeout,
       )
