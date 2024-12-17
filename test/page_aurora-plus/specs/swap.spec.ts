@@ -34,9 +34,9 @@ test.describe(
       ["USDC.e", "AURORA"],
     ]
 
-    for (const element of transferFromTo) {
-      const tokenWithBalance: string = element[0]
-      const destinationToken: string = element[1]
+    for (const transfer of transferFromTo) {
+      const tokenWithBalance: string = transfer[0]
+      const destinationToken: string = transfer[1]
 
       // Done
       test(`Confirm that user cannot swap more from ${tokenWithBalance} to ${destinationToken} than balance allows`, async ({

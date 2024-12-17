@@ -1,6 +1,9 @@
 import { MetaMask } from "@synthetixio/synpress/playwright"
 import { NEAR_WEB3_PAGE } from "../../helpers/constants/pages"
-import { WEB3_WALLET_TAG } from "../../helpers/constants/tags"
+import {
+  WEB3_WALLET_TAG,
+  WEB3_WALLET_TAG_STAKING,
+} from "../../helpers/constants/tags"
 import { test } from "../fixtures/near-web3"
 import { HomePage } from "../pages/home.page"
 import { BasePage } from "../pages/base.page"
@@ -15,123 +18,135 @@ test.beforeEach(
   },
 )
 
-test.describe("NEAR: Stake Page - Staking", { tag: WEB3_WALLET_TAG }, () => {
-  test(`Confirm that user can't stake more than balance allows`, async ({
-    page,
-    context,
-    extensionId,
-  }) => {
-    const stakeAmount = 0.1
-
-    const homePage = new HomePage(page)
-    const basePage = new BasePage(page)
-    const stakingPage = new StakingPage(page)
-    const metamask = new MetaMask(
-      context,
+test.describe(
+  "NEAR Web3 Wallet: Staking Page - Staking",
+  { tag: [WEB3_WALLET_TAG, WEB3_WALLET_TAG_STAKING] },
+  () => {
+    test(`Confirm that user can't stake more than balance allows`, async ({
       page,
-      nearWeb3ProdSetup.walletPassword,
-      extensionId,
-    )
+    }) => {
+      const homePage = new HomePage(page)
+      const stakingPage = new StakingPage(page)
 
-    await homePage.confirmHomePageLoaded("/")
-    await basePage.navigateToStakingPage()
-    throw new Error("Test not implemented.")
-  })
+      await homePage.confirmHomePageLoaded("/")
+      await homePage.navigateToStakingPage()
+      await stakingPage.clickStakeTokensButton()
+      await stakingPage.selectFirstValidator()
+      const availableBalance = await stakingPage.getAvalableBalance()
+      await stakingPage.enterAmount(availableBalance * 100)
+      await stakingPage.confirmStake()
+      await stakingPage.confirmTransactionIsBlocked()
+    })
 
-  const stakeAmount = 0.1
-  test(`Confirm that user can stake ${stakeAmount} tokens`, async ({
-    page,
-    context,
-    extensionId,
-  }) => {
-    const homePage = new HomePage(page)
-    const basePage = new BasePage(page)
-    const stakingPage = new StakingPage(page)
-    const metamask = new MetaMask(
-      context,
+    const stakeAmount = 0.01
+    test(`Confirm that user can stake ${stakeAmount} tokens`, async ({
       page,
-      nearWeb3ProdSetup.walletPassword,
-      extensionId,
-    )
-
-    await homePage.confirmHomePageLoaded("/")
-    await basePage.navigateToStakingPage()
-    await stakingPage.clickStakeTokensButton()
-    await stakingPage.selectValidator()
-    await stakingPage.getAvalableBalance()
-    await stakingPage.enterAmountToStake(stakeAmount)
-    await stakingPage.confirmStake()
-    await stakingPage.confirmTransaction()
-    await metamask.confirmTransaction()
-    await stakingPage.returnToStakingInputPage()
-    throw new Error("Test not implemented.")
-  })
-
-  test(`Confirm that user can't unstake more than staked amount`, async ({
-    page,
-    context,
-    extensionId,
-  }) => {
-    const stakeAmount = 0.1
-
-    const homePage = new HomePage(page)
-    const basePage = new BasePage(page)
-    const stakingPage = new StakingPage(page)
-    const metamask = new MetaMask(
       context,
-      page,
-      nearWeb3ProdSetup.walletPassword,
       extensionId,
-    )
+    }) => {
+      const homePage = new HomePage(page)
+      const basePage = new BasePage(page)
+      const stakingPage = new StakingPage(page)
+      const metamask = new MetaMask(
+        context,
+        page,
+        nearWeb3ProdSetup.walletPassword,
+        extensionId,
+      )
 
-    await homePage.confirmHomePageLoaded("/")
-    await basePage.navigateToStakingPage()
-    throw new Error("Test not implemented.")
-  })
+      await homePage.confirmHomePageLoaded("/")
+      await basePage.navigateToStakingPage()
+      await stakingPage.clickStakeTokensButton()
+      await stakingPage.selectFirstValidator()
+      const availableBalance = await stakingPage.getAvalableBalance()
+      test.skip(
+        availableBalance < stakeAmount,
+        `Insufficient funds for staking, balance: ${availableBalance}, transfer: ${stakeAmount}`,
+      )
+      await stakingPage.enterAmount(stakeAmount)
+      await stakingPage.confirmStake()
+      await stakingPage.confirmTransaction()
+      await metamask.confirmTransaction()
+      await stakingPage.waitForActionToComplete()
+      await stakingPage.confirmSuccessNotificationAppears()
+      await stakingPage.returnToStakingInputPage()
+      const availableBalanceAfter = await stakingPage.getAvalableBalance()
+      stakingPage.confirmTransactionWasCorrect(
+        availableBalance,
+        availableBalanceAfter,
+      )
+    })
 
-  const unstakeAmount = 0.1
-  test(`Confirm that user can unstake ${unstakeAmount} tokens`, async ({
-    page,
-    context,
-    extensionId,
-  }) => {
-    const homePage = new HomePage(page)
-    const basePage = new BasePage(page)
-    const stakingPage = new StakingPage(page)
-    const metamask = new MetaMask(
+    test(`Confirm that user can't unstake more than staked amount`, async ({
+      page,
+    }) => {
+      const homePage = new HomePage(page)
+      const stakingPage = new StakingPage(page)
+
+      await homePage.confirmHomePageLoaded("/")
+      await stakingPage.navigateToStakingPage()
+      await stakingPage.clickUnstakeLink()
+      await stakingPage.clickSelectButton()
+      const availableToUnstake = await stakingPage.getAvalableBalance()
+      await stakingPage.enterAmount(availableToUnstake * 100)
+      await stakingPage.clickUnstakeButton()
+      await stakingPage.confirmInsufficientFundsNotificationVisible()
+    })
+
+    const unstakeAmount = 0.1
+    test(`Confirm that user can unstake ${unstakeAmount} tokens`, async ({
+      page,
       context,
-      page,
-      nearWeb3ProdSetup.walletPassword,
       extensionId,
-    )
+    }) => {
+      const homePage = new HomePage(page)
+      const stakingPage = new StakingPage(page)
+      const metamask = new MetaMask(
+        context,
+        page,
+        nearWeb3ProdSetup.walletPassword,
+        extensionId,
+      )
 
-    await homePage.confirmHomePageLoaded("/")
-    await basePage.navigateToStakingPage()
-    throw new Error("Test not implemented.")
-  })
+      await homePage.confirmHomePageLoaded("/")
+      await stakingPage.navigateToStakingPage()
+      await stakingPage.clickUnstakeLink()
+      await stakingPage.clickSelectButton()
+      await stakingPage.clickMaxAmountButton()
+      await stakingPage.clickUnstakeButton()
+      await stakingPage.confirmTransaction()
+      await metamask.confirmTransaction()
+      await stakingPage.waitForActionToComplete()
+      await stakingPage.confirmSuccessNotificationAppears()
+    })
 
-  test(`Confirm that user can claim tokens after cooldown passes`, async ({
-    page,
-    context,
-    extensionId,
-  }) => {
-    const homePage = new HomePage(page)
-    const basePage = new BasePage(page)
-    const stakingPage = new StakingPage(page)
-    const metamask = new MetaMask(
+    test(`Confirm that user can claim withdraw unstaked balance`, async ({
+      page,
       context,
-      page,
-      nearWeb3ProdSetup.walletPassword,
       extensionId,
-    )
+    }) => {
+      const homePage = new HomePage(page)
+      const stakingPage = new StakingPage(page)
+      const metamask = new MetaMask(
+        context,
+        page,
+        nearWeb3ProdSetup.walletPassword,
+        extensionId,
+      )
 
-    await homePage.confirmHomePageLoaded("/")
-    await basePage.navigateToStakingPage()
-    throw new Error("Test not implemented.")
-  })
-})
+      await homePage.confirmHomePageLoaded("/")
+      await homePage.navigateToStakingPage()
 
-// Send/Transfer:
-// NEAR
-// USDT
-// REF
+      test.skip(
+        !(await stakingPage.withdrawalIsReady()),
+        "There are no balance to withdraw",
+      )
+
+      await stakingPage.clickWithdrawButton()
+      await stakingPage.confirmTransaction()
+      await metamask.confirmTransaction()
+      await stakingPage.waitForActionToComplete()
+      await stakingPage.confirmSuccessNotificationAppears()
+    })
+  },
+)

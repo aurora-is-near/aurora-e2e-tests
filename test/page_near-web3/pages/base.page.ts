@@ -1,5 +1,5 @@
 import { expect, type Locator, type Page } from "@playwright/test"
-import { nearEnvironment } from "../../helpers/functions/system-variables"
+import { NEAR_WEB3_PAGE } from "../../helpers/constants/pages"
 
 export class BasePage {
   page: Page
@@ -21,10 +21,8 @@ export class BasePage {
   }
 
   async confirmCorrectPageLoaded(page: Page, urlExtension: string) {
-    const url = nearEnvironment().baseURL
-
     await expect(page, `Loaded page is not ${urlExtension}`).toHaveURL(
-      `${url}${urlExtension}`,
+      `${NEAR_WEB3_PAGE.baseURL}${urlExtension}`,
     )
   }
 
@@ -58,5 +56,9 @@ export class BasePage {
     await expect(this.exploreTab, messageOnFail).toBeVisible()
     await this.exploreTab.click()
     await this.confirmCorrectPageLoaded(this.page, url)
+  }
+
+  async waitForActionToComplete() {
+    await this.page.waitForTimeout(15000)
   }
 }

@@ -1,5 +1,3 @@
-import { NEAR_WEB3_PAGE } from "../constants/pages"
-
 export const getPassword = () => {
   const password = process.env.MM_PASSWORD
 
@@ -28,20 +26,4 @@ export const getNearAccountToken = () => {
   }
 
   return token
-}
-
-/**
- * For development purposes. Helps to override environment for web3 wallet
- * 2 possible options: "mainnet" or "testnet"
- * @param environment - string
- * @returns {string} - web url for required environment
- */
-export const nearEnvironment = () => {
-  const getNearUrl = () => {
-    return NEAR_WEB3_PAGE
-  }
-
-  const environmenUrl = getNearUrl()
-
-  return environmenUrl
 }

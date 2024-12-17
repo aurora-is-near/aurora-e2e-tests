@@ -6,3 +6,5 @@ export const AURORA_PLUS_TAG_SWAPPING = "@aurora-plus-swapping"
 
 export const WEB3_WALLET_TAG = "@web3-wallet"
 export const WEB3_WALLET_TAG_SWAPPING = "@web3-wallet-swapping"
+export const WEB3_WALLET_TAG_STAKING = "@web3-wallet-staking"
+export const WEB3_WALLET_TAG_TRANSFERING = "@web3-wallet-transfering"
