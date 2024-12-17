@@ -1,5 +1,7 @@
 # Aurora End-to-end tests
 
+This repository contains tests of the following [projects](./test/helpers/constants/pages.ts)
+
 ## Project stack details
 
 Project uses Synpress V4, Playwright, TypeScript, Metamask.
@@ -9,11 +11,14 @@ MetaMask extension of Chrome is used for testing wallet functionality. [More inf
 </br>Playwright is Javascript/ TypeScript testing framework. [More information](https://playwright.dev/)
 
 > [!IMPORTANT]
-> </br>Currently Synpress has a limitation on supported OSes and only support UNIX based operating systems. Please note that if it's required to run tests on Windows machine, user could do this with WSL. [More about WSL](https://learn.microsoft.com/en-us/windows/wsl/about)
+> Currently Synpress has a limitation on supported OSes and only support UNIX based operating systems. Please note that if it's required to run tests on Windows machine, user could do this with WSL. [More about WSL](https://learn.microsoft.com/en-us/windows/wsl/about)
 
 ## Project preparation
 
 ### Installation
+> [!WARNING]
+> Before running any commands please ensure that you have NodeJS installed on your device! If you do not have it, please visit: [NodeJS](https://nodejs.org/en)
+
 
 After downloading code from repository, you must install dependencies with command:
 ```bash
@@ -27,9 +32,9 @@ yarn install playwright
 
 ### Environmental variables
 
-<p class="callout warning">A test message</p>
 
-</br>Sensitive information must be stored locally in .env file, or as variable/ secret in repository options.
+> [!IMPORTANT]
+> </br>Sensitive information must be stored locally in .env file, or as variable/ secret in repository options.
 
 A sample .env file can be generated as follows:
 ```
@@ -60,12 +65,14 @@ If it's required to run only tests for specific website, you can use tags:
 ```bash
 yarn test --grep @tag-name
 ```
+All possible tags can be found in: [Tags](./test/helpers/constants/tags.ts)
+
 
 See [tests/helpers/constants/tags.ts](./tests/helpers/constants/tags.ts) for a list of the available
 tags.
 
 > [!CAUTION]
-> </br>If you are using a new wallet, and automatic tests keeps failing, please try to go through STAKING scenario manually, as it might be required to agree some metamask steps once.
+> If you are using a new wallet, and automatic tests keeps failing, please try to go through STAKING scenario manually, as it might be required to agree some metamask steps once.
 
 ## Tests development
 
