@@ -45,9 +45,8 @@ cp .env.sample .env
 
 You must have at least one wallet config and cache.
 Currently there are few wallet configs, e.g.:
-</br>[Aurora Plus Wallet MainNet Setup](.\test\wallet-setup\aurora-plus.setup.ts)
-</br>[NEAR Wallet MainNet Setup](.\test\wallet-setup\near-web3-prod.setup.ts)
-</br>[NEAR Wallet TestNet Setup](.\test\wallet-setup\near-web3-test.setup.ts)
+</br>[Aurora Plus Wallet MainNet Setup](./test/wallet-setup/aurora-plus.setup.ts)
+</br>[NEAR Wallet MainNet Setup](./test/wallet-setup/near-web3-prod.setup.ts)
 
 As it's not safe to publish cache information in repository, before running tests you have to cache it on your machine. To do so, use command:
 ```bash
@@ -106,8 +105,8 @@ Below is the structure of folders/ files required for tests development. It does
 ### Wallet folder
 If any additional wallet will be required, please follow the steps below:
 </br>1. Create a new file in ```/test/wallet-setup``` folder
-</br>2. File should follow naming pattern ```*.setup.ts``` - [more details](https://synpress.io/docs/guides/wallet-cache#file-name)
-</br>3. Define wallet details. Use existing wallet as example, or official documentation - [more details](https://synpress.io/docs/guides/wallet-cache#define-the-wallet-setup)
+</br>2. File should follow naming pattern ```*.setup.ts``` - [more details](https://docs.synpress.io/docs/guides/wallet-cache#file-name)
+</br>3. Define wallet details. Use existing wallet as example, or official documentation - [more details](https://docs.synpress.io/docs/guides/wallet-cache#define-the-wallet-setup)
 </br>4. After defining a new wallet, you can create a new cache, by using command:
 ```bash
 yarn synpress
@@ -137,7 +136,7 @@ yarn report
 
 ## Pipelines
 All the pipeline configurations you can find in .github/workflows.
-For tests automation configuration file you can refer to tests-automation.yml
+For tests automation configuration file you can refer to [tests-automation.yml](./.github/workflows/tests-automation.yml)
 
 Pipeline triggered on push and every 12 hours.
 

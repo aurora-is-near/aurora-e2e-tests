@@ -9,7 +9,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-8-core
-    timeout-minutes: 90
+    timeout-minutes: 180
 
     env:
       MM_SEED_PHRASE: ${{ secrets.MM_SEED_PHRASE }}
