@@ -47,15 +47,6 @@ export class StakingPage extends BasePage {
     await this.stakeTokensButton.click()
   }
 
-  async selectValidator(validator = "kiln.pool.f863973.m0") {
-    const validatorLocator = this.page.getByRole("link", {
-      name: validator,
-    })
-    const messageOnFail: string = `Validator: ${validator} is not visible in the list of validators`
-    await expect(validatorLocator, messageOnFail).toBeVisible()
-    await validatorLocator.click()
-  }
-
   async getAvalableBalance() {
     const messageOnFail: string = "Available balance not visible"
     await expect(this.availableBalance, messageOnFail).toBeVisible()
@@ -98,9 +89,18 @@ export class StakingPage extends BasePage {
     await this.stakeMoreButton.click()
   }
 
-  async selectFirstValidator() {
-    const locators = await this.page.getByText("%").all()
-    await locators[0].click()
+  async selectValidator(validator = null) {
+    if (validator === null) {
+      const locators = await this.page.getByText("%").all()
+      await locators[0].click()
+    } else {
+      const validatorLocator = this.page.getByRole("link", {
+        name: validator,
+      })
+      const messageOnFail: string = `Validator: ${validator} is not visible in the list of validators`
+      await expect(validatorLocator, messageOnFail).toBeVisible()
+      await validatorLocator.click()
+    }
   }
 
   async confirmTransactionIsBlocked() {

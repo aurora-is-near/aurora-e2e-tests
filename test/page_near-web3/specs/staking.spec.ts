@@ -31,7 +31,7 @@ test.describe(
       await homePage.confirmHomePageLoaded("/")
       await homePage.navigateToStakingPage()
       await stakingPage.clickStakeTokensButton()
-      await stakingPage.selectFirstValidator()
+      await stakingPage.selectValidator()
       const availableBalance = await stakingPage.getAvalableBalance()
       await stakingPage.enterAmount(availableBalance * 100)
       await stakingPage.confirmStake()
@@ -57,7 +57,7 @@ test.describe(
       await homePage.confirmHomePageLoaded("/")
       await basePage.navigateToStakingPage()
       await stakingPage.clickStakeTokensButton()
-      await stakingPage.selectFirstValidator()
+      await stakingPage.selectValidator()
       const availableBalance = await stakingPage.getAvalableBalance()
       test.skip(
         availableBalance < stakeAmount,

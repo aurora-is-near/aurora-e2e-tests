@@ -3,13 +3,9 @@ import { NEAR_WEB3_PAGE } from "../../helpers/constants/pages"
 
 export class BasePage {
   page: Page
-
   homeTab: Locator
-
   portfolioTab: Locator
-
   stakingTab: Locator
-
   exploreTab: Locator
 
   constructor(page: Page) {

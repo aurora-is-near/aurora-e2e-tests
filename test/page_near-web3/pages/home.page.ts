@@ -4,29 +4,17 @@ import { BasePage } from "./base.page"
 
 export class HomePage extends BasePage {
   swapContainer: Locator
-
   swapFromWallet: Locator
-
   swapToWallet: Locator
-
   fromAmountInputField: Locator
-
   toAmountInputField: Locator
-
   firstDropdownArrow: Locator
-
   secondDropdownArrow: Locator
-
   amountInputField: Locator
-
   swapButton: Locator
-
   popUpConfirmTransactionButton: Locator
-
   balance: Locator
-
   successNotificationTitle: Locator
-
   successNotificationCloseButton: Locator
 
   constructor(page: Page) {
