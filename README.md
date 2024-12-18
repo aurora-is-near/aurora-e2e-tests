@@ -34,7 +34,7 @@ yarn install playwright
 
 
 > [!IMPORTANT]
-> </br>Sensitive information must be stored locally in .env file, or as variable/ secret in repository options.
+> Sensitive information must be stored locally in .env file, or as variable/ secret in repository options.
 
 A sample .env file can be generated as follows:
 ```
