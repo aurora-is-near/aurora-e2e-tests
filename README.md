@@ -64,11 +64,7 @@ If it's required to run only tests for specific website, you can use tags:
 ```bash
 yarn test --grep @tag-name
 ```
-All possible tags can be found in: [Tags](./test/helpers/constants/tags.ts)
-
-
-See [tests/helpers/constants/tags.ts](./tests/helpers/constants/tags.ts) for a list of the available
-tags.
+All available tags can be found in: [Tags](./test/helpers/constants/tags.ts)
 
 > [!CAUTION]
 > If you are using a new wallet, and automatic tests keeps failing, please try to go through STAKING scenario manually, as it might be required to agree some metamask steps once.
