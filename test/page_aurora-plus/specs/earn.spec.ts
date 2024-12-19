@@ -126,6 +126,7 @@ test.describe(
       await earnPage.waitForActionToComplete()
       await page.getByRole("button", { name: "Deposit", exact: true }).click()
       await metamask.confirmTransaction()
+      await earnPage.waitForActionToComplete()
 
       const depositAfterTransaction = await earnPage.getDepositedTokenBalance()
       const valueAfterDeposit = await earnPage.getDepositedTokenValue()
