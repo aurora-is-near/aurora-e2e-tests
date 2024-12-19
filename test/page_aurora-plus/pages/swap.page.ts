@@ -22,9 +22,7 @@ export class SwapPage extends BasePage {
 
     this.reviewSwapButton = page.getByTestId("review-swap-button")
     this.reviewSwapModalTitle = page.getByText("Review your Swap")
-    this.approveSwapButton = page.getByRole("button", {
-      name: "Approve",
-    })
+    this.approveSwapButton = page.getByRole("button", { name: "Approve" })
     this.swapNowButton = page.getByTestId("swap-now-button")
     this.swapFromInput = page.locator("#input-amount")
     this.tokensWithBalance = page.locator('[data-testid*="-swap-button"]')
@@ -91,13 +89,15 @@ export class SwapPage extends BasePage {
   }
 
   async clickApproveSwapButton() {
-    if (await this.approveSwapButton.isVisible(midTimeout)) {
-      await this.approveSwapButton.click()
-    } else {
-      const messageOnFail: string = "Swap now button not visible"
-      await expect(this.swapNowButton, messageOnFail).toBeVisible()
-      await this.swapNowButton.click()
-    }
+    const messageOnFail: string = "Approve Swap button not visible"
+    await expect(this.approveSwapButton, messageOnFail).toBeVisible()
+    await this.approveSwapButton.click()
+  }
+
+  async clickSwapNowButton() {
+    const messageOnFail: string = "Swap now button not visible"
+    await expect(this.swapNowButton, messageOnFail).toBeVisible(midTimeout)
+    await this.swapNowButton.click()
   }
 
   async getTokens() {

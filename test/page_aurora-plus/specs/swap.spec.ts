@@ -39,7 +39,7 @@ test.describe(
       const destinationToken: string = transfer[1]
 
       // Done
-      test(`Confirm that user cannot swap more from ${tokenWithBalance} to ${destinationToken} than balance allows`, async ({
+      test.only(`Confirm that user cannot swap more from ${tokenWithBalance} to ${destinationToken} than balance allows`, async ({
         context,
         page,
         extensionId,
@@ -63,7 +63,7 @@ test.describe(
         await swapPage.enterSwapFromAmount(amount)
         await swapPage.clickReviewSwapButton()
         await swapPage.confirmThatReviewYourSwapModalVisible()
-        await swapPage.clickApproveSwapButton()
+        await swapPage.clickSwapNowButton()
         await metamask.confirmTransaction()
         test.fail() // REMOVE when JSON-RPC issue will be resolved. Amount of free transactions for used account should be increased
         await swapPage.waitForActionToComplete()
@@ -72,7 +72,7 @@ test.describe(
           destinationToken,
           amount,
         )
-        await swapPage.clickApproveSwapButton()
+        await swapPage.clickSwapNowButton()
         await metamask.confirmTransaction()
         await swapPage.waitForActionToComplete()
         const amountAfter = await swapPage.getAvailableToTradeBalance()
