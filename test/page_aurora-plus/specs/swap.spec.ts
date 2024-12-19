@@ -39,7 +39,7 @@ test.describe(
       const destinationToken: string = transfer[1]
 
       // Done
-      test.only(`Confirm that user cannot swap more from ${tokenWithBalance} to ${destinationToken} than balance allows`, async ({
+      test(`Confirm that user cannot swap more from ${tokenWithBalance} to ${destinationToken} than balance allows`, async ({
         context,
         page,
         extensionId,
