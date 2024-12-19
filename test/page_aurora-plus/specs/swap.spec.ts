@@ -65,7 +65,7 @@ test.describe(
         await swapPage.confirmThatReviewYourSwapModalVisible()
         await swapPage.clickApproveSwapButton()
         await metamask.confirmTransaction()
-        test.fail() // REMOVE when JSON-RPC issue will be resolved
+        test.fail() // REMOVE when JSON-RPC issue will be resolved. Amount of free transactions for used account should be increased
         await swapPage.waitForActionToComplete()
         await swapPage.confirmTransactionData(
           tokenWithBalance,
