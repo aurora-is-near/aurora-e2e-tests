@@ -22,3 +22,5 @@ yarn-error.log*
 # Env
 .env
 my-report/
+.DS_Store
+**/.DS_Store

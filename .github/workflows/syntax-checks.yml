@@ -1,4 +1,4 @@
-name: Test
+name: E2E syntax checks
 
 on: workflow_call
 
