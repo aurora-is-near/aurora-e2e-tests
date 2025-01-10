@@ -13,8 +13,9 @@ import nearWeb3ProdSetup from "../../wallet-setup/near-web3-prod.setup"
 test.use(NEAR_WEB3_PAGE)
 test.beforeEach(
   "Login to Near Web3 wallet with MetaMask",
-  async ({ nearWeb3Preconditions }) => {
+  async ({ nearWeb3Preconditions }, testInfo) => {
     await nearWeb3Preconditions.loginToNearWeb3()
+    testInfo.setTimeout(30_000)
   },
 )
 
@@ -142,6 +143,11 @@ test.describe(
         !(await stakingPage.withdrawalIsReady()),
         "There are no balance to withdraw",
       )
+
+      // Scroll to the bottom to avoid scrolling back and forth
+      await page.evaluate(() => {
+        window.scrollTo(0, document.body.scrollHeight)
+      })
 
       await stakingPage.clickWithdrawButton()
       await stakingPage.confirmTransaction()
