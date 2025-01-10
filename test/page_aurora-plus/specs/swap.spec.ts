@@ -70,7 +70,7 @@ test.describe(
           destinationToken,
           amount,
         )
-        // await swapPage.clickSwapNowButton()
+        await swapPage.clickSwapNowButton()
         await metamask.confirmTransaction()
         await swapPage.waitForActionToComplete()
         const amountAfter = await swapPage.getAvailableToTradeBalance()
