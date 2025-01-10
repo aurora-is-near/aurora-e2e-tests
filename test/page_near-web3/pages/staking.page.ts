@@ -38,7 +38,7 @@ export class StakingPage extends BasePage {
       "Unstake amount is greater",
     )
     this.maxButton = page.getByText("MAX")
-    this.withdrawButton = page.getByRole("button", { name: "Withdraw" })
+    this.withdrawButton = page.getByRole("link", { name: "Withdraw" })
   }
 
   async clickStakeTokensButton() {

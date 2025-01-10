@@ -55,6 +55,6 @@ export class BasePage {
   }
 
   async waitForActionToComplete() {
-    await this.page.waitForTimeout(15000)
+    await this.page.waitForTimeout(5000)
   }
 }

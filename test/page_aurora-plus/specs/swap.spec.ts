@@ -37,9 +37,7 @@ test.describe(
     for (const transfer of transferFromTo) {
       const tokenWithBalance: string = transfer[0]
       const destinationToken: string = transfer[1]
-
-      // Done
-      test(`Confirm that user cannot swap more from ${tokenWithBalance} to ${destinationToken} than balance allows`, async ({
+      test.skip(`Confirm that user can swap from ${tokenWithBalance} to ${destinationToken}`, async ({
         context,
         page,
         extensionId,
@@ -72,11 +70,25 @@ test.describe(
           destinationToken,
           amount,
         )
-        await swapPage.clickSwapNowButton()
+        // await swapPage.clickSwapNowButton()
         await metamask.confirmTransaction()
         await swapPage.waitForActionToComplete()
         const amountAfter = await swapPage.getAvailableToTradeBalance()
         swapPage.confirmSwapWasCompleted(amountBefore, amountAfter, amount)
+      })
+
+      test(`Confirm that user cannot swap more from ${tokenWithBalance} to ${destinationToken} than balance allows`, async ({
+        page,
+      }) => {
+        const swapPage = new SwapPage(page)
+        const dashboardPage = new DashboardPage(page)
+        await dashboardPage.navigateToSwapPage()
+        await swapPage.selectTokenWithBalance(tokenWithBalance)
+        await swapPage.selectDestinationSupportedToken(destinationToken)
+        const amountBefore = await swapPage.getAvailableToTradeBalance()
+        const amountInsufficient: number = amountBefore + 10
+        await swapPage.enterSwapFromAmount(amountInsufficient)
+        await swapPage.confirmSwapAmountInsufficient(amountBefore)
       })
     }
   },

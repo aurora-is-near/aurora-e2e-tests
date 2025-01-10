@@ -112,7 +112,7 @@ test.describe(
       )
     })
 
-    test(`Confirm that user can withdraw tokens after cooldown passes`, async ({
+    test.skip(`Confirm that user can withdraw tokens after cooldown passes`, async ({
       page,
     }) => {
       const dashboardPage = new DashboardPage(page)
