@@ -10,6 +10,7 @@ export const test = testWithSynpress(
 ).extend<{
   nearWeb3Preconditions: {
     loginToNearWeb3: () => Promise<void>
+    loginToNearWeb3Account: (accountString: string) => Promise<void>
   }
 }>({
   nearWeb3Preconditions: async ({ page, context, extensionId }, use) => {
@@ -42,8 +43,25 @@ export const test = testWithSynpress(
       await metamask.connectToDapp()
     }
 
+    const loginToNearWeb3Account = async (accountString: string) => {
+      let messageOnFail: string = '"Log in with Ethereum" button is not visible'
+      await expect(loginWithEthereumButton, messageOnFail).toBeVisible(
+        shortTimeout,
+      )
+      await loginWithEthereumButton.click()
+
+      messageOnFail = "MetaMask login option is not visible in pop up"
+      await expect(metamaskOptionInPopUp, messageOnFail).toBeVisible(
+        shortTimeout,
+      )
+      await metamaskOptionInPopUp.click()
+
+      await metamask.connectToDapp([accountString])
+    }
+
     await use({
       loginToNearWeb3,
+      loginToNearWeb3Account,
     })
   },
 })

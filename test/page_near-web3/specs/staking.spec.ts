@@ -22,13 +22,16 @@ test.describe(
   "NEAR Web3 Wallet: Staking Page - Staking",
   { tag: [WEB3_WALLET_TAG, WEB3_WALLET_TAG_STAKING] },
   () => {
+    const stakeAmount = 0.01
+    const unstakeAmount = 0.1
+
     test(`Confirm that user can't stake more than balance allows`, async ({
       page,
     }) => {
       const homePage = new HomePage(page)
       const stakingPage = new StakingPage(page)
 
-      await homePage.confirmHomePageLoaded("/")
+      await homePage.confirmHomePageLoaded()
       await homePage.navigateToStakingPage()
       await stakingPage.clickStakeTokensButton()
       await stakingPage.selectValidator()
@@ -38,7 +41,6 @@ test.describe(
       await stakingPage.confirmTransactionIsBlocked()
     })
 
-    const stakeAmount = 0.01
     test(`Confirm that user can stake ${stakeAmount} tokens`, async ({
       page,
       context,
@@ -54,7 +56,7 @@ test.describe(
         extensionId,
       )
 
-      await homePage.confirmHomePageLoaded("/")
+      await homePage.confirmHomePageLoaded()
       await basePage.navigateToStakingPage()
       await stakingPage.clickStakeTokensButton()
       await stakingPage.selectValidator()
@@ -83,7 +85,7 @@ test.describe(
       const homePage = new HomePage(page)
       const stakingPage = new StakingPage(page)
 
-      await homePage.confirmHomePageLoaded("/")
+      await homePage.confirmHomePageLoaded()
       await stakingPage.navigateToStakingPage()
       await stakingPage.clickUnstakeLink()
       await stakingPage.clickSelectButton()
@@ -93,7 +95,6 @@ test.describe(
       await stakingPage.confirmInsufficientFundsNotificationVisible()
     })
 
-    const unstakeAmount = 0.1
     test(`Confirm that user can unstake ${unstakeAmount} tokens`, async ({
       page,
       context,
@@ -108,7 +109,7 @@ test.describe(
         extensionId,
       )
 
-      await homePage.confirmHomePageLoaded("/")
+      await homePage.confirmHomePageLoaded()
       await stakingPage.navigateToStakingPage()
       await stakingPage.clickUnstakeLink()
       await stakingPage.clickSelectButton()
@@ -134,7 +135,7 @@ test.describe(
         extensionId,
       )
 
-      await homePage.confirmHomePageLoaded("/")
+      await homePage.confirmHomePageLoaded()
       await homePage.navigateToStakingPage()
 
       test.skip(

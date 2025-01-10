@@ -46,8 +46,8 @@ export class HomePage extends BasePage {
     })
   }
 
-  async confirmHomePageLoaded(url: string, page = this.page) {
-    await this.confirmCorrectPageLoaded(page, url)
+  async confirmHomePageLoaded(page = this.page) {
+    await this.confirmCorrectPageLoaded(page, "/")
   }
 
   async scrollToSwapContainer() {
