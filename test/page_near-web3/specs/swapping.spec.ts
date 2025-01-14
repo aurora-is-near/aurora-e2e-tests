@@ -49,7 +49,7 @@ test.describe(
         context,
         extensionId,
       }) => {
-        const transferAmount = 0.1
+        const transferAmount = 0.01
         const homePage = new HomePage(page)
         const metamask = new MetaMask(
           context,
@@ -77,7 +77,6 @@ test.describe(
           transferAmount,
         )
 
-        // TODO: Remove once test ids will be set
         await homePage.restoreToDefaultTokens(tokenFrom, tokenTo)
       })
     }

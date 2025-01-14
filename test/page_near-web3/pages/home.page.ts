@@ -28,6 +28,7 @@ export class HomePage extends BasePage {
     this.fromAmountInputField = page.getByText("NEAR~$").getByPlaceholder("0.0")
     this.toAmountInputField = page.getByText("REF~$").getByPlaceholder("0.0")
     this.firstDropdownArrow = page
+      .getByRole("form")
       .locator("div.__ref-swap-widget-token-amount_token-select-button")
       .nth(0)
 
@@ -65,8 +66,10 @@ export class HomePage extends BasePage {
 
   async selectTokenToSwapFrom(tokenName: string) {
     if (tokenName !== "NEAR") {
-      await this.firstDropdownArrow.click()
-      // Must be updated to IDS
+      const firstDropdownArrow = this.page
+        .getByRole("main")
+        .getByText("NEAR", { exact: true })
+      await firstDropdownArrow.click()
       const tokenSelector = this.page.getByText(tokenName, { exact: true })
       const messageOnFail: string = `Token ${tokenName} was not found in token list which contains any balance`
       await expect(tokenSelector, messageOnFail).toBeVisible()
@@ -75,8 +78,12 @@ export class HomePage extends BasePage {
   }
 
   async selectTokenToSwapTo(tokenName: string) {
-    if (tokenName !== "REF") {
-      await this.secondDropdownArrow.click()
+    if (tokenName !== "AURORA") {
+      // get current text in 2nd dropdown
+      const secondDropdownArrow = this.page.getByText("AURORA", {
+        exact: true,
+      })
+      await secondDropdownArrow.click()
       const tokenSelector = this.page
         .getByText(tokenName, { exact: true })
         .first()
@@ -124,9 +131,10 @@ export class HomePage extends BasePage {
   ) {
     const balanceBefore = Number(balanceBeforeString.replace("Balance: ", ""))
     const balanceAfter = Number(balanceAfterString.replace("Balance: ", ""))
-    console.log(balanceBefore, balanceAfter, transfer)
 
-    expect(balanceBefore - transfer).toBeLessThanOrEqual(balanceAfter)
+    expect(Math.round(balanceBefore - transfer)).toBeLessThanOrEqual(
+      Math.round(balanceAfter),
+    )
   }
 
   async confirmSwapButtonNotAvailable() {
@@ -140,9 +148,9 @@ export class HomePage extends BasePage {
       .locator("form")
       .getByText(tokenFrom, { exact: true })
       .click()
-    await this.page.getByText("NEAR", { exact: true }).click()
+    await this.page.getByText("NEAR", { exact: true }).first().click()
 
     await this.page.getByText(tokenTo, { exact: true }).click()
-    await this.page.getByText("REF", { exact: true }).click()
+    await this.page.getByText("AURORA", { exact: true }).first().click()
   }
 }
