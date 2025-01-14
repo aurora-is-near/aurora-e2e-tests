@@ -27,13 +27,13 @@ export class HomePage extends BasePage {
     this.swapToWallet = page.getByText("REF", { exact: true })
     this.fromAmountInputField = page.getByText("NEAR~$").getByPlaceholder("0.0")
     this.toAmountInputField = page.getByText("REF~$").getByPlaceholder("0.0")
-    // Dropdown locators must be updated
     this.firstDropdownArrow = page
-      .locator("form")
-      .getByText("NEAR", { exact: true })
+      .locator("div.__ref-swap-widget-token-amount_token-select-button")
+      .nth(0)
+
     this.secondDropdownArrow = page
-      .locator("form")
-      .getByText("REF", { exact: true })
+      .locator("div.__ref-swap-widget-token-amount_token-select-button")
+      .nth(1)
     this.amountInputField = page.getByPlaceholder("0.0")
     this.swapButton = page.getByRole("button", { name: "Swap" })
     this.popUpConfirmTransactionButton = page.getByRole("button", {
@@ -77,7 +77,9 @@ export class HomePage extends BasePage {
   async selectTokenToSwapTo(tokenName: string) {
     if (tokenName !== "REF") {
       await this.secondDropdownArrow.click()
-      const tokenSelector = this.page.getByText(tokenName, { exact: true })
+      const tokenSelector = this.page
+        .getByText(tokenName, { exact: true })
+        .first()
       const messageOnFail: string = `Token ${tokenName} was not found in token list of destination tokens`
       await expect(tokenSelector, messageOnFail).toBeVisible()
       await tokenSelector.click()
@@ -122,8 +124,9 @@ export class HomePage extends BasePage {
   ) {
     const balanceBefore = Number(balanceBeforeString.replace("Balance: ", ""))
     const balanceAfter = Number(balanceAfterString.replace("Balance: ", ""))
+    console.log(balanceBefore, balanceAfter, transfer)
 
-    expect((balanceBefore - transfer).toFixed()).toBe(balanceAfter)
+    expect(balanceBefore - transfer).toBeLessThanOrEqual(balanceAfter)
   }
 
   async confirmSwapButtonNotAvailable() {

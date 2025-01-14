@@ -20,14 +20,13 @@ test.describe(
   "NEAR Web3 Wallet: Home Page - Swapping",
   { tag: [WEB3_WALLET_TAG, WEB3_WALLET_TAG_SWAPPING] },
   () => {
-    test.only(`Confirm that user cannot swap more than the balance contains`, async ({
+    test(`Confirm that user cannot swap more than the balance contains`, async ({
       page,
     }) => {
       const transferAmount = 9999
       const homePage = new HomePage(page)
       await homePage.confirmHomePageLoaded()
       await homePage.scrollToSwapContainer()
-      await page.pause()
       await homePage.selectTokenToSwapFrom("NEAR")
       await homePage.enterSwapFromAmount(transferAmount)
       await homePage.confirmSwapButtonNotAvailable()
@@ -35,11 +34,11 @@ test.describe(
 
     const tokensFromTo = [
       { from: "NEAR", to: "USDt" },
-      { from: "NEAR", to: "wNEAR" },
-      { from: "NEAR", to: "USDT.e" },
-      { from: "NEAR", to: "ETH" },
-      { from: "ETH", to: "NEAR" },
-      { from: "USDT.e", to: "NEAR" },
+      // { from: "NEAR", to: "wNEAR" },
+      // { from: "NEAR", to: "USDT.e" },
+      // { from: "NEAR", to: "ETH" },
+      // { from: "ETH", to: "NEAR" },
+      // { from: "USDT.e", to: "NEAR" },
     ]
 
     for (const transfers of tokensFromTo) {

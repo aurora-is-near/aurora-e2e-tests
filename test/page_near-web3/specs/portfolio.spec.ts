@@ -33,8 +33,7 @@ test.describe(
       throw new Error("Test not completed yet")
     })
 
-    // const assets: string[] = ["NEAR", "USDt", "FLX"]
-    const assets: string[] = ["USDt"]
+    const assets: string[] = ["NEAR", "USDt", "FLX"]
     const transferAmount = 0.01
     const transferAccountAddress: string =
       "0x2a8ac9f504ea4c9da5eb435b92027cb86c793ce4"
