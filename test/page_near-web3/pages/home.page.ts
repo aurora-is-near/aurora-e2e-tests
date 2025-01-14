@@ -28,13 +28,12 @@ export class HomePage extends BasePage {
     this.fromAmountInputField = page.getByText("NEAR~$").getByPlaceholder("0.0")
     this.toAmountInputField = page.getByText("REF~$").getByPlaceholder("0.0")
     this.firstDropdownArrow = page
-      .getByRole("form")
-      .locator("div.__ref-swap-widget-token-amount_token-select-button")
-      .nth(0)
+      .getByRole("main")
+      .getByText("NEAR", { exact: true })
 
-    this.secondDropdownArrow = page
-      .locator("div.__ref-swap-widget-token-amount_token-select-button")
-      .nth(1)
+    this.secondDropdownArrow = page.getByText("AURORA", {
+      exact: true,
+    })
     this.amountInputField = page.getByPlaceholder("0.0")
     this.swapButton = page.getByRole("button", { name: "Swap" })
     this.popUpConfirmTransactionButton = page.getByRole("button", {
@@ -66,11 +65,10 @@ export class HomePage extends BasePage {
 
   async selectTokenToSwapFrom(tokenName: string) {
     if (tokenName !== "NEAR") {
-      const firstDropdownArrow = this.page
-        .getByRole("main")
-        .getByText("NEAR", { exact: true })
-      await firstDropdownArrow.click()
-      const tokenSelector = this.page.getByText(tokenName, { exact: true })
+      await this.firstDropdownArrow.click()
+      const tokenSelector = this.page
+        .getByText(tokenName, { exact: true })
+        .first()
       const messageOnFail: string = `Token ${tokenName} was not found in token list which contains any balance`
       await expect(tokenSelector, messageOnFail).toBeVisible()
       await tokenSelector.click()
@@ -80,10 +78,7 @@ export class HomePage extends BasePage {
   async selectTokenToSwapTo(tokenName: string) {
     if (tokenName !== "AURORA") {
       // get current text in 2nd dropdown
-      const secondDropdownArrow = this.page.getByText("AURORA", {
-        exact: true,
-      })
-      await secondDropdownArrow.click()
+      await this.secondDropdownArrow.click()
       const tokenSelector = this.page
         .getByText(tokenName, { exact: true })
         .first()
