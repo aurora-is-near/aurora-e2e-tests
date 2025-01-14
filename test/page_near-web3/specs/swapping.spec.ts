@@ -34,11 +34,11 @@ test.describe(
 
     const tokensFromTo = [
       { from: "NEAR", to: "USDt" },
-      // { from: "NEAR", to: "wNEAR" },
-      // { from: "NEAR", to: "USDT.e" },
-      // { from: "NEAR", to: "ETH" },
-      // { from: "ETH", to: "NEAR" },
-      // { from: "USDT.e", to: "NEAR" },
+      { from: "NEAR", to: "wNEAR" },
+      { from: "NEAR", to: "USDT.e" },
+      { from: "NEAR", to: "ETH" },
+      { from: "ETH", to: "NEAR" },
+      { from: "USDT.e", to: "NEAR" },
     ]
 
     for (const transfers of tokensFromTo) {

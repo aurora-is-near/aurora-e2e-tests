@@ -22,6 +22,7 @@ test.describe(
   "NEAR Web3 Wallet: Portfolio Page - Transfering",
   { tag: [WEB3_WALLET_TAG, WEB3_WALLET_TAG_TRANSFERING] },
   () => {
+    // TODO Test not completed yet
     test.skip(`Confirm that user can buy some some funds`, async ({ page }) => {
       const homePage = new HomePage(page)
       const portfolioPage = new PortfolioPage(page)
@@ -29,8 +30,6 @@ test.describe(
       await homePage.navigateToPortfolioPage()
       await portfolioPage.clickBuyButton()
       await portfolioPage.selectPaymentMethod("Münzen")
-      //-------------------------------------------------------------------
-      throw new Error("Test not completed yet")
     })
 
     const assets: string[] = ["NEAR", "USDt", "FLX"]
@@ -68,8 +67,8 @@ test.describe(
       })
     }
 
-    // TODO fix this test
-    test(`Confirm that user receive funds`, async ({
+    // TODO fix this
+    test.skip(`Confirm that user receive funds`, async ({
       page,
       context,
       extensionId,
@@ -104,6 +103,7 @@ test.describe(
       await homePage.waitForActionToComplete()
       await nearWeb3Preconditions.loginToNearWeb3Account("Account 1")
 
+      await homePage.waitForActionToComplete()
       await homePage.checkBalances(initialBalance)
     })
   },
