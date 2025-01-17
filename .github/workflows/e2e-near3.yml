@@ -1,0 +1,54 @@
+name: E2E UI automation tests on Near Web3
+
+on:
+    workflow_dispatch:
+    schedule:
+      - cron: '0 8,14 * * 1-5'
+
+jobs:
+  build:
+    runs-on: ubuntu-8-core
+    timeout-minutes: 240
+
+    env:
+      MM_SEED_PHRASE: ${{ secrets.MM_SEED_PHRASE }}
+      MM_PASSWORD: ${{ secrets.MM_PASSWORD }}
+      NEAR_ACCOUNT_TOKEN : ${{ secrets.NEAR_ACCOUNT_TOKEN}}
+      AURORA_ACCOUNT_TOKEN: ${{ secrets.AURORA_ACCOUNT_TOKEN}}
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: package.json
+
+      - name: Install linux deps
+        run: |
+          sudo apt-get install --no-install-recommends -y \
+          fluxbox \
+          xvfb
+
+      - name: Run xvfb and fluxbox
+        run: |
+          Xvfb :0 -screen 0 2560x1440x24 -listen tcp -ac &
+          fluxbox -display :0.0 &
+        env:
+          DISPLAY: :0.0
+
+      - name: Install NodeJS dependencies
+        run: yarn install --immutable
+
+      - name: Install Playwright
+        run: yarn playwright install
+
+      - name: Create Synpress cache
+        run: xvfb-run yarn synpress
+
+      - name: Run tests
+        run: xvfb-run yarn test-web-wallet
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report
+          path: my-report/
+          retention-days: 1
