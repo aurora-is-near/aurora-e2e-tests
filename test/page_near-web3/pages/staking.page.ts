@@ -149,9 +149,9 @@ export class StakingPage extends BasePage {
   async withdrawalIsReady(): Promise<boolean> {
     // button is always enabled and clickable, but no onClick so checking
     // by attributes, this checks if button is disabled
-    const attributeFound = await this.withdrawButton.getAttribute("bg-sand-12")
+    const attributeFound = await this.withdrawButton.getAttribute("data-testid")
 
-    return !(attributeFound == null)
+    return attributeFound === "withdraw-btn"
   }
 
   async clickWithdrawButton() {
