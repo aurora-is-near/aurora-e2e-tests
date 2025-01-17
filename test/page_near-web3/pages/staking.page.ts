@@ -151,7 +151,7 @@ export class StakingPage extends BasePage {
     // by attributes, this checks if button is disabled
     const attributeFound = await this.withdrawButton.getAttribute("data-testid")
 
-    return attributeFound === "withdraw-btn"
+    return attributeFound != null && attributeFound === "withdraw-btn"
   }
 
   async clickWithdrawButton() {
