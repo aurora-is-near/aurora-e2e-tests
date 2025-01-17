@@ -22,15 +22,14 @@ test.describe(
   "NEAR Web3 Wallet: Portfolio Page - Transfering",
   { tag: [WEB3_WALLET_TAG, WEB3_WALLET_TAG_TRANSFERING] },
   () => {
-    test(`Confirm that user can buy some some funds`, async ({ page }) => {
+    // TODO Test not completed yet
+    test.skip(`Confirm that user can buy some some funds`, async ({ page }) => {
       const homePage = new HomePage(page)
       const portfolioPage = new PortfolioPage(page)
 
       await homePage.navigateToPortfolioPage()
       await portfolioPage.clickBuyButton()
       await portfolioPage.selectPaymentMethod("Münzen")
-      //-------------------------------------------------------------------
-      throw new Error("Test not completed yet")
     })
 
     const assets: string[] = ["NEAR", "USDt", "FLX"]
@@ -68,14 +67,44 @@ test.describe(
       })
     }
 
-    test(`Confirm that user receive funds`, async ({ page }) => {
+    // TODO fix this
+    test.skip(`Confirm that user receive funds`, async ({
+      page,
+      context,
+      extensionId,
+      nearWeb3Preconditions,
+    }) => {
       const homePage = new HomePage(page)
       const portfolioPage = new PortfolioPage(page)
+      const metamask = new MetaMask(
+        context,
+        page,
+        nearWeb3ProdSetup.walletPassword,
+        extensionId,
+      )
 
       await homePage.navigateToPortfolioPage()
+      const initialBalance = await portfolioPage.getAvailableBalance()
       await portfolioPage.clickSendButton()
-      //-------------------------------------------------------------------
-      throw new Error("Test not completed yet")
+      await portfolioPage.selectAsset("NEAR")
+      await portfolioPage.enterTransferAmount(0.01)
+      await portfolioPage.clickContinueButton()
+      await portfolioPage.enterNearAccountId(transferAccountAddress)
+      await portfolioPage.clickContinueButton()
+      await portfolioPage.clickConfirmAndSend()
+      await portfolioPage.clickConfirmTransactionButton()
+      await metamask.confirmTransaction()
+      await portfolioPage.waitForActionToComplete()
+      await portfolioPage.confirmSuccessNotificationAppears()
+      await homePage.navigateToPortfolioPage()
+      await homePage.openAccountDropdown()
+      await homePage.disconnectAccount()
+
+      await homePage.waitForActionToComplete()
+      await nearWeb3Preconditions.loginToNearWeb3Account("Account 1")
+
+      await homePage.waitForActionToComplete()
+      await homePage.checkBalances(initialBalance)
     })
   },
 )

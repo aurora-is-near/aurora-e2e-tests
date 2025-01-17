@@ -13,6 +13,7 @@ export class SwapPage extends BasePage {
   swapFromInput: Locator
   tokensWithBalance: Locator
   availableToTrade: Locator
+  insufficientFundsText: Locator
 
   constructor(page: Page) {
     super(page)
@@ -27,6 +28,7 @@ export class SwapPage extends BasePage {
     this.swapFromInput = page.locator("#input-amount")
     this.tokensWithBalance = page.locator('[data-testid*="-swap-button"]')
     this.availableToTrade = page.getByText("You have ")
+    this.insufficientFundsText = page.getByText("Insufficient funds ")
   }
 
   async confirmHomePageLoaded(url: string, page = this.page) {
@@ -58,7 +60,6 @@ export class SwapPage extends BasePage {
   async enterSwapFromAmount(amount: number) {
     const messageOnFail: string = '"From" input field not visible'
     await expect(this.swapFromInput, messageOnFail).toBeVisible()
-
     await this.swapFromInput.fill(amount.toString())
   }
 
@@ -78,14 +79,22 @@ export class SwapPage extends BasePage {
     )
   }
 
-  async getAvailableToTradeBalance(): Promise<number> {
+  async getAvailableToTradeBalance() {
     const balanceString = await this.availableToTrade.innerText()
-    const cleanString = balanceString
-      .replace("You have ", "")
-      .replace(" available to trade", "")
-    const amountToken = cleanString.split(" ")
+    const amountToken = balanceString.match(/[\d.]+/)
 
-    return Number(amountToken[0])
+    return amountToken ? parseFloat(amountToken[0]) : 0
+  }
+
+  async confirmSwapAmountInsufficient(currentBalance: number) {
+    const messageOnFail: string = "Insufficient funds error not shown!"
+    await expect(this.insufficientFundsText, messageOnFail).toBeVisible()
+    const shownBalanceString = await this.insufficientFundsText.innerText()
+    const amountTokenString = shownBalanceString.match(/[\d.]+/)
+    const amountToken = Number(
+      amountTokenString ? parseFloat(amountTokenString[0]) : 0,
+    )
+    expect(amountToken, messageOnFail).toEqual(currentBalance)
   }
 
   async clickApproveSwapButton() {

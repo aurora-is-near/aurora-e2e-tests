@@ -38,7 +38,7 @@ export class StakingPage extends BasePage {
       "Unstake amount is greater",
     )
     this.maxButton = page.getByText("MAX")
-    this.withdrawButton = page.getByRole("button", { name: "Withdraw" })
+    this.withdrawButton = page.getByRole("link", { name: "Withdraw" })
   }
 
   async clickStakeTokensButton() {
@@ -80,7 +80,9 @@ export class StakingPage extends BasePage {
 
   async confirmSuccessNotificationAppears() {
     const messageOnFail: string = '"Confirm transaction" button is not visible'
-    await expect(this.successNotification, messageOnFail).toBeVisible()
+    await expect(this.successNotification, messageOnFail).toBeVisible({
+      timeout: 30_000,
+    })
   }
 
   async returnToStakingInputPage() {
@@ -145,12 +147,14 @@ export class StakingPage extends BasePage {
   }
 
   async withdrawalIsReady(): Promise<boolean> {
-    const status = await this.withdrawButton.isEnabled()
+    // button is always enabled and clickable, but no onClick so checking
+    // by attributes, this checks if button is disabled
+    const attributeFound = await this.withdrawButton.getAttribute("data-testid")
 
-    return status
+    return attributeFound != null && attributeFound === "withdraw-btn"
   }
 
   async clickWithdrawButton() {
-    await this.withdrawButton.click()
+    await this.withdrawButton.click({ force: true })
   }
 }

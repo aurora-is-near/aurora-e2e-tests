@@ -14,7 +14,7 @@ const { expect } = test
 
 test.use(AURORA_PLUS_PAGE)
 
-// Done
+// Earn page - Depositing
 test.describe(
   "Aurora Plus: Earn Page - Depositing",
   { tag: [AURORA_PLUS_TAG, AURORA_PLUS_TAG_DEPOSITING] },
@@ -185,7 +185,7 @@ test.describe(
   },
 )
 
-// Done
+// Earn page - Borrowing
 test.describe(
   "Aurora Plus: Earn Page - Borrowing",
   { tag: [AURORA_PLUS_TAG, AURORA_PLUS_TAG_BORROWING] },

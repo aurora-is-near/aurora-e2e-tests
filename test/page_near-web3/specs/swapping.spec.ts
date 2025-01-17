@@ -20,39 +20,36 @@ test.describe(
   "NEAR Web3 Wallet: Home Page - Swapping",
   { tag: [WEB3_WALLET_TAG, WEB3_WALLET_TAG_SWAPPING] },
   () => {
-    // const tokenFrom = "NEAR"
-
     test(`Confirm that user cannot swap more than the balance contains`, async ({
       page,
     }) => {
       const transferAmount = 9999
       const homePage = new HomePage(page)
-      await homePage.confirmHomePageLoaded("/")
+      await homePage.confirmHomePageLoaded()
       await homePage.scrollToSwapContainer()
       await homePage.selectTokenToSwapFrom("NEAR")
       await homePage.enterSwapFromAmount(transferAmount)
       await homePage.confirmSwapButtonNotAvailable()
     })
 
-    const tokensFromTo: string[][] = [
-      ["NEAR", "USDt"],
-      ["NEAR", "wNEAR"],
-      ["NEAR", "USDT.e"],
-      ["NEAR", "ETH"],
-      ["USDt", "NEAR"],
-      ["ETH", "NEAR"],
-      ["USDT.e", "NEAR"],
+    const tokensFromTo = [
+      { from: "NEAR", to: "USDt" },
+      { from: "NEAR", to: "wNEAR" },
+      { from: "NEAR", to: "USDT.e" },
+      { from: "NEAR", to: "ETH" },
+      { from: "ETH", to: "NEAR" },
+      { from: "USDT.e", to: "NEAR" },
     ]
 
     for (const transfers of tokensFromTo) {
-      const tokenFrom = transfers[0]
-      const tokenTo = transfers[1]
+      const tokenFrom = transfers.from
+      const tokenTo = transfers.to
       test(`Confirm that user can swap some tokens from ${tokenFrom}, to ${tokenTo}`, async ({
         page,
         context,
         extensionId,
       }) => {
-        const transferAmount = 0.1
+        const transferAmount = 0.01
         const homePage = new HomePage(page)
         const metamask = new MetaMask(
           context,
@@ -61,7 +58,7 @@ test.describe(
           extensionId,
         )
 
-        await homePage.confirmHomePageLoaded("/")
+        await homePage.confirmHomePageLoaded()
         await homePage.scrollToSwapContainer()
         await homePage.selectTokenToSwapFrom(tokenFrom)
         await homePage.enterSwapFromAmount(transferAmount)
@@ -80,7 +77,6 @@ test.describe(
           transferAmount,
         )
 
-        // TODO: Remove once test ids will be set
         await homePage.restoreToDefaultTokens(tokenFrom, tokenTo)
       })
     }

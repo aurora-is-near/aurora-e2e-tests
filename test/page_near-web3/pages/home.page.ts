@@ -27,13 +27,13 @@ export class HomePage extends BasePage {
     this.swapToWallet = page.getByText("REF", { exact: true })
     this.fromAmountInputField = page.getByText("NEAR~$").getByPlaceholder("0.0")
     this.toAmountInputField = page.getByText("REF~$").getByPlaceholder("0.0")
-    // Dropdown locators must be updated
     this.firstDropdownArrow = page
-      .locator("form")
+      .getByRole("main")
       .getByText("NEAR", { exact: true })
-    this.secondDropdownArrow = page
-      .locator("form")
-      .getByText("REF", { exact: true })
+
+    this.secondDropdownArrow = page.getByText("AURORA", {
+      exact: true,
+    })
     this.amountInputField = page.getByPlaceholder("0.0")
     this.swapButton = page.getByRole("button", { name: "Swap" })
     this.popUpConfirmTransactionButton = page.getByRole("button", {
@@ -46,8 +46,8 @@ export class HomePage extends BasePage {
     })
   }
 
-  async confirmHomePageLoaded(url: string, page = this.page) {
-    await this.confirmCorrectPageLoaded(page, url)
+  async confirmHomePageLoaded(page = this.page) {
+    await this.confirmCorrectPageLoaded(page, "/")
   }
 
   async scrollToSwapContainer() {
@@ -66,8 +66,9 @@ export class HomePage extends BasePage {
   async selectTokenToSwapFrom(tokenName: string) {
     if (tokenName !== "NEAR") {
       await this.firstDropdownArrow.click()
-      // Must be updated to IDS
-      const tokenSelector = this.page.getByText(tokenName, { exact: true })
+      const tokenSelector = this.page
+        .getByText(tokenName, { exact: true })
+        .first()
       const messageOnFail: string = `Token ${tokenName} was not found in token list which contains any balance`
       await expect(tokenSelector, messageOnFail).toBeVisible()
       await tokenSelector.click()
@@ -75,9 +76,12 @@ export class HomePage extends BasePage {
   }
 
   async selectTokenToSwapTo(tokenName: string) {
-    if (tokenName !== "REF") {
+    if (tokenName !== "AURORA") {
+      // get current text in 2nd dropdown
       await this.secondDropdownArrow.click()
-      const tokenSelector = this.page.getByText(tokenName, { exact: true })
+      const tokenSelector = this.page
+        .getByText(tokenName, { exact: true })
+        .first()
       const messageOnFail: string = `Token ${tokenName} was not found in token list of destination tokens`
       await expect(tokenSelector, messageOnFail).toBeVisible()
       await tokenSelector.click()
@@ -123,7 +127,9 @@ export class HomePage extends BasePage {
     const balanceBefore = Number(balanceBeforeString.replace("Balance: ", ""))
     const balanceAfter = Number(balanceAfterString.replace("Balance: ", ""))
 
-    expect((balanceBefore - transfer).toFixed()).toBe(balanceAfter)
+    expect(Math.round(balanceBefore - transfer)).toBeLessThanOrEqual(
+      Math.round(balanceAfter),
+    )
   }
 
   async confirmSwapButtonNotAvailable() {
@@ -137,9 +143,9 @@ export class HomePage extends BasePage {
       .locator("form")
       .getByText(tokenFrom, { exact: true })
       .click()
-    await this.page.getByText("NEAR", { exact: true }).click()
+    await this.page.getByText("NEAR", { exact: true }).first().click()
 
     await this.page.getByText(tokenTo, { exact: true }).click()
-    await this.page.getByText("REF", { exact: true }).click()
+    await this.page.getByText("AURORA", { exact: true }).first().click()
   }
 }

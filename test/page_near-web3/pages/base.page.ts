@@ -7,6 +7,11 @@ export class BasePage {
   portfolioTab: Locator
   stakingTab: Locator
   exploreTab: Locator
+  accountDropdown: Locator
+  accountDropdownExpanded: Locator
+  disconnectAccountButton: Locator
+  loginButton: Locator
+  balanceElement: Locator
 
   constructor(page: Page) {
     this.page = page
@@ -14,6 +19,17 @@ export class BasePage {
     this.portfolioTab = page.getByRole("link", { name: "Portfolio" })
     this.stakingTab = page.getByRole("link", { name: "Staking" })
     this.exploreTab = page.getByRole("link", { name: "Explore", exact: true })
+    this.accountDropdown = page.locator('button[aria-haspopup="menu"]')
+    this.accountDropdownExpanded = page.locator(
+      'button[aria-haspopup="menu"][aria-expanded="true"]',
+    )
+    this.disconnectAccountButton = page.getByRole("menuitem", {
+      name: "Disconnect",
+    })
+    this.loginButton = page
+      .getByRole("banner")
+      .getByRole("button", { name: "Log in with Ethereum" })
+    this.balanceElement = page.locator("div.font-sans > span")
   }
 
   async confirmCorrectPageLoaded(page: Page, urlExtension: string) {
@@ -54,7 +70,29 @@ export class BasePage {
     await this.confirmCorrectPageLoaded(this.page, url)
   }
 
+  async openAccountDropdown() {
+    await expect(this.accountDropdown).toBeVisible()
+    await this.accountDropdown.click()
+    await expect(this.accountDropdownExpanded).toBeVisible()
+  }
+
+  async disconnectAccount() {
+    await expect(this.disconnectAccountButton).toBeVisible()
+    await this.disconnectAccountButton.click()
+    await expect(this.loginButton).toBeVisible()
+  }
+
+  async getAvailableBalance() {
+    return this.balanceElement.innerText()
+  }
+
+  async checkBalances(initialBalance: string) {
+    expect(parseInt(await this.balanceElement.innerText(), 10)).toBeLessThan(
+      parseInt(initialBalance, 10),
+    )
+  }
+
   async waitForActionToComplete() {
-    await this.page.waitForTimeout(15000)
+    await this.page.waitForTimeout(5000)
   }
 }
