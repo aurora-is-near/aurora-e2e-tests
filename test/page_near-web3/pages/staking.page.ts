@@ -157,7 +157,6 @@ export class StakingPage extends BasePage {
   async unstakingIsReady(): Promise<boolean> {
     const attributeFound = await this.unstakeButton.getAttribute("data-testid")
 
-
     return attributeFound != null && attributeFound === "unstake-btn"
   }
 
