@@ -12,4 +12,4 @@ concurrency:
 
 jobs:
   test:
-    uses: ./.github/workflows/test.yml
+    uses: ./.github/workflows/lint_check.yml
