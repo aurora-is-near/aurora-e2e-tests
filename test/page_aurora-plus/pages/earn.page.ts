@@ -28,9 +28,10 @@ export class EarnPage extends BasePage {
   borrowedAmountLine: Locator
   repayButton: Locator
   myBorrowWrapper: Locator
-  withdrawDeositButton: Locator
+  withdrawDepositButton: Locator
   incorrectAmountNotification: Locator
   availableBorrowAmount: Locator
+  withdrawButton: Locator
 
   constructor(page: Page) {
     super(page)
@@ -76,10 +77,11 @@ export class EarnPage extends BasePage {
     })
     this.repayButton = page.getByRole("button", { name: "Repay" })
     this.myBorrowWrapper = page.getByRole("heading", { name: "My borrow" })
-    this.withdrawDeositButton = page.getByTestId("withdraw-deposit-button")
+    this.withdrawDepositButton = page.getByTestId("withdraw-deposit-button")
     this.incorrectAmountNotification = page.getByText(
       "You may only withdraw up to",
     )
+    this.withdrawButton = page.getByRole("button", { name: "Withdraw" })
     this.availableBorrowAmount = page.getByText("You may borrow up to")
   }
 
@@ -195,10 +197,12 @@ export class EarnPage extends BasePage {
   }
 
   async clickBorrowButton() {
+    await expect(this.borrowButton).toBeEnabled(shortTimeout)
     await this.borrowButton.click()
   }
 
   async clickBorrowMoreButton() {
+    await expect(this.borrowMoreButton).toBeEnabled(shortTimeout)
     await this.borrowMoreButton.click()
   }
 
@@ -241,10 +245,12 @@ export class EarnPage extends BasePage {
   }
 
   async clickRepayButton() {
+    await expect(this.repayButton).toBeEnabled(shortTimeout)
     await this.repayButton.click()
   }
 
   async clickApproveButton() {
+    await expect(this.approveButton).toBeEnabled(shortTimeout)
     await this.approveButton.click()
   }
 
@@ -258,7 +264,7 @@ export class EarnPage extends BasePage {
   }
 
   async clickWithdrawDeposit() {
-    await this.withdrawDeositButton.click()
+    await this.withdrawDepositButton.click()
   }
 
   async confirmIncorrectAmountNotificationVisible() {
@@ -292,5 +298,10 @@ export class EarnPage extends BasePage {
     const splitInfo = amountInfo.split(" ")
 
     return splitInfo[0]
+  }
+
+  async clickWitdrawButton() {
+    await expect(this.withdrawButton).toBeEnabled(shortTimeout)
+    await this.withdrawButton.click()
   }
 }

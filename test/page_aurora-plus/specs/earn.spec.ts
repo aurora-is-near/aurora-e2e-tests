@@ -172,7 +172,7 @@ test.describe(
       await earnPage.clickWithdrawDeposit()
       test.skip(amount > depositedValueBefore, "Not enought funds to withdraw")
       await earnPage.enterAmount(amount)
-      await page.getByRole("button", { name: "Withdraw" }).click()
+      await earnPage.clickWitdrawButton()
       await metamask.confirmTransaction()
       await earnPage.waitForActionToComplete()
       const depositedValueAfter = await earnPage.getDepositedTokenBalance()
