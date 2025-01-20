@@ -46,11 +46,9 @@ jobs:
 
       - name: Run tests
         run: xvfb-run yarn test-web-wallet
-
-      - name: Upload test artifacts
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: playwright-report
+          name: playwright-report-near3
           path: my-report/
           retention-days: 5
