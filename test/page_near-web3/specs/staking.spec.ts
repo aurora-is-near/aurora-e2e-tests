@@ -88,6 +88,10 @@ test.describe(
 
       await homePage.confirmHomePageLoaded()
       await stakingPage.navigateToStakingPage()
+      test.skip(
+        !(await stakingPage.unstakingIsReady()),
+        "There are no balance to unstake",
+      )
       await stakingPage.clickUnstakeLink()
       await stakingPage.clickSelectButton()
       const availableToUnstake = await stakingPage.getAvalableBalance()
@@ -112,6 +116,12 @@ test.describe(
 
       await homePage.confirmHomePageLoaded()
       await stakingPage.navigateToStakingPage()
+
+      test.skip(
+        !(await stakingPage.unstakingIsReady()),
+        "There are no balance to unstake",
+      )
+
       await stakingPage.clickUnstakeLink()
       await stakingPage.clickSelectButton()
       await stakingPage.clickMaxAmountButton()
