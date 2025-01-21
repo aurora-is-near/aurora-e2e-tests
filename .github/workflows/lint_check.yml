@@ -1,4 +1,4 @@
-name: Test
+name: CI lint and typecheck
 
 on: workflow_call
 
