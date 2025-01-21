@@ -11,7 +11,7 @@
     "test": "playwright test --workers=1",
     "test-aurora": "playwright test --workers=1 --grep @aurora-plus",
     "test-web-wallet": "playwright test --workers=1 --grep @web3-wallet",
-    "test-tag": "playwright test --workers=1 --grep @aurora-plus-borrowing",
+    "test-tag": "playwright test --workers=1 --grep",
     "debug": "yarn playwright test --debug",
     "console": "PWDEBUG=console yarn playwright test",
     "report": "yarn playwright show-report"

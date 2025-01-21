@@ -1,12 +1,17 @@
-name: E2E UI automation tests on Aurora plus
+name: E2E UI automation tests worker
 
 on:
-    workflow_dispatch:
-    schedule:
-      - cron: '0 8,14 * * 1-5'
+    on: workflow_call
+    inputs:
+      tag:
+        description: 'Provide tag to run tests by'
+        required: true
+        default: ''
+        type: string
+
 
 jobs:
-  build:
+  e2e-test:
     runs-on: ubuntu-8-core
     timeout-minutes: 240
 
@@ -45,10 +50,11 @@ jobs:
         run: xvfb-run yarn synpress
 
       - name: Run tests
-        run: xvfb-run yarn test-aurora
+        run: xvfb-run yarn test-tag ${{ inputs.tag }}
+
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: playwright-report-aurora-plus
+          name: playwright-report
           path: my-report/
           retention-days: 5
