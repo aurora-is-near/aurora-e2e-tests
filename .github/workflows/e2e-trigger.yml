@@ -10,7 +10,6 @@ jobs:
     strategy:
       matrix:
         tag: ['@aurora-plus', '@web3-wallet']
-    steps:
-       - uses: ./.github/workflows/e2e-worker.yml
-         with:
-           tag: ${{ matrix.tag }}
+    uses: ./.github/workflows/e2e-worker.yml
+      with:
+        tag: ${{ matrix.tag }}
