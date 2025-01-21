@@ -1,12 +1,11 @@
 name: E2E UI automation tests worker
 
 on:
-    on: workflow_call
+  workflow_call:
     inputs:
       tag:
         description: 'Provide tag to run tests by'
         required: true
-        default: ''
         type: string
 
 
