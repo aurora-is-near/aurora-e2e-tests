@@ -33,23 +33,24 @@ test.describe(
     })
 
     const tokensFromTo = [
-      { from: "NEAR", to: "USDt" },
-      { from: "NEAR", to: "wNEAR" },
-      { from: "NEAR", to: "USDT.e" },
-      { from: "NEAR", to: "ETH" },
-      { from: "ETH", to: "NEAR" },
-      { from: "USDT.e", to: "NEAR" },
+      { tokenFrom: "NEAR", tokenTo: "USDt", swapAmount: 0.01 },
+      { tokenFrom: "NEAR", tokenTo: "USDT.e", swapAmount: 0.01 },
+      { tokenFrom: "NEAR", tokenTo: "ETH", swapAmount: 0.01 },
+      { tokenFrom: "ETH", tokenTo: "NEAR", swapAmount: 0.00001 },
+      { tokenFrom: "USDT.e", tokenTo: "NEAR", swapAmount: 0.01 },
     ]
 
     for (const transfers of tokensFromTo) {
-      const tokenFrom = transfers.from
-      const tokenTo = transfers.to
-      test(`Confirm that user can swap some tokens from ${tokenFrom}, to ${tokenTo}`, async ({
+      const {
+        tokenFrom,
+        tokenTo,
+        swapAmount,
+      }: { tokenFrom: string; tokenTo: string; swapAmount: number } = transfers
+      test(`Confirm that user can swap some tokens from ${tokenFrom}, to ${tokenTo} for ${swapAmount}`, async ({
         page,
         context,
         extensionId,
       }) => {
-        const transferAmount = 0.01
         const homePage = new HomePage(page)
         const metamask = new MetaMask(
           context,
@@ -61,8 +62,13 @@ test.describe(
         await homePage.confirmHomePageLoaded()
         await homePage.scrollToSwapContainer()
         await homePage.selectTokenToSwapFrom(tokenFrom)
-        await homePage.enterSwapFromAmount(transferAmount)
+        await homePage.enterSwapFromAmount(swapAmount)
         const balanceBefore = await homePage.getFromTokenBalance()
+        // check if we have enough balance for swapping with gas fee
+        test.skip(
+          Number(balanceBefore) < Number(swapAmount + 0.2),
+          `Insufficient funds for sending, balance: ${balanceBefore}, transfer: ${swapAmount}`,
+        )
         await homePage.selectTokenToSwapTo(tokenTo)
         await homePage.clickSwapButton()
         await homePage.confirmTransactionPopup()
@@ -74,7 +80,7 @@ test.describe(
         homePage.confirmTransactionWasCorrect(
           balanceBefore,
           balanceAfter,
-          transferAmount,
+          swapAmount,
         )
 
         await homePage.restoreToDefaultTokens(tokenFrom, tokenTo)

@@ -139,13 +139,20 @@ export class HomePage extends BasePage {
   }
 
   async restoreToDefaultTokens(tokenFrom: string, tokenTo: string) {
-    await this.page
-      .locator("form")
-      .getByText(tokenFrom, { exact: true })
-      .click()
-    await this.page.getByText("NEAR", { exact: true }).first().click()
+    if (tokenTo !== "AURORA") {
+      await this.page
+        .getByRole("main")
+        .getByText(tokenTo, { exact: true })
+        .click()
+      await this.page.getByText("AURORA", { exact: true }).first().click()
+    }
 
-    await this.page.getByText(tokenTo, { exact: true }).click()
-    await this.page.getByText("AURORA", { exact: true }).first().click()
+    if (tokenFrom !== "NEAR") {
+      await this.page
+        .locator("form")
+        .getByText(tokenFrom, { exact: true })
+        .click()
+      await this.page.getByText("NEAR", { exact: true }).first().click()
+    }
   }
 }

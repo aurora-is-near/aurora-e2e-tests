@@ -42,8 +42,19 @@ export class PortfolioPage extends BasePage {
     await this.sendButton.click()
   }
 
-  async selectAsset(asset: string) {
-    await this.page.locator(`//h3[starts-with(text(), '${asset}')]/..`).click()
+  async selectAsset(asset: string): Promise<number> {
+    const numberString = await this.page
+      .getByRole("button", { name: asset })
+      .getByText(RegExp(`[+-]?([0-9]*[.])?[0-9]+ ${asset}`))
+      .innerText()
+
+    await this.page
+      .getByRole("button", { name: asset })
+      .getByRole("heading", { name: asset, exact: true })
+      .click()
+    const number = Number(numberString.split(" ")[0])
+
+    return number
   }
 
   async enterTransferAmount(amount: number) {

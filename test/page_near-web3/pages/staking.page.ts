@@ -33,7 +33,7 @@ export class StakingPage extends BasePage {
     this.notEnoughBalanceNotification = page.getByText("Not enough balance")
     this.unstakeLink = page.getByRole("link", { name: "Unstake" })
     this.selectButton = page.getByRole("button", { name: "Select" })
-    this.unstakeButton = page.getByRole("button", { name: "Unstake" })
+    this.unstakeButton = page.getByRole("link", { name: "Unstake" })
     this.insufficientFundsNotification = page.getByText(
       "Unstake amount is greater",
     )
@@ -152,6 +152,12 @@ export class StakingPage extends BasePage {
     const attributeFound = await this.withdrawButton.getAttribute("data-testid")
 
     return attributeFound != null && attributeFound === "withdraw-btn"
+  }
+
+  async unstakingIsReady(): Promise<boolean> {
+    const attributeFound = await this.unstakeButton.getAttribute("data-testid")
+
+    return attributeFound != null && attributeFound === "unstake-btn"
   }
 
   async clickWithdrawButton() {
