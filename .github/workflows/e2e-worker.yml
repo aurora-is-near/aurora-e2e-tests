@@ -7,6 +7,15 @@ on:
         description: 'Provide tag to run tests by'
         required: true
         type: string
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Provide tag to run tests by'
+        required: true
+        type: choice
+        options:
+          - '@aurora-plus' 
+          - '@web3-wallet'
 
 
 jobs:
