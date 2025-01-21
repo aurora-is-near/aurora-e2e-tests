@@ -7,7 +7,6 @@ on:
 
 jobs:
   e2e-daily:
-    runs-on: ubuntu-8-core
     strategy:
       matrix:
         tag: ['@aurora-plus', '@web3-wallet']
