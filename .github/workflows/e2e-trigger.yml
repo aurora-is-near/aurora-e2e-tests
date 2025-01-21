@@ -6,12 +6,14 @@ on:
       - cron: '0 8,14 * * 1-5'
 
 jobs:
-  e2e-daily:
+  e2e-aurora:
     runs-on: ubuntu-8-core
-    strategy:
-      matrix:
-        tag: ['@aurora-plus', '@web3-wallet']
-    steps:
-       - uses: ./.github/workflows/e2e-worker.yml
-         with:
-           tag: ${{ matrix.tag }}
+    uses: ./.github/workflows/e2e-worker.yml
+    with:
+      tag: '@aurora-plus'
+
+  e2e-near:
+    runs-on: ubuntu-8-core
+    uses: ./.github/workflows/e2e-worker.yml
+    with:
+      tag: '@web3-wallet'
