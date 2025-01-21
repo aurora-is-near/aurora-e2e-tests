@@ -6,7 +6,6 @@ on:
       - cron: '0 8,14 * * 1-5'
 
 jobs:
-
   e2e-daily:
     runs-on: ubuntu-8-core
     strategy:
