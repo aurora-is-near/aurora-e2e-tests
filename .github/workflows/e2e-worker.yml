@@ -7,6 +7,15 @@ on:
         description: 'Provide tag to run tests by'
         required: true
         type: string
+    secrets:
+      MM_SEED_PHRASE:
+        required: true
+      MM_PASSWORD:
+        required: true
+      NEAR_ACCOUNT_TOKEN:
+        required: true
+      AURORA_ACCOUNT_TOKEN:
+        required: true
   workflow_dispatch:
     inputs:
       tag:
@@ -14,7 +23,7 @@ on:
         required: true
         type: choice
         options:
-          - '@aurora-plus' 
+          - '@aurora-plus'
           - '@web3-wallet'
 
 

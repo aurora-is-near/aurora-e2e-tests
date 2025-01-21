@@ -8,8 +8,10 @@ on:
 jobs:
   e2e-daily:
     strategy:
+      fail-fast: false
       matrix:
         tag: ['@aurora-plus', '@web3-wallet']
     uses: ./.github/workflows/e2e-worker.yml
     with:
       tag: ${{ matrix.tag }}
+    secrets: inherit
