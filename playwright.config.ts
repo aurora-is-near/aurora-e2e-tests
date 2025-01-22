@@ -9,13 +9,14 @@ export default defineConfig({
   reporter: [["html", { outputFolder: "my-report", open: "never" }]],
   reportSlowTests: null,
   timeout: (process.env.CI ? 3 : 2) * 60 * 1000,
+  globalTimeout: (process.env.CI ? 60 : 30) * 60 * 1000,
   use: {
     screenshot: "only-on-failure",
     trace: "on-first-retry",
     viewport: { width: 1920, height: 1080 },
   },
   expect: {
-    timeout: (process.env.CI ? 5 : 3) * 60 * 1000,
+    timeout: (process.env.CI ? 50 : 30) * 1000,
   },
   projects: [
     {
