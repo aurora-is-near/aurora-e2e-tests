@@ -56,7 +56,7 @@ test.describe(
         await portfolioPage.clickConfirmAndSend()
         await portfolioPage.clickConfirmTransactionButton()
         await metamask.confirmTransaction()
-        await portfolioPage.waitForActionToComplete()
+        await portfolioPage.waitForTransactionToComplete()
         await portfolioPage.confirmSuccessNotificationAppears()
       })
     }
@@ -87,7 +87,7 @@ test.describe(
       await portfolioPage.clickConfirmAndSend()
       await portfolioPage.clickConfirmTransactionButton()
       await metamask.confirmTransaction()
-      await portfolioPage.waitForActionToComplete()
+      await portfolioPage.waitForTransactionToComplete()
       await portfolioPage.confirmSuccessNotificationAppears()
       await homePage.navigateToPortfolioPage()
       await homePage.openAccountDropdown()

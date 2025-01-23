@@ -99,4 +99,8 @@ export class BasePage {
   async waitForActionToComplete() {
     await this.page.waitForTimeout(5000)
   }
+
+  async waitForTransactionToComplete() {
+    await this.page.waitForTimeout(10_000)
+  }
 }
