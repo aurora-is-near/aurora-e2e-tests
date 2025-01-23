@@ -6,16 +6,20 @@ export default defineConfig({
   forbidOnly: false,
   retries: process.env.CI ? 1 : 0,
   workers: 1,
-  reporter: [["html", { outputFolder: "my-report", open: "never" }]],
+  reporter: [
+    ["html", { outputFolder: "my-report", open: "never" }],
+    ["junit", { outputFile: "results.xml", open: "never" }],
+  ],
   reportSlowTests: null,
   timeout: (process.env.CI ? 3 : 2) * 60 * 1000,
+  globalTimeout: (process.env.CI ? 60 : 30) * 60 * 1000,
   use: {
     screenshot: "only-on-failure",
-    trace: "on-first-retry",
+    trace: "retain-on-failure",
     viewport: { width: 1920, height: 1080 },
   },
   expect: {
-    timeout: (process.env.CI ? 5 : 3) * 60 * 1000,
+    timeout: (process.env.CI ? 50 : 30) * 1000,
   },
   projects: [
     {

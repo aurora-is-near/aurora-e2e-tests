@@ -83,7 +83,11 @@ export class BasePage {
   }
 
   async getAvailableBalance() {
-    return this.balanceElement.innerText()
+    // we need to wait a bit since there is animation on the amount, starting from 0
+    await this.page.waitForTimeout(2000)
+    const balance = await this.balanceElement.innerText()
+
+    return balance
   }
 
   async checkBalances(initialBalance: string) {
@@ -94,5 +98,9 @@ export class BasePage {
 
   async waitForActionToComplete() {
     await this.page.waitForTimeout(5000)
+  }
+
+  async waitForTransactionToComplete() {
+    await this.page.waitForTimeout(10_000)
   }
 }

@@ -22,16 +22,6 @@ test.describe(
   "NEAR Web3 Wallet: Portfolio Page - Transfering",
   { tag: [WEB3_WALLET_TAG, WEB3_WALLET_TAG_TRANSFERING] },
   () => {
-    // TODO Test not completed yet
-    test.skip(`Confirm that user can buy some some funds`, async ({ page }) => {
-      const homePage = new HomePage(page)
-      const portfolioPage = new PortfolioPage(page)
-
-      await homePage.navigateToPortfolioPage()
-      await portfolioPage.clickBuyButton()
-      await portfolioPage.selectPaymentMethod("Münzen")
-    })
-
     const assets: string[] = ["NEAR", "USDt", "FLX"]
     const transferAmount = 0.01
     const transferAccountAddress: string =
@@ -66,13 +56,12 @@ test.describe(
         await portfolioPage.clickConfirmAndSend()
         await portfolioPage.clickConfirmTransactionButton()
         await metamask.confirmTransaction()
-        await portfolioPage.waitForActionToComplete()
+        await portfolioPage.waitForTransactionToComplete()
         await portfolioPage.confirmSuccessNotificationAppears()
       })
     }
 
-    // TODO fix this
-    test.skip(`Confirm that user receive funds`, async ({
+    test(`Confirm that user receive funds`, async ({
       page,
       context,
       extensionId,
@@ -91,14 +80,14 @@ test.describe(
       const initialBalance = await portfolioPage.getAvailableBalance()
       await portfolioPage.clickSendButton()
       await portfolioPage.selectAsset("NEAR")
-      await portfolioPage.enterTransferAmount(0.01)
+      await portfolioPage.enterTransferAmount(0.001)
       await portfolioPage.clickContinueButton()
       await portfolioPage.enterNearAccountId(transferAccountAddress)
       await portfolioPage.clickContinueButton()
       await portfolioPage.clickConfirmAndSend()
       await portfolioPage.clickConfirmTransactionButton()
       await metamask.confirmTransaction()
-      await portfolioPage.waitForActionToComplete()
+      await portfolioPage.waitForTransactionToComplete()
       await portfolioPage.confirmSuccessNotificationAppears()
       await homePage.navigateToPortfolioPage()
       await homePage.openAccountDropdown()

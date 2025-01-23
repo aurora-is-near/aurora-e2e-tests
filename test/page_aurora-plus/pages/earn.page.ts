@@ -139,6 +139,8 @@ export class EarnPage extends BasePage {
   async confirmDeposit() {
     await this.page.waitForTimeout(5000)
 
+    await this.page.getByText("After Depositing").click()
+
     if (await this.confirmDepositButton.isVisible(midTimeout)) {
       await this.confirmDepositButton.click()
     } else if (await this.approveDepositButton.isVisible(midTimeout)) {
@@ -301,6 +303,7 @@ export class EarnPage extends BasePage {
   }
 
   async clickWitdrawButton() {
+    await this.page.getByText("After withdrawing").click()
     await expect(this.withdrawButton).toBeEnabled(shortTimeout)
     await this.withdrawButton.click()
   }
