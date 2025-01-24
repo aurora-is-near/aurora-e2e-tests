@@ -132,8 +132,10 @@ export class EarnPage extends BasePage {
   async enterAmountToDeposit(amount: number) {
     const messageOnFail: string = "Deposit input field not visible"
     await expect(this.depositInputField, messageOnFail).toBeVisible()
-
-    await this.depositInputField.fill(amount.toString())
+    // deposit value seems to need being filled in slowly
+    await this.depositInputField.pressSequentially(amount.toString(), {
+      delay: 1000,
+    })
   }
 
   async confirmDeposit() {
@@ -141,11 +143,20 @@ export class EarnPage extends BasePage {
 
     await this.page.getByText("After Depositing").click()
 
-    if (await this.confirmDepositButton.isVisible(midTimeout)) {
+    if (
+      (await this.confirmDepositButton.isVisible(shortTimeout)) &&
+      (await this.confirmDepositButton.isEnabled(shortTimeout))
+    ) {
       await this.confirmDepositButton.click()
-    } else if (await this.approveDepositButton.isVisible(midTimeout)) {
+    } else if (
+      (await this.approveDepositButton.isVisible(shortTimeout)) &&
+      (await this.approveDepositButton.isEnabled(shortTimeout))
+    ) {
       await this.approveDepositButton.click()
-    } else if (await this.depositButton.isVisible(midTimeout)) {
+    } else if (
+      (await this.depositButton.isVisible(shortTimeout)) &&
+      (await this.depositButton.isEnabled(shortTimeout))
+    ) {
       await this.depositButton.click()
     } else {
       throw new Error("None of described buttons is visible")
@@ -218,7 +229,10 @@ export class EarnPage extends BasePage {
 
   async enterAmount(amount: number | string) {
     const string = typeof amount === "string" ? amount : amount.toString()
-    await this.amountInputField.fill(string)
+    // withdraw value seems to need being filled in slowly
+    await this.amountInputField.pressSequentially(string, {
+      delay: 1000,
+    })
   }
 
   confirmBorrowMoreWasSuccessfull(

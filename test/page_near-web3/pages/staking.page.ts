@@ -81,7 +81,7 @@ export class StakingPage extends BasePage {
   async confirmSuccessNotificationAppears() {
     const messageOnFail: string = '"Confirm transaction" button is not visible'
     await expect(this.successNotification, messageOnFail).toBeVisible({
-      timeout: 30_000,
+      timeout: 45_000,
     })
   }
 

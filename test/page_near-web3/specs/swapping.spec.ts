@@ -66,7 +66,7 @@ test.describe(
         const balanceBefore = await homePage.getFromTokenBalance()
         // check if we have enough balance for swapping with gas fee
         test.skip(
-          Number(balanceBefore) < Number(swapAmount + 0.2),
+          Number(balanceBefore + 0.2) < Number(swapAmount),
           `Insufficient funds for sending, balance: ${balanceBefore}, transfer: ${swapAmount}`,
         )
         await homePage.selectTokenToSwapTo(tokenTo)
