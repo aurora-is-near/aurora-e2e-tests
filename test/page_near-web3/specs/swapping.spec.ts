@@ -83,7 +83,7 @@ test.describe(
           swapAmount,
         )
 
-        // await homePage.restoreToDefaultTokens(tokenFrom, tokenTo)
+        await homePage.restoreToDefaultTokens(tokenFrom, tokenTo)
       })
     }
   },
