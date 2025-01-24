@@ -134,7 +134,7 @@ export class EarnPage extends BasePage {
     await expect(this.depositInputField, messageOnFail).toBeVisible()
     // deposit value seems to need being filled in slowly
     await this.depositInputField.pressSequentially(amount.toString(), {
-      delay: 500,
+      delay: 1000,
     })
   }
 
@@ -231,7 +231,7 @@ export class EarnPage extends BasePage {
     const string = typeof amount === "string" ? amount : amount.toString()
     // withdraw value seems to need being filled in slowly
     await this.amountInputField.pressSequentially(string, {
-      delay: 500,
+      delay: 1000,
     })
   }
 
