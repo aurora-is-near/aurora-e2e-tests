@@ -55,9 +55,8 @@ export class HomePage extends BasePage {
   }
 
   async getFromTokenBalance() {
-    await this.page.waitForTimeout(2000)
     const messageOnFail: string = '"From" token balance is not visible'
-    await expect(this.balance, messageOnFail).toBeVisible()
+    await expect(this.balance, messageOnFail).toBeVisible({ timeout: 5000 })
     const balanceText = await this.balance.innerText()
 
     return balanceText

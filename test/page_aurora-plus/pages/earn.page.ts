@@ -317,6 +317,7 @@ export class EarnPage extends BasePage {
   }
 
   async clickWitdrawButton() {
+    await this.page.getByText("After withdrawing").click()
     await expect(this.withdrawButton).toBeEnabled(shortTimeout)
     await this.withdrawButton.click()
   }

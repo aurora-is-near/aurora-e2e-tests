@@ -70,7 +70,7 @@ test.describe(
       await stakingPage.confirmStake()
       await stakingPage.confirmTransaction()
       await metamask.confirmTransaction()
-      await stakingPage.waitForActionToComplete()
+      await stakingPage.waitForTransactionToComplete()
       await stakingPage.confirmSuccessNotificationAppears()
       await stakingPage.returnToStakingInputPage()
       const availableBalanceAfter = await stakingPage.getAvalableBalance()
@@ -128,7 +128,7 @@ test.describe(
       await stakingPage.clickUnstakeButton()
       await stakingPage.confirmTransaction()
       await metamask.confirmTransaction()
-      await stakingPage.waitForActionToComplete()
+      await stakingPage.waitForTransactionToComplete()
       await stakingPage.confirmSuccessNotificationAppears()
     })
 
@@ -162,7 +162,7 @@ test.describe(
       await stakingPage.clickWithdrawButton()
       await stakingPage.confirmTransaction()
       await metamask.confirmTransaction()
-      await stakingPage.waitForActionToComplete()
+      await stakingPage.waitForTransactionToComplete()
       await stakingPage.confirmSuccessNotificationAppears()
     })
   },
