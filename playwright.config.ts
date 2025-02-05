@@ -1,3 +1,4 @@
+import type { GitHubActionOptions } from "@estruyf/github-actions-reporter"
 import { defineConfig, devices } from "@playwright/test"
 
 export default defineConfig({
@@ -9,7 +10,13 @@ export default defineConfig({
   reporter: [
     ["html", { outputFolder: "my-report", open: "never" }],
     ["junit", { outputFile: "results.xml", open: "never" }],
-    ["@estruyf/github-actions-reporter"],
+    [
+      "@estruyf/github-actions-reporter",
+      <GitHubActionOptions>{
+        useDetails: true,
+        showError: true,
+      },
+    ],
   ],
   reportSlowTests: null,
   timeout: (process.env.CI ? 3 : 2) * 60 * 1000,
