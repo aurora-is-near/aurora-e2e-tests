@@ -9,6 +9,7 @@ export default defineConfig({
   reporter: [
     ["html", { outputFolder: "my-report", open: "never" }],
     ["junit", { outputFile: "results.xml", open: "never" }],
+    ["@estruyf/github-actions-reporter"],
   ],
   reportSlowTests: null,
   timeout: (process.env.CI ? 3 : 2) * 60 * 1000,

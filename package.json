@@ -22,6 +22,7 @@
     "node": "20.x"
   },
   "dependencies": {
+    "@estruyf/github-actions-reporter": "^1.10.0",
     "@synthetixio/synpress": "4.0.3",
     "dotenv": "16.4.5",
     "playwright": "1.44.0"
