@@ -15,6 +15,7 @@ export default defineConfig({
       <GitHubActionOptions>{
         useDetails: true,
         showError: true,
+        showTags: false,
       },
     ],
   ],
