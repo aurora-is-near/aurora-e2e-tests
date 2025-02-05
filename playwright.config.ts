@@ -14,7 +14,7 @@ export default defineConfig({
       "@estruyf/github-actions-reporter",
       <GitHubActionOptions>{
         useDetails: true,
-        showError: true,
+        showError: false,
         showTags: false,
       },
     ],
