@@ -90,10 +90,16 @@ export class BasePage {
     return balance
   }
 
-  async checkBalances(initialBalance: string) {
+  async checkSenderBalances(initialBalance: string) {
     expect(parseInt(await this.balanceElement.innerText(), 10)).toBeLessThan(
       parseInt(initialBalance, 10),
     )
+  }
+
+  async checkReceiverBalances(initialBalance: string) {
+    expect(
+      parseInt(await this.balanceElement.innerText(), 10),
+    ).toBeGreaterThanOrEqual(parseInt(initialBalance, 10))
   }
 
   async waitForActionToComplete() {

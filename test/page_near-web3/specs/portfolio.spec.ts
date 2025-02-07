@@ -97,7 +97,7 @@ test.describe(
       await nearWeb3Preconditions.loginToNearWeb3Account("Account 1")
 
       await homePage.waitForActionToComplete()
-      await homePage.checkBalances(initialBalance)
+      await homePage.checkSenderBalances(initialBalance)
     })
   },
 )
