@@ -1,4 +1,9 @@
-import { expect, type Locator, type Page } from "@playwright/test"
+import {
+  type BrowserContext,
+  expect,
+  type Locator,
+  type Page,
+} from "@playwright/test"
 import { AURORA_PLUS_PAGE } from "../../helpers/constants/pages"
 
 export class BasePage {
@@ -106,5 +111,17 @@ export class BasePage {
 
   async waitForActionToComplete() {
     await this.page.waitForTimeout(15000)
+  }
+
+  async setUsersCookieCountry(context: BrowserContext) {
+    const cookies = await context.cookies()
+    const cookieToModify = cookies.find(
+      (cookie) => cookie.name === "aurora-plus-country",
+    )
+
+    if (cookieToModify) {
+      cookieToModify.value = "LV"
+      await context.addCookies([cookieToModify])
+    }
   }
 }

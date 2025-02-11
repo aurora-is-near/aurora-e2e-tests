@@ -91,15 +91,15 @@ export class BasePage {
   }
 
   async checkSenderBalances(initialBalance: string) {
-    expect(parseInt(await this.balanceElement.innerText(), 10)).toBeLessThan(
-      parseInt(initialBalance, 10),
+    expect(parseFloat(await this.balanceElement.innerText())).toBeLessThan(
+      parseFloat(initialBalance),
     )
   }
 
   async checkReceiverBalances(initialBalance: string) {
     expect(
-      parseInt(await this.balanceElement.innerText(), 10),
-    ).toBeGreaterThanOrEqual(parseInt(initialBalance, 10))
+      parseFloat(await this.balanceElement.innerText()),
+    ).toBeGreaterThanOrEqual(parseFloat(initialBalance))
   }
 
   async waitForActionToComplete() {

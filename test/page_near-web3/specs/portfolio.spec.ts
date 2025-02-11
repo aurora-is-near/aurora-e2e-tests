@@ -90,14 +90,12 @@ test.describe(
       await portfolioPage.waitForTransactionToComplete()
       await portfolioPage.confirmSuccessNotificationAppears()
       await homePage.navigateToPortfolioPage()
+      await homePage.checkSenderBalances(initialBalance)
       await homePage.openAccountDropdown()
       await homePage.disconnectAccount()
 
       await homePage.waitForActionToComplete()
       await nearWeb3Preconditions.loginToNearWeb3Account("Account 1")
-
-      await homePage.waitForActionToComplete()
-      await homePage.checkSenderBalances(initialBalance)
     })
   },
 )

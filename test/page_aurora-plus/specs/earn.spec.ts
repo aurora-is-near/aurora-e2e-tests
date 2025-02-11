@@ -70,7 +70,10 @@ test.describe(
       await earnPage.skipOnboardingIfVisible()
 
       await page.waitForTimeout(2000)
-      test.skip(await earnPage.isAnyDepositsExist())
+      test.skip(
+        await earnPage.isAnyDepositsExist(),
+        "No entities found for available depositing",
+      )
 
       await page.waitForTimeout(5000)
 
@@ -110,7 +113,12 @@ test.describe(
       await dashboardPage.navigateToEarnPage()
       await earnPage.skipOnboardingIfVisible()
 
-      test.skip(!(await earnPage.isAnyDepositsExist()))
+      await dashboardPage.setUsersCookieCountry(context)
+
+      test.skip(
+        !(await earnPage.isAnyDepositsExist()),
+        "No entities found for available depositing",
+      )
 
       const depositBeforeTransaction = await earnPage.getDepositedTokenBalance()
       const depositValueBeforeTransaction =
@@ -143,7 +151,10 @@ test.describe(
       await dashboardPage.navigateToEarnPage()
       await earnPage.skipOnboardingIfVisible()
 
-      test.skip(!(await earnPage.isAnyDepositsExist()))
+      test.skip(
+        !(await earnPage.isAnyDepositsExist()),
+        "No entities found for available depositing",
+      )
 
       const depositedValue = await earnPage.getDepositedTokenValue()
       await earnPage.clickWithdrawDeposit()
@@ -167,7 +178,11 @@ test.describe(
       await dashboardPage.navigateToEarnPage()
       await earnPage.skipOnboardingIfVisible()
 
-      test.skip(!(await earnPage.isAnyDepositsExist()))
+      await dashboardPage.setUsersCookieCountry(context)
+      test.skip(
+        !(await earnPage.isAnyDepositsExist()),
+        "No entities found for available depositing",
+      )
       const depositedValueBefore = await earnPage.getDepositedTokenBalance()
       await earnPage.clickWithdrawDeposit()
       test.skip(amount > depositedValueBefore, "Not enought funds to withdraw")
@@ -202,12 +217,15 @@ test.describe(
 
     test(`Confirm that user cannot borrow more than balance allow ${tokenName} tokens`, async ({
       page,
+      context,
     }) => {
       const dashboardPage = new DashboardPage(page)
       const earnPage = new EarnPage(page)
 
       await dashboardPage.navigateToEarnPage()
       await earnPage.skipOnboardingIfVisible()
+
+      await dashboardPage.setUsersCookieCountry(context)
 
       if (await earnPage.borrowExists()) {
         await earnPage.clickBorrowMoreButton()
@@ -236,7 +254,10 @@ test.describe(
 
       await dashboardPage.navigateToEarnPage()
       await earnPage.skipOnboardingIfVisible()
-      test.skip(await earnPage.borrowExists())
+      test.skip(
+        await earnPage.borrowExists(),
+        "No entities found for burrowing",
+      )
 
       await earnPage.selectTokenByTokenName(tokenName)
       await earnPage.enterAmount(borrowAmount)
@@ -263,7 +284,10 @@ test.describe(
       await dashboardPage.navigateToEarnPage()
       await earnPage.skipOnboardingIfVisible()
 
-      test.skip(!(await earnPage.borrowExists()))
+      test.skip(
+        !(await earnPage.borrowExists()),
+        "No entities found for burrowing",
+      )
 
       const amountBefore = await earnPage.getBorrowedAmount()
       await earnPage.clickBorrowMoreButton()
@@ -286,7 +310,10 @@ test.describe(
 
       await dashboardPage.navigateToEarnPage()
       await earnPage.skipOnboardingIfVisible()
-      test.skip(!(await earnPage.borrowExists()))
+      test.skip(
+        !(await earnPage.borrowExists()),
+        "No entities found for burrowing",
+      )
 
       await earnPage.clickRepayButton()
       const amountToReturn = await earnPage.getBorrowedAmountToReturn()
@@ -310,7 +337,10 @@ test.describe(
 
       await dashboardPage.navigateToEarnPage()
       await earnPage.skipOnboardingIfVisible()
-      test.skip(!(await earnPage.borrowExists()))
+      test.skip(
+        !(await earnPage.borrowExists()),
+        "No entities found for burrowing",
+      )
 
       await earnPage.clickRepayButton()
       const amountToReturn = await earnPage.getBorrowedAmountToReturn()

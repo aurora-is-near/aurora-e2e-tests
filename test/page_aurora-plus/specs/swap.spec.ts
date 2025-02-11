@@ -22,7 +22,7 @@ test.describe(
       },
     )
 
-    const amount: number = 0.1
+    const amount: number = 0.00001
 
     const transferFromTo: string[][] = [
       ["AURORA", "BRRR"],
@@ -37,45 +37,44 @@ test.describe(
     for (const transfer of transferFromTo) {
       const tokenWithBalance: string = transfer[0]
       const destinationToken: string = transfer[1]
-      test.skip(`Confirm that user can swap from ${tokenWithBalance} to ${destinationToken}`, async ({
-        context,
-        page,
-        extensionId,
-      }) => {
-        const swapPage = new SwapPage(page)
-        const dashboardPage = new DashboardPage(page)
-        const metamask = new MetaMask(
-          context,
-          page,
-          auroraSetup.walletPassword,
-          extensionId,
-        )
-        await dashboardPage.navigateToSwapPage()
-        await swapPage.selectTokenWithBalance(tokenWithBalance)
-        const amountBefore = await swapPage.getAvailableToTradeBalance()
-        test.skip(
-          amountBefore > amount,
-          `Insufficient balance for make transaction from ${tokenWithBalance}`,
-        )
-        await swapPage.selectDestinationSupportedToken(destinationToken)
-        await swapPage.enterSwapFromAmount(amount)
-        await swapPage.clickReviewSwapButton()
-        await swapPage.confirmThatReviewYourSwapModalVisible()
-        await swapPage.clickSwapNowButton()
-        await metamask.confirmTransaction()
-        test.fail() // REMOVE when JSON-RPC issue will be resolved. Amount of free transactions for used account should be increased
-        await swapPage.waitForActionToComplete()
-        await swapPage.confirmTransactionData(
-          tokenWithBalance,
-          destinationToken,
-          amount,
-        )
-        await swapPage.clickSwapNowButton()
-        await metamask.confirmTransaction()
-        await swapPage.waitForActionToComplete()
-        const amountAfter = await swapPage.getAvailableToTradeBalance()
-        swapPage.confirmSwapWasCompleted(amountBefore, amountAfter, amount)
-      })
+      test.fixme(
+        `Confirm that user can swap from ${tokenWithBalance} to ${destinationToken}`,
+        async ({ context, page, extensionId }) => {
+          const swapPage = new SwapPage(page)
+          const dashboardPage = new DashboardPage(page)
+          const metamask = new MetaMask(
+            context,
+            page,
+            auroraSetup.walletPassword,
+            extensionId,
+          )
+          await dashboardPage.navigateToSwapPage()
+          await swapPage.selectTokenWithBalance(tokenWithBalance)
+          const amountBefore = await swapPage.getAvailableToTradeBalance()
+          test.skip(
+            amount > amountBefore,
+            `Insufficient balance for make transaction for ${amount} from ${tokenWithBalance}, got ${amountBefore}`,
+          )
+          await swapPage.selectDestinationSupportedToken(destinationToken)
+          await swapPage.enterSwapFromAmount(amount)
+          await swapPage.clickReviewSwapButton()
+          await swapPage.confirmThatReviewYourSwapModalVisible()
+          await swapPage.clickSwapNowButton()
+          await metamask.confirmTransaction()
+          // test.fail() // REMOVE when JSON-RPC issue will be resolved. Amount of free transactions for used account should be increased
+          await swapPage.waitForActionToComplete()
+          await swapPage.confirmTransactionData(
+            tokenWithBalance,
+            destinationToken,
+            amount,
+          )
+          await swapPage.clickSwapNowButton()
+          await metamask.confirmTransaction()
+          await swapPage.waitForActionToComplete()
+          const amountAfter = await swapPage.getAvailableToTradeBalance()
+          swapPage.confirmSwapWasCompleted(amountBefore, amountAfter, amount)
+        },
+      )
 
       test(`Confirm that user cannot swap more from ${tokenWithBalance} to ${destinationToken} than balance allows`, async ({
         page,
