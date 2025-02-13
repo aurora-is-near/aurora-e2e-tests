@@ -82,20 +82,6 @@ export class BasePage {
     await expect(this.loginButton).toBeVisible()
   }
 
-  async getAvailableBalance() {
-    // we need to wait a bit since there is animation on the amount, starting from 0
-    await this.page.waitForTimeout(2000)
-    const balance = await this.balanceElement.innerText()
-
-    return balance
-  }
-
-  async checkSenderBalances(initialBalance: string) {
-    expect(parseFloat(await this.balanceElement.innerText())).toBeLessThan(
-      parseFloat(initialBalance),
-    )
-  }
-
   async checkReceiverBalances(initialBalance: string) {
     expect(
       parseFloat(await this.balanceElement.innerText()),

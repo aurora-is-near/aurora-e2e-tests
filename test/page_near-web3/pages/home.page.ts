@@ -1,6 +1,7 @@
 import { type Locator, type Page } from "playwright/test"
 import { expect } from "@playwright/test"
 import { BasePage } from "./base.page"
+import { midTimeout, shortTimeout } from "../../helpers/constants/timeouts"
 
 export class HomePage extends BasePage {
   swapContainer: Locator
@@ -56,7 +57,7 @@ export class HomePage extends BasePage {
 
   async getFromTokenBalance() {
     const messageOnFail: string = '"From" token balance is not visible'
-    await expect(this.balance, messageOnFail).toBeVisible({ timeout: 5000 })
+    await expect(this.balance, messageOnFail).toBeVisible(midTimeout)
     const balanceText = await this.balance.innerText()
 
     return balanceText
@@ -93,10 +94,18 @@ export class HomePage extends BasePage {
     await this.amountInputField.fill(amount.toString())
   }
 
+  async canPayGasFee(): Promise<boolean> {
+    const gasFeeWarning = await this.page
+      .getByText("Must have 0.02N or more left in wallet for gas fee")
+      .isVisible()
+
+    return gasFeeWarning
+  }
+
   async clickSwapButton() {
     const messageOnFail: string =
       '"Swap" button is disabled, while it should be enabled'
-    await expect(this.swapButton, messageOnFail).toBeEnabled()
+    await expect(this.swapButton, messageOnFail).toBeEnabled(midTimeout)
     await this.swapButton.click()
   }
 

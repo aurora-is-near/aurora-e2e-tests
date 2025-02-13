@@ -11,6 +11,7 @@ export class PortfolioPage extends BasePage {
   confirmAndSendButton: Locator
   confirmTransactionButton: Locator
   successNotification: Locator
+  closeSuccessfulSentFundsBtn: Locator
 
   constructor(page: Page) {
     super(page)
@@ -28,6 +29,9 @@ export class PortfolioPage extends BasePage {
       name: "Confirm transaction",
     })
     this.successNotification = page.getByText("Successfully sent!")
+    this.closeSuccessfulSentFundsBtn = page.getByRole("button", {
+      name: "Close",
+    })
   }
 
   async clickBuyButton() {
@@ -80,5 +84,23 @@ export class PortfolioPage extends BasePage {
   async confirmSuccessNotificationAppears() {
     const messageOnFail: string = '"Confirm transaction" button is not visible'
     await expect(this.successNotification, messageOnFail).toBeVisible()
+  }
+
+  async closeSuccessfulSentFunds() {
+    await this.closeSuccessfulSentFundsBtn.click()
+  }
+
+  async getAvailableBalance() {
+    // we need to wait a bit since there is animation on the amount, starting from 0
+    await this.page.waitForTimeout(2000)
+    const balance = await this.balanceElement.innerText()
+
+    return balance
+  }
+
+  async checkSenderBalance(previousBalance: number) {
+    await this.page.waitForTimeout(2000)
+    const balance = await this.balanceElement.innerText()
+    expect(parseFloat(balance)).toBeLessThan(previousBalance)
   }
 }

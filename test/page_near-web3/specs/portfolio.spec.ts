@@ -8,6 +8,7 @@ import { test } from "../fixtures/near-web3"
 import { HomePage } from "../pages/home.page"
 import { PortfolioPage } from "../pages/portfolio.page"
 import nearWeb3ProdSetup from "../../wallet-setup/near-web3-prod.setup"
+import { getNearTokenValue } from "../helpers/api.helper"
 
 test.use(NEAR_WEB3_PAGE)
 
@@ -46,8 +47,8 @@ test.describe(
         await portfolioPage.clickSendButton()
         const currentBalance = await portfolioPage.selectAsset(asset)
         test.skip(
-          currentBalance < transferAmount,
-          `Insufficient funds for sending, balance: ${currentBalance}, transfer: ${transferAmount}`,
+          currentBalance + 0.001 < transferAmount,
+          `Insufficient funds for sending (plus gas), balance: ${currentBalance}, transfer: ${transferAmount}`,
         )
         await portfolioPage.enterTransferAmount(transferAmount)
         await portfolioPage.clickContinueButton()
@@ -62,6 +63,7 @@ test.describe(
     }
 
     test(`Confirm that user receive funds`, async ({
+      request,
       page,
       context,
       extensionId,
@@ -80,7 +82,9 @@ test.describe(
       const initialBalance = await portfolioPage.getAvailableBalance()
       await portfolioPage.clickSendButton()
       await portfolioPage.selectAsset("NEAR")
-      await portfolioPage.enterTransferAmount(0.001)
+
+      const transferAmountToSend = await getNearTokenValue(request)
+      await portfolioPage.enterTransferAmount(transferAmountToSend)
       await portfolioPage.clickContinueButton()
       await portfolioPage.enterNearAccountId(transferAccountAddress)
       await portfolioPage.clickContinueButton()
@@ -89,8 +93,8 @@ test.describe(
       await metamask.confirmTransaction()
       await portfolioPage.waitForTransactionToComplete()
       await portfolioPage.confirmSuccessNotificationAppears()
-      await homePage.navigateToPortfolioPage()
-      await homePage.checkSenderBalances(initialBalance)
+      await portfolioPage.closeSuccessfulSentFunds()
+      await portfolioPage.checkSenderBalance(parseFloat(initialBalance))
       await homePage.openAccountDropdown()
       await homePage.disconnectAccount()
 
