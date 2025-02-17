@@ -1,7 +1,7 @@
 import { type Locator, type Page } from "playwright/test"
 import { expect } from "@playwright/test"
 import { BasePage } from "./base.page"
-import { midTimeout, shortTimeout } from "../../helpers/constants/timeouts"
+import { midTimeout } from "../../helpers/constants/timeouts"
 
 export class HomePage extends BasePage {
   swapContainer: Locator
