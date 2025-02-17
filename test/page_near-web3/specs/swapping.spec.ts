@@ -33,9 +33,9 @@ test.describe(
     })
 
     const tokensFromTo = [
-      { tokenFrom: "NEAR", tokenTo: "USDt", swapAmount: 0.000001 },
+      // { tokenFrom: "NEAR", tokenTo: "USDt", swapAmount: 0.000001 },
       // { tokenFrom: "NEAR", tokenTo: "USDT.e", swapAmount: 0.000001 },
-      // { tokenFrom: "NEAR", tokenTo: "ETH", swapAmount: 0.000001 },
+      { tokenFrom: "NEAR", tokenTo: "ETH", swapAmount: 0.000001 },
       // { tokenFrom: "ETH", tokenTo: "NEAR", swapAmount: 0.00000001 },
       // { tokenFrom: "USDT.e", tokenTo: "NEAR", swapAmount: 0.000001 },
       // { tokenFrom: "USDt", tokenTo: "NEAR", swapAmount: 0.000001 },
