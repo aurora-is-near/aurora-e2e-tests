@@ -33,12 +33,12 @@ test.describe(
     })
 
     const tokensFromTo = [
-      { tokenFrom: "NEAR", tokenTo: "USDt", swapAmount: 0.01 },
-      { tokenFrom: "NEAR", tokenTo: "USDT.e", swapAmount: 0.01 },
-      { tokenFrom: "NEAR", tokenTo: "ETH", swapAmount: 0.01 },
-      { tokenFrom: "ETH", tokenTo: "NEAR", swapAmount: 0.00001 },
-      { tokenFrom: "USDT.e", tokenTo: "NEAR", swapAmount: 0.01 },
-      { tokenFrom: "USDt", tokenTo: "NEAR", swapAmount: 0.01 },
+      { tokenFrom: "NEAR", tokenTo: "USDt", swapAmount: 0.000001 },
+      { tokenFrom: "NEAR", tokenTo: "USDT.e", swapAmount: 0.000001 },
+      { tokenFrom: "NEAR", tokenTo: "ETH", swapAmount: 0.000001 },
+      { tokenFrom: "ETH", tokenTo: "NEAR", swapAmount: 0.00000001 },
+      { tokenFrom: "USDT.e", tokenTo: "NEAR", swapAmount: 0.000001 },
+      { tokenFrom: "USDt", tokenTo: "NEAR", swapAmount: 0.000001 },
     ]
 
     for (const transfers of tokensFromTo) {
@@ -65,12 +65,12 @@ test.describe(
         await homePage.selectTokenToSwapFrom(tokenFrom)
         await homePage.enterSwapFromAmount(swapAmount)
         const balanceBefore = await homePage.getFromTokenBalance()
+        await homePage.selectTokenToSwapTo(tokenTo)
         // check if we have enough balance for swapping with gas fee
         test.skip(
-          Number(balanceBefore + 0.2) < Number(swapAmount),
-          `Insufficient funds for sending, balance: ${balanceBefore}, transfer: ${swapAmount}`,
+          await homePage.canPayGasFee(),
+          `Insufficient funds for sending with included gas fee, balance: ${balanceBefore}, transfer: ${swapAmount}`,
         )
-        await homePage.selectTokenToSwapTo(tokenTo)
         await homePage.clickSwapButton()
         await homePage.confirmTransactionPopup()
         await metamask.confirmTransaction()

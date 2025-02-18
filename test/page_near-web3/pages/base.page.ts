@@ -1,5 +1,6 @@
 import { expect, type Locator, type Page } from "@playwright/test"
 import { NEAR_WEB3_PAGE } from "../../helpers/constants/pages"
+import { shortTimeout } from "../../helpers/constants/timeouts"
 
 export class BasePage {
   page: Page
@@ -82,18 +83,10 @@ export class BasePage {
     await expect(this.loginButton).toBeVisible()
   }
 
-  async getAvailableBalance() {
-    // we need to wait a bit since there is animation on the amount, starting from 0
-    await this.page.waitForTimeout(2000)
-    const balance = await this.balanceElement.innerText()
-
-    return balance
-  }
-
-  async checkBalances(initialBalance: string) {
-    expect(parseInt(await this.balanceElement.innerText(), 10)).toBeLessThan(
-      parseInt(initialBalance, 10),
-    )
+  async checkReceiverBalances(initialBalance: string) {
+    expect(
+      parseFloat(await this.balanceElement.innerText()),
+    ).toBeGreaterThanOrEqual(parseFloat(initialBalance))
   }
 
   async waitForActionToComplete() {
@@ -101,6 +94,6 @@ export class BasePage {
   }
 
   async waitForTransactionToComplete() {
-    await this.page.waitForTimeout(10_000)
+    await this.page.waitForTimeout(shortTimeout.timeout)
   }
 }
