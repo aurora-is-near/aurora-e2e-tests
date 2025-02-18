@@ -256,7 +256,7 @@ test.describe(
       await earnPage.skipOnboardingIfVisible()
       test.skip(
         await earnPage.borrowExists(),
-        "No entities found for burrowing",
+        "No entities found for borrowing",
       )
 
       await earnPage.selectTokenByTokenName(tokenName)
@@ -286,7 +286,7 @@ test.describe(
 
       test.skip(
         !(await earnPage.borrowExists()),
-        "No entities found for burrowing",
+        "No entities found for borrowing",
       )
 
       const amountBefore = await earnPage.getBorrowedAmount()
@@ -312,7 +312,7 @@ test.describe(
       await earnPage.skipOnboardingIfVisible()
       test.skip(
         !(await earnPage.borrowExists()),
-        "No entities found for burrowing",
+        "No entities found for borrowing",
       )
 
       await earnPage.clickRepayButton()
@@ -339,7 +339,7 @@ test.describe(
       await earnPage.skipOnboardingIfVisible()
       test.skip(
         !(await earnPage.borrowExists()),
-        "No entities found for burrowing",
+        "No entities found for borrowing",
       )
 
       await earnPage.clickRepayButton()
