@@ -68,7 +68,7 @@ test.describe(
         await homePage.selectTokenToSwapTo(tokenTo)
         // check if we have enough balance for swapping with gas fee
         test.skip(
-          await homePage.canPayGasFee(),
+          await homePage.canPayGasFee(balanceBefore),
           `Insufficient funds for sending with included gas fee, balance: ${balanceBefore}, transfer: ${swapAmount}`,
         )
         await homePage.clickSwapButton()
@@ -79,12 +79,12 @@ test.describe(
         await homePage.confirmSuccessNotificationAppears()
         const balanceAfter = await homePage.getFromTokenBalance()
         homePage.confirmTransactionWasCorrect(
-          balanceBefore,
-          balanceAfter,
+          balanceBefore.toString(),
+          balanceAfter.toString(),
           swapAmount,
         )
 
-        await homePage.restoreToDefaultTokens(tokenFrom, tokenTo)
+        // await homePage.restoreToDefaultTokens(tokenFrom, tokenTo)
       })
     }
   },

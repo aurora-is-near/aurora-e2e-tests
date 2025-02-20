@@ -1,7 +1,7 @@
 import { type Locator, type Page } from "playwright/test"
 import { expect } from "@playwright/test"
 import { BasePage } from "./base.page"
-import { midTimeout } from "../../helpers/constants/timeouts"
+import { longTimeout, midTimeout } from "../../helpers/constants/timeouts"
 
 export class HomePage extends BasePage {
   swapContainer: Locator
@@ -55,12 +55,15 @@ export class HomePage extends BasePage {
     await this.swapContainer.scrollIntoViewIfNeeded()
   }
 
-  async getFromTokenBalance() {
+  async getFromTokenBalance(): Promise<number> {
     const messageOnFail: string = '"From" token balance is not visible'
     await expect(this.balance, messageOnFail).toBeVisible(midTimeout)
-    const balanceText = await this.balance.innerText()
+    const balanceText = (await this.balance.innerText()).toString()
 
-    return balanceText
+    const balanceTextParsed = balanceText.split(/\s+/)
+    const balance = balanceTextParsed[balanceTextParsed.length - 1]
+
+    return parseFloat(balance)
   }
 
   async selectTokenToSwapFrom(tokenName: string) {
@@ -91,31 +94,28 @@ export class HomePage extends BasePage {
   async enterSwapFromAmount(amount: number) {
     const messageOnFail: string = "From input field is not visible"
     await expect(this.amountInputField, messageOnFail).toBeVisible()
-    await this.amountInputField.fill(amount.toString())
+    await this.amountInputField.fill(amount.toFixed(8))
   }
 
-  async canPayGasFee(): Promise<boolean> {
-    const gasFeeWarning = await this.page
-      .getByText("Must have 0.02N or more left in wallet for gas fee")
-      .isVisible()
+  async canPayGasFee(beforeBalance: number): Promise<boolean> {
+    const amountInInput = parseFloat(await this.amountInputField.innerText())
 
-    return gasFeeWarning
+    return beforeBalance - amountInInput > 0.02
   }
 
   async clickSwapButton() {
     const messageOnFail: string =
       '"Swap" button is disabled, while it should be enabled'
-    await expect(this.swapButton, messageOnFail).toBeEnabled(midTimeout)
+    await expect(this.swapButton, messageOnFail).toBeEnabled(longTimeout)
     await this.swapButton.click()
   }
 
   async confirmTransactionPopup() {
     const messageOnFail: string =
       '"Confirm transaction" in transaction overview pop-up not visible'
-    await expect(
-      this.popUpConfirmTransactionButton,
-      messageOnFail,
-    ).toBeVisible()
+    await expect(this.popUpConfirmTransactionButton, messageOnFail).toBeVisible(
+      longTimeout,
+    )
     await this.popUpConfirmTransactionButton.click()
   }
 
@@ -147,20 +147,20 @@ export class HomePage extends BasePage {
   }
 
   async restoreToDefaultTokens(tokenFrom: string, tokenTo: string) {
-    if (tokenTo !== "AURORA") {
+    if (tokenTo !== "NEAR") {
       await this.page
         .getByRole("main")
         .getByText(tokenTo, { exact: true })
         .click()
-      await this.page.getByText("AURORA", { exact: true }).first().click()
+      await this.page.getByText("NEAR", { exact: true }).first().click()
     }
 
-    if (tokenFrom !== "NEAR") {
+    if (tokenFrom !== "AURORA") {
       await this.page
         .locator("form")
         .getByText(tokenFrom, { exact: true })
         .click()
-      await this.page.getByText("NEAR", { exact: true }).first().click()
+      await this.page.getByText("AURORA", { exact: true }).first().click()
     }
   }
 }

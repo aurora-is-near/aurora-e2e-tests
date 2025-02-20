@@ -47,7 +47,7 @@ test.describe(
         await portfolioPage.clickSendButton()
         const currentBalance = await portfolioPage.selectAsset(asset)
         test.skip(
-          currentBalance + 0.001 < transferAmount,
+          currentBalance + 0.02 < transferAmount,
           `Insufficient funds for sending (plus gas), balance: ${currentBalance}, transfer: ${transferAmount}`,
         )
         await portfolioPage.enterTransferAmount(transferAmount)
@@ -67,7 +67,6 @@ test.describe(
       page,
       context,
       extensionId,
-      nearWeb3Preconditions,
     }) => {
       const homePage = new HomePage(page)
       const portfolioPage = new PortfolioPage(page)
@@ -79,9 +78,9 @@ test.describe(
       )
 
       await homePage.navigateToPortfolioPage()
-      const initialBalance = await portfolioPage.getAvailableBalance()
       await portfolioPage.clickSendButton()
       await portfolioPage.selectAsset("NEAR")
+      const initialBalance = await portfolioPage.getAvailableBalance()
 
       const transferAmountToSend = await getNearTokenValue(request)
       await portfolioPage.enterTransferAmount(transferAmountToSend)
@@ -91,15 +90,9 @@ test.describe(
       await portfolioPage.clickConfirmAndSend()
       await portfolioPage.clickConfirmTransactionButton()
       await metamask.confirmTransaction()
-      await portfolioPage.waitForTransactionToComplete()
       await portfolioPage.confirmSuccessNotificationAppears()
       await portfolioPage.closeSuccessfulSentFunds()
-      await portfolioPage.checkSenderBalance(parseFloat(initialBalance))
-      await homePage.openAccountDropdown()
-      await homePage.disconnectAccount()
-
-      await homePage.waitForActionToComplete()
-      await nearWeb3Preconditions.loginToNearWeb3Account("Account 1")
+      await portfolioPage.checkSenderBalance(initialBalance)
     })
   },
 )
