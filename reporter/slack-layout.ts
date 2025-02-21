@@ -1,7 +1,7 @@
 import type { Block, KnownBlock } from "@slack/types"
 import type { SummaryResults } from "playwright-slack-report/dist/src"
 
-export default function generateCustomLayoutSimpleExample(
+export default function generateCustomLayout(
   summaryResults: SummaryResults,
 ): Array<Block | KnownBlock> {
   return [

@@ -25,6 +25,7 @@ export default defineConfig({
             slackWebHookUrl:
               "https://hooks.slack.com/services/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",
             sendResults: "always",
+            showInThread: true,
           },
         ],
       ]
