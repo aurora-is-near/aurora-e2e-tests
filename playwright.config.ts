@@ -23,7 +23,7 @@ export default defineConfig({
           "./node_modules/playwright-slack-report/dist/src/SlackReporter.js",
           {
             slackWebHookUrl:
-              "https://hooks.slack.com/services/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",
+              "https://hooks.slack.com/services/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",
             sendResults: "always",
           },
         ],
