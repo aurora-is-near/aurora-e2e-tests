@@ -12,7 +12,6 @@
     "test-aurora": "playwright test --workers=1 --grep @aurora-plus",
     "test-web-wallet": "playwright test --workers=1 --grep @web3-wallet",
     "test-tag": "playwright test --workers=1 --grep",
-    "test-temp": "playwright test --workers=1 -g 'Confirm that user can not deposit more tokens than balance contains'",
     "debug": "yarn playwright test --debug",
     "console": "PWDEBUG=console yarn playwright test",
     "report": "yarn playwright show-report"
