@@ -79,12 +79,10 @@ test.describe(
         await homePage.confirmSuccessNotificationAppears()
         const balanceAfter = await homePage.getFromTokenBalance()
         homePage.confirmTransactionWasCorrect(
-          balanceBefore.toString(),
-          balanceAfter.toString(),
+          balanceBefore,
+          balanceAfter,
           swapAmount,
         )
-
-        // await homePage.restoreToDefaultTokens(tokenFrom, tokenTo)
       })
     }
   },

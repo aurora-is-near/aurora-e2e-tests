@@ -128,13 +128,10 @@ export class HomePage extends BasePage {
   }
 
   confirmTransactionWasCorrect(
-    balanceBeforeString: string,
-    balanceAfterString: string,
+    balanceBefore: number,
+    balanceAfter: number,
     transfer: number,
   ) {
-    const balanceBefore = Number(balanceBeforeString.replace("Balance: ", ""))
-    const balanceAfter = Number(balanceAfterString.replace("Balance: ", ""))
-
     expect(Math.round(balanceBefore - transfer)).toBeLessThanOrEqual(
       Math.round(balanceAfter),
     )
@@ -144,23 +141,5 @@ export class HomePage extends BasePage {
     const messageOnFail: string =
       '"Swap" button is enabled, while it should be disabled'
     await expect(this.swapButton, messageOnFail).toBeDisabled()
-  }
-
-  async restoreToDefaultTokens(tokenFrom: string, tokenTo: string) {
-    if (tokenTo !== "NEAR") {
-      await this.page
-        .getByRole("main")
-        .getByText(tokenTo, { exact: true })
-        .click()
-      await this.page.getByText("NEAR", { exact: true }).first().click()
-    }
-
-    if (tokenFrom !== "AURORA") {
-      await this.page
-        .locator("form")
-        .getByText(tokenFrom, { exact: true })
-        .click()
-      await this.page.getByText("AURORA", { exact: true }).first().click()
-    }
   }
 }
