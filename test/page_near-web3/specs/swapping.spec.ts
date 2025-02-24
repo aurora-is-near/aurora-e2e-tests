@@ -68,7 +68,7 @@ test.describe(
         await homePage.selectTokenToSwapTo(tokenTo)
         // check if we have enough balance for swapping with gas fee
         test.skip(
-          await homePage.canPayGasFee(),
+          await homePage.canPayGasFee(balanceBefore),
           `Insufficient funds for sending with included gas fee, balance: ${balanceBefore}, transfer: ${swapAmount}`,
         )
         await homePage.clickSwapButton()
@@ -83,8 +83,6 @@ test.describe(
           balanceAfter,
           swapAmount,
         )
-
-        await homePage.restoreToDefaultTokens(tokenFrom, tokenTo)
       })
     }
   },

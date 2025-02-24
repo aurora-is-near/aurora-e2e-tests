@@ -1,5 +1,6 @@
 import { expect, type Locator, type Page } from "playwright/test"
 import { BasePage } from "./base.page"
+import { midTimeout } from "../../helpers/constants/timeouts"
 
 export class PortfolioPage extends BasePage {
   exampleLocator: Locator
@@ -83,24 +84,25 @@ export class PortfolioPage extends BasePage {
 
   async confirmSuccessNotificationAppears() {
     const messageOnFail: string = '"Confirm transaction" button is not visible'
-    await expect(this.successNotification, messageOnFail).toBeVisible()
+    await expect(this.successNotification, messageOnFail).toBeVisible(
+      midTimeout,
+    )
   }
 
   async closeSuccessfulSentFunds() {
     await this.closeSuccessfulSentFundsBtn.click()
   }
 
-  async getAvailableBalance() {
+  async getAvailableBalance(): Promise<number> {
     // we need to wait a bit since there is animation on the amount, starting from 0
     await this.page.waitForTimeout(2000)
     const balance = await this.balanceElement.innerText()
 
-    return balance
+    return parseFloat(balance)
   }
 
   async checkSenderBalance(previousBalance: number) {
-    await this.page.waitForTimeout(2000)
-    const balance = await this.balanceElement.innerText()
-    expect(parseFloat(balance)).toBeLessThan(previousBalance)
+    const currentBalance = await this.getAvailableBalance()
+    expect(currentBalance).toBeLessThan(previousBalance)
   }
 }

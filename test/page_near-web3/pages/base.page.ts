@@ -1,6 +1,6 @@
 import { expect, type Locator, type Page } from "@playwright/test"
 import { NEAR_WEB3_PAGE } from "../../helpers/constants/pages"
-import { shortTimeout } from "../../helpers/constants/timeouts"
+import { midTimeout } from "../../helpers/constants/timeouts"
 
 export class BasePage {
   page: Page
@@ -94,6 +94,6 @@ export class BasePage {
   }
 
   async waitForTransactionToComplete() {
-    await this.page.waitForTimeout(shortTimeout.timeout)
+    await this.page.waitForTimeout(midTimeout.timeout)
   }
 }
