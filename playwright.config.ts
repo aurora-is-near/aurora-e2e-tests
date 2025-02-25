@@ -38,7 +38,7 @@ export default defineConfig({
     viewport: { width: 1920, height: 1080 },
   },
   expect: {
-    timeout: (process.env.CI ? 50 : 30) * 1000,
+    timeout: 50 * 1000,
   },
   projects: [
     {

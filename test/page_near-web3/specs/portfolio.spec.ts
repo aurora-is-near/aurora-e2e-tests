@@ -57,7 +57,6 @@ test.describe(
         await portfolioPage.clickConfirmAndSend()
         await portfolioPage.clickConfirmTransactionButton()
         await metamask.confirmTransaction()
-        await portfolioPage.waitForTransactionToComplete()
         await portfolioPage.confirmSuccessNotificationAppears()
       })
     }
@@ -92,6 +91,7 @@ test.describe(
       await metamask.confirmTransaction()
       await portfolioPage.confirmSuccessNotificationAppears()
       await portfolioPage.closeSuccessfulSentFunds()
+      await portfolioPage.waitForActionToComplete()
       await portfolioPage.checkSenderBalance(initialBalance)
     })
   },

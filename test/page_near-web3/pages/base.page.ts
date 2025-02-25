@@ -1,6 +1,6 @@
 import { expect, type Locator, type Page } from "@playwright/test"
 import { NEAR_WEB3_PAGE } from "../../helpers/constants/pages"
-import { midTimeout } from "../../helpers/constants/timeouts"
+import { longTimeout, midTimeout } from "../../helpers/constants/timeouts"
 
 export class BasePage {
   page: Page
