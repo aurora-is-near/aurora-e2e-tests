@@ -1,6 +1,7 @@
 import { type Locator, type Page } from "playwright/test"
 import { expect } from "@playwright/test"
 import { BasePage } from "./base.page"
+import { midTimeout } from "../../helpers/constants/timeouts"
 
 export class StakingPage extends BasePage {
   stakeTokensButton: Locator
@@ -80,9 +81,9 @@ export class StakingPage extends BasePage {
 
   async confirmSuccessNotificationAppears() {
     const messageOnFail: string = '"Confirm transaction" button is not visible'
-    await expect(this.successNotification, messageOnFail).toBeVisible({
-      timeout: 45_000,
-    })
+    await expect(this.successNotification, messageOnFail).toBeVisible(
+      midTimeout,
+    )
   }
 
   async returnToStakingInputPage() {
