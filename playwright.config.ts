@@ -1,4 +1,4 @@
-// import type { GitHubActionOptions } from "@estruyf/github-actions-reporter"
+import type { GitHubActionOptions } from "@estruyf/github-actions-reporter"
 import { defineConfig, devices } from "@playwright/test"
 
 export default defineConfig({
@@ -7,7 +7,6 @@ export default defineConfig({
   forbidOnly: false,
   retries: process.env.CI ? 1 : 0,
   workers: 1,
-  reporter: [["dot"], ["list"], ["html"]],
   // reporter: process.env.CI
   //   ? [
   //       ["html", { outputFolder: "my-report", open: "never" }],
@@ -30,6 +29,18 @@ export default defineConfig({
   //       ],
   //     ]
   //   : [["dot"], ["list"], ["html"]],
+  reporter: [
+    ["html", { outputFolder: "my-report", open: "never" }],
+    ["junit", { outputFile: "results.xml", open: "never" }],
+    [
+      "@estruyf/github-actions-reporter",
+      <GitHubActionOptions>{
+        useDetails: true,
+        showError: false,
+        showTags: false,
+      },
+    ],
+  ],
   reportSlowTests: null,
   timeout: (process.env.CI ? 3 : 2) * 60 * 1000,
   globalTimeout: (process.env.CI ? 60 : 30) * 60 * 1000,
