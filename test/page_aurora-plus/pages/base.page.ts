@@ -1,5 +1,7 @@
 import {
+  type Browser,
   type BrowserContext,
+  type Cookie,
   expect,
   type Locator,
   type Page,
@@ -123,5 +125,19 @@ export class BasePage {
       cookieToModify.value = "LV"
       await context.addCookies([cookieToModify])
     }
+  }
+
+  async setUniqueCookieValue(context: BrowserContext) {
+    const myCookie: Cookie = {
+      name: "aurora-plus-qa-automation",
+      value: "True",
+      domain: "aurora.plus",
+      path: "/",
+      expires: -1,
+      httpOnly: false,
+      secure: false,
+      sameSite: "None",
+    }
+    await context.addCookies([myCookie])
   }
 }

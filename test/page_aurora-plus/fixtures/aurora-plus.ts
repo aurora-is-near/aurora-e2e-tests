@@ -1,5 +1,6 @@
 import { testWithSynpress } from "@synthetixio/synpress"
 import { MetaMask, metaMaskFixtures } from "@synthetixio/synpress/playwright"
+import type { Cookie } from "playwright"
 import auroraSetup from "../../wallet-setup/aurora-plus.setup"
 import { HomePage } from "../pages/home.page"
 import { DashboardPage } from "../pages/dashboard.page"
@@ -7,6 +8,7 @@ import { DashboardPage } from "../pages/dashboard.page"
 export const test = testWithSynpress(metaMaskFixtures(auroraSetup)).extend<{
   auroraPlusPreconditions: {
     loginToAuroraPlus: () => Promise<void>
+    assignCookieToAutomation: () => Promise<void>
   }
 }>({
   auroraPlusPreconditions: async ({ page, context, extensionId }, use) => {
@@ -44,8 +46,23 @@ export const test = testWithSynpress(metaMaskFixtures(auroraSetup)).extend<{
       await page.waitForTimeout(1000)
     }
 
+    const assignCookieToAutomation = async () => {
+      const myCookie: Cookie = {
+        name: "aurora-plus-qa-automation",
+        value: "True",
+        domain: "aurora.plus",
+        path: "/",
+        expires: -1,
+        httpOnly: false,
+        secure: false,
+        sameSite: "Lax",
+      }
+      await context.addCookies([myCookie])
+    }
+
     await use({
       loginToAuroraPlus,
+      assignCookieToAutomation,
     })
   },
 })

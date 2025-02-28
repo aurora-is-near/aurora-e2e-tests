@@ -1,4 +1,5 @@
 import { MetaMask } from "@synthetixio/synpress/playwright"
+import type { Cookie } from "@playwright/test"
 import {
   AURORA_PLUS_TAG,
   AURORA_PLUS_TAG_BORROWING,
@@ -23,6 +24,7 @@ test.describe(
       "Login to Aurora Plus with MetaMask",
       async ({ auroraPlusPreconditions }) => {
         await auroraPlusPreconditions.loginToAuroraPlus()
+        await auroraPlusPreconditions.assignCookieToAutomation()
       },
     )
     test(`Confirm that user can not deposit more tokens than balance contains`, async ({
@@ -96,52 +98,49 @@ test.describe(
       expect(depositValueBeforeTransaction).toBeLessThan(valueAfterDeposit)
     })
 
-    test.fixme(
-      `Confirm that user can deposit more tokens`,
-      async ({ context, page, extensionId }) => {
-        const dashboardPage = new DashboardPage(page)
-        const earnPage = new EarnPage(page)
-        const metamask = new MetaMask(
-          context,
-          page,
-          auroraSetup.walletPassword,
-          extensionId,
-        )
+    test(`Confirm that user can deposit more tokens`, async ({
+      context,
+      page,
+      extensionId,
+    }) => {
+      const dashboardPage = new DashboardPage(page)
+      const earnPage = new EarnPage(page)
+      const metamask = new MetaMask(
+        context,
+        page,
+        auroraSetup.walletPassword,
+        extensionId,
+      )
 
-        await dashboardPage.navigateToEarnPage()
-        await earnPage.skipOnboardingIfVisible()
+      await dashboardPage.navigateToEarnPage()
+      await earnPage.skipOnboardingIfVisible()
 
-        await dashboardPage.setUsersCookieCountry(context)
+      test.skip(
+        !(await earnPage.isAnyDepositsExist()),
+        "No entities found for available depositing",
+      )
 
-        test.skip(
-          !(await earnPage.isAnyDepositsExist()),
-          "No entities found for available depositing",
-        )
+      const depositBeforeTransaction = await earnPage.getDepositedTokenBalance()
+      const depositValueBeforeTransaction =
+        await earnPage.getDepositedTokenValue()
 
-        const depositBeforeTransaction =
-          await earnPage.getDepositedTokenBalance()
-        const depositValueBeforeTransaction =
-          await earnPage.getDepositedTokenValue()
+      await earnPage.clickDepositMoreButton()
+      await earnPage.enterAmountToDeposit(amount)
+      await earnPage.confirmDeposit()
+      // Single metamask method does not complete metamask actions
+      await metamask.confirmTransaction()
+      await earnPage.waitForActionToComplete()
+      await metamask.confirmTransaction()
+      await earnPage.waitForActionToComplete()
+      await page.getByRole("button", { name: "Deposit", exact: true }).click()
+      await metamask.confirmTransaction()
+      await earnPage.waitForActionToComplete()
 
-        await earnPage.clickDepositMoreButton()
-        await earnPage.enterAmountToDeposit(amount)
-        await earnPage.confirmDeposit()
-        // Single metamask method does not complete metamask actions
-        await metamask.confirmTransaction()
-        await earnPage.waitForActionToComplete()
-        await metamask.confirmTransaction()
-        await earnPage.waitForActionToComplete()
-        await page.getByRole("button", { name: "Deposit", exact: true }).click()
-        await metamask.confirmTransaction()
-        await earnPage.waitForActionToComplete()
-
-        const depositAfterTransaction =
-          await earnPage.getDepositedTokenBalance()
-        const valueAfterDeposit = await earnPage.getDepositedTokenValue()
-        expect(depositBeforeTransaction).toBeLessThan(depositAfterTransaction)
-        expect(depositValueBeforeTransaction).toBeLessThan(valueAfterDeposit)
-      },
-    )
+      const depositAfterTransaction = await earnPage.getDepositedTokenBalance()
+      const valueAfterDeposit = await earnPage.getDepositedTokenValue()
+      expect(depositBeforeTransaction).toBeLessThan(depositAfterTransaction)
+      expect(depositValueBeforeTransaction).toBeLessThan(valueAfterDeposit)
+    })
 
     test(`Confirm that user cannot withdraw more than deposited`, async ({
       page,
@@ -163,43 +162,41 @@ test.describe(
       await earnPage.confirmIncorrectAmountNotificationVisible()
     })
 
-    test.fixme(
-      `Confirm that user can withdraw ${amount} tokens`,
-      async ({ context, page, extensionId }) => {
-        const dashboardPage = new DashboardPage(page)
-        const earnPage = new EarnPage(page)
-        const metamask = new MetaMask(
-          context,
-          page,
-          auroraSetup.walletPassword,
-          extensionId,
-        )
-        await dashboardPage.navigateToEarnPage()
-        await earnPage.skipOnboardingIfVisible()
+    test(`Confirm that user can withdraw ${amount} tokens`, async ({
+      context,
+      page,
+      extensionId,
+    }) => {
+      const dashboardPage = new DashboardPage(page)
+      const earnPage = new EarnPage(page)
+      const metamask = new MetaMask(
+        context,
+        page,
+        auroraSetup.walletPassword,
+        extensionId,
+      )
+      await dashboardPage.navigateToEarnPage()
+      await earnPage.skipOnboardingIfVisible()
 
-        await dashboardPage.setUsersCookieCountry(context)
-        test.skip(
-          !(await earnPage.isAnyDepositsExist()),
-          "No entities found for available depositing",
-        )
-        const depositedValueBefore = await earnPage.getDepositedTokenBalance()
-        await earnPage.clickWithdrawDeposit()
-        test.skip(
-          amount > depositedValueBefore,
-          "Not enought funds to withdraw",
-        )
-        await earnPage.enterAmount(amount)
-        await earnPage.clickWitdrawButton()
-        await metamask.confirmTransaction()
-        await earnPage.waitForActionToComplete()
-        const depositedValueAfter = await earnPage.getDepositedTokenBalance()
-        earnPage.confirmWithdrawalSuccessfull(
-          depositedValueBefore,
-          depositedValueAfter,
-          amount,
-        )
-      },
-    )
+      await dashboardPage.setUsersCookieCountry(context)
+      test.skip(
+        !(await earnPage.isAnyDepositsExist()),
+        "No entities found for available depositing",
+      )
+      const depositedValueBefore = await earnPage.getDepositedTokenBalance()
+      await earnPage.clickWithdrawDeposit()
+      test.skip(amount > depositedValueBefore, "Not enought funds to withdraw")
+      await earnPage.enterAmount(amount)
+      await earnPage.clickWitdrawButton()
+      await metamask.confirmTransaction()
+      await earnPage.waitForActionToComplete()
+      const depositedValueAfter = await earnPage.getDepositedTokenBalance()
+      earnPage.confirmWithdrawalSuccessfull(
+        depositedValueBefore,
+        depositedValueAfter,
+        amount,
+      )
+    })
   },
 )
 
