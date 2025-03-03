@@ -1,7 +1,7 @@
 export const AURORA_PLUS_PAGE = {
   baseURL: "https://aurora.plus",
   extraHTTPHeaders: {
-    "X-QA-Automation": "True",
+    "x-aurora-e2e-testing": "True",
   },
 }
 

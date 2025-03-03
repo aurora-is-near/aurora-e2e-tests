@@ -1,5 +1,4 @@
 import { MetaMask } from "@synthetixio/synpress/playwright"
-import type { Cookie } from "@playwright/test"
 import {
   AURORA_PLUS_TAG,
   AURORA_PLUS_TAG_BORROWING,
