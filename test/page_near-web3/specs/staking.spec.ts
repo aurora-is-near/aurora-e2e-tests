@@ -47,6 +47,9 @@ test.describe(
       context,
       extensionId,
     }) => {
+      // specifically set timeout here since this test on CI seems to take a
+      // long time
+      test.setTimeout(120_000)
       const homePage = new HomePage(page)
       const basePage = new BasePage(page)
       const stakingPage = new StakingPage(page)
