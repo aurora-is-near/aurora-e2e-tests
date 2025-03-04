@@ -48,7 +48,7 @@ export const test = testWithSynpress(metaMaskFixtures(auroraSetup)).extend<{
 
     const assignCookieToAutomation = async () => {
       const myCookie: Cookie = {
-        name: "aurora-plus-qa-automation",
+        name: "aurora-e2e-testing",
         value: "True",
         domain: "aurora.plus",
         path: "/",
