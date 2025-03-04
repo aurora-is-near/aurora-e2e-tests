@@ -1,5 +1,4 @@
 import {
-  type Browser,
   type BrowserContext,
   type Cookie,
   expect,
@@ -113,18 +112,6 @@ export class BasePage {
 
   async waitForActionToComplete() {
     await this.page.waitForTimeout(15000)
-  }
-
-  async setUsersCookieCountry(context: BrowserContext) {
-    const cookies = await context.cookies()
-    const cookieToModify = cookies.find(
-      (cookie) => cookie.name === "aurora-plus-country",
-    )
-
-    if (cookieToModify) {
-      cookieToModify.value = "LV"
-      await context.addCookies([cookieToModify])
-    }
   }
 
   async setUniqueCookieValue(context: BrowserContext) {
