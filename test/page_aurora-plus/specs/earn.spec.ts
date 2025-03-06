@@ -22,8 +22,8 @@ test.describe(
     test.beforeEach(
       "Login to Aurora Plus with MetaMask",
       async ({ auroraPlusPreconditions }) => {
-        await auroraPlusPreconditions.loginToAuroraPlus()
         await auroraPlusPreconditions.assignCookieToAutomation()
+        await auroraPlusPreconditions.loginToAuroraPlus()
       },
     )
     test(`Confirm that user can not deposit more tokens than balance contains`, async ({
