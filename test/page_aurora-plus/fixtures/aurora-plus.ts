@@ -33,11 +33,13 @@ export const test = testWithSynpress(metaMaskFixtures(auroraSetup)).extend<{
         secure: false,
         sameSite: "Lax",
       }
+      await context.clearCookies()
       await context.addCookies([myCookie])
+      const cookies = await context.cookies()
+      console.log(`After just adding cookie: ${cookies}`)
     }
 
     const loginToAuroraPlus = async () => {
-      await assignCookieToAutomation()
       await page.waitForTimeout(1000)
       await homePage.confirmCorrectPageLoaded(page, "/")
       await page.waitForTimeout(1000)

@@ -1,6 +1,7 @@
 import { expect, type Locator, type Page } from "playwright/test"
 import { BasePage } from "./base.page"
 import { midTimeout, shortTimeout } from "../../helpers/constants/timeouts"
+import { parseFloatWithRounding } from "../../helpers/functions/helper-functions"
 
 export class EarnPage extends BasePage {
   earnPageTitle: Locator
@@ -183,7 +184,7 @@ export class EarnPage extends BasePage {
   async getDepositedTokenBalance(): Promise<number> {
     const balance: string = await this.depositedTokenBalance.innerText()
 
-    return parseFloat(balance)
+    return parseFloatWithRounding(balance, 3)
   }
 
   async getDepositedTokenValue(): Promise<number> {
