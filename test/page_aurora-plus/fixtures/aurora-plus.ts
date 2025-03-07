@@ -22,7 +22,22 @@ export const test = testWithSynpress(metaMaskFixtures(auroraSetup)).extend<{
     const homePage = new HomePage(page)
     const dashboardPage = new DashboardPage(page)
 
+    const assignCookieToAutomation = async () => {
+      const myCookie: Cookie = {
+        name: "aurora-e2e-testing",
+        value: "True",
+        domain: "aurora.plus",
+        path: "/",
+        expires: -1,
+        httpOnly: false,
+        secure: false,
+        sameSite: "Lax",
+      }
+      await context.addCookies([myCookie])
+    }
+
     const loginToAuroraPlus = async () => {
+      await assignCookieToAutomation()
       await page.waitForTimeout(1000)
       await homePage.confirmCorrectPageLoaded(page, "/")
       await page.waitForTimeout(1000)
@@ -44,20 +59,6 @@ export const test = testWithSynpress(metaMaskFixtures(auroraSetup)).extend<{
       await page.waitForTimeout(1000)
       await metamask.confirmSignature()
       await page.waitForTimeout(1000)
-    }
-
-    const assignCookieToAutomation = async () => {
-      const myCookie: Cookie = {
-        name: "aurora-e2e-testing",
-        value: "True",
-        domain: "aurora.plus",
-        path: "/",
-        expires: -1,
-        httpOnly: false,
-        secure: false,
-        sameSite: "Lax",
-      }
-      await context.addCookies([myCookie])
     }
 
     await use({

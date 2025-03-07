@@ -22,7 +22,6 @@ test.describe(
     test.beforeEach(
       "Login to Aurora Plus with MetaMask",
       async ({ auroraPlusPreconditions }) => {
-        await auroraPlusPreconditions.assignCookieToAutomation()
         await auroraPlusPreconditions.loginToAuroraPlus()
       },
     )
