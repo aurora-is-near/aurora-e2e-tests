@@ -230,10 +230,7 @@ export class EarnPage extends BasePage {
 
   async enterAmount(amount: number | string) {
     const string = typeof amount === "string" ? amount : amount.toString()
-    // withdraw value seems to need being filled in slowly
-    await this.amountInputField.pressSequentially(string, {
-      delay: 1000,
-    })
+    await this.amountInputField.fill(string)
   }
 
   confirmBorrowMoreWasSuccessfull(
@@ -294,8 +291,9 @@ export class EarnPage extends BasePage {
     amount: number,
   ) {
     const messageOnFail: string = `Expected depositValue: ${depositedValueBefore - amount}, but received: ${depositedValueAfter}`
+    const currentBalance = depositedValueBefore - amount
     expect(depositedValueAfter, messageOnFail).toBe(
-      depositedValueBefore - amount,
+      parseFloatWithRounding(currentBalance.toString(), 3),
     )
   }
 

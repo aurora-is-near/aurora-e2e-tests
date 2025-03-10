@@ -35,8 +35,6 @@ export const test = testWithSynpress(metaMaskFixtures(auroraSetup)).extend<{
       }
       await context.clearCookies()
       await context.addCookies([myCookie])
-      const cookies = await context.cookies()
-      console.log(`After just adding cookie: ${cookies}`)
     }
 
     const loginToAuroraPlus = async () => {

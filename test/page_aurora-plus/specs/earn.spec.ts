@@ -9,6 +9,7 @@ import auroraSetup from "../../wallet-setup/aurora-plus.setup"
 import { DashboardPage } from "../pages/dashboard.page"
 import { AURORA_PLUS_PAGE } from "../../helpers/constants/pages"
 import { EarnPage } from "../pages/earn.page"
+import { clearCountryCookie } from "../../helpers/functions/helper-functions"
 
 const { expect } = test
 
@@ -115,8 +116,6 @@ test.describe(
 
       await dashboardPage.navigateToEarnPage()
       await earnPage.skipOnboardingIfVisible()
-      const cookies = await context.cookies()
-      console.log(cookies)
 
       test.skip(
         !(await earnPage.isAnyDepositsExist()),
@@ -127,8 +126,13 @@ test.describe(
       const depositValueBeforeTransaction =
         await earnPage.getDepositedTokenValue()
 
+      // lets try to delete country cookie here
+      await clearCountryCookie(context)
+
       await earnPage.clickDepositMoreButton()
       await earnPage.enterAmountToDeposit(amount)
+      const cookies = await context.cookies()
+      console.log(cookies)
       await earnPage.confirmDeposit()
       // Single metamask method does not complete metamask actions
       await metamask.confirmTransaction()
@@ -181,16 +185,19 @@ test.describe(
       await dashboardPage.navigateToEarnPage()
       await earnPage.skipOnboardingIfVisible()
 
-      const cookies = await context.cookies()
-      console.log(`before actual: ${cookies}`)
       test.skip(
         !(await earnPage.isAnyDepositsExist()),
         "No entities found for available depositing",
       )
       const depositedValueBefore = await earnPage.getDepositedTokenBalance()
+      // lets try to delete country cookie here
+      await clearCountryCookie(context)
+
       await earnPage.clickWithdrawDeposit()
       test.skip(amount > depositedValueBefore, "Not enought funds to withdraw")
       await earnPage.enterAmount(amount)
+      let cookies = await context.cookies()
+      console.log(cookies)
       await earnPage.clickWitdrawButton()
       await metamask.confirmTransaction()
       await earnPage.waitForActionToComplete()
