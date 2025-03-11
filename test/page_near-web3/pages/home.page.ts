@@ -127,6 +127,13 @@ export class HomePage extends BasePage {
     await this.page.reload()
   }
 
+  async isSuccessNotificationVisible() {
+    const isNotificationVisible =
+      await this.successNotificationTitle.isVisible(midTimeout)
+
+    return isNotificationVisible
+  }
+
   confirmTransactionWasCorrect(
     balanceBefore: number,
     balanceAfter: number,
