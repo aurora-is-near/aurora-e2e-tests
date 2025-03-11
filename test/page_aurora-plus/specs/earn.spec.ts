@@ -22,7 +22,8 @@ test.describe(
   () => {
     test.beforeEach(
       "Login to Aurora Plus with MetaMask",
-      async ({ auroraPlusPreconditions }) => {
+      async ({ auroraPlusPreconditions, context }) => {
+        await context.clearCookies()
         await auroraPlusPreconditions.assignCookieToAutomation()
         await auroraPlusPreconditions.loginToAuroraPlus()
       },
@@ -71,7 +72,6 @@ test.describe(
       await dashboardPage.navigateToEarnPage()
       await earnPage.skipOnboardingIfVisible()
 
-      await dashboardPage.waitForActionToComplete()
       test.skip(
         await earnPage.isAnyDepositsExist(),
         "No entities found for available depositing",

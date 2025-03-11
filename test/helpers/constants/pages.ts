@@ -1,8 +1,11 @@
 export const AURORA_PLUS_PAGE = {
   baseURL: "https://aurora.plus",
-  // extraHTTPHeaders: {
-  //   "x-aurora-e2e-testing": "True",
-  // },
+  geolocation: { latitude: 40.7128, longitude: -74.006 }, // NYC coordinates
+  // Set the timezone to Eastern Time (for New York)
+  timezoneId: "America/New_York",
+  // Set language/locale to English (US)
+  locale: "en-US",
+  permissions: ["geolocation"],
 }
 
 export const NEAR_WEB3_PAGE = {
