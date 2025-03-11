@@ -134,9 +134,7 @@ export class EarnPage extends BasePage {
     const messageOnFail: string = "Deposit input field not visible"
     await expect(this.depositInputField, messageOnFail).toBeVisible()
     // deposit value seems to need being filled in slowly
-    await this.depositInputField.pressSequentially(amount.toString(), {
-      delay: 1000,
-    })
+    await this.depositInputField.fill(amount.toString())
   }
 
   async confirmDeposit() {

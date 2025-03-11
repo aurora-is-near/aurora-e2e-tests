@@ -71,9 +71,7 @@ test.describe(
       await dashboardPage.navigateToEarnPage()
       await earnPage.skipOnboardingIfVisible()
 
-      await page.waitForTimeout(2000)
-      const cookies = await context.cookies()
-      console.log(cookies)
+      await dashboardPage.waitForActionToComplete()
       test.skip(
         await earnPage.isAnyDepositsExist(),
         "No entities found for available depositing",
@@ -116,6 +114,8 @@ test.describe(
 
       await dashboardPage.navigateToEarnPage()
       await earnPage.skipOnboardingIfVisible()
+
+      await dashboardPage.waitForActionToComplete()
 
       test.skip(
         !(await earnPage.isAnyDepositsExist()),
