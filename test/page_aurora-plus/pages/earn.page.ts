@@ -140,22 +140,15 @@ export class EarnPage extends BasePage {
   async confirmDeposit() {
     await this.page.waitForTimeout(5000)
 
-    await this.page.getByText("After Depositing").click()
-
-    if (
-      (await this.confirmDepositButton.isVisible(shortTimeout)) &&
-      (await this.confirmDepositButton.isEnabled(shortTimeout))
-    ) {
+    if (await this.confirmDepositButton.isVisible(shortTimeout)) {
+      await this.confirmDepositButton.hover()
+      await this.confirmDepositButton.isEnabled(shortTimeout)
       await this.confirmDepositButton.click()
-    } else if (
-      (await this.approveDepositButton.isVisible(shortTimeout)) &&
-      (await this.approveDepositButton.isEnabled(shortTimeout))
-    ) {
+    } else if (await this.approveDepositButton.isVisible(shortTimeout)) {
+      await this.approveDepositButton.hover()
       await this.approveDepositButton.click()
-    } else if (
-      (await this.depositButton.isVisible(shortTimeout)) &&
-      (await this.depositButton.isEnabled(shortTimeout))
-    ) {
+    } else if (await this.depositButton.isVisible(shortTimeout)) {
+      await this.depositButton.hover()
       await this.depositButton.click()
     } else {
       throw new Error("None of described buttons is visible")
@@ -305,16 +298,16 @@ export class EarnPage extends BasePage {
     await expect(this.approveButton, messageOnFail).toBeDisabled()
   }
 
-  async getAmountOfAvailableBorrowAmount() {
+  async getAmountOfAvailableBorrowAmount(): Promise<number> {
     const balanceString = await this.availableBorrowAmount.innerText()
     const amountInfo = balanceString.replace("You may borrow up to ", "")
     const splitInfo = amountInfo.split(" ")
 
-    return splitInfo[0]
+    return parseFloatWithRounding(splitInfo[0], 3)
   }
 
   async clickWitdrawButton() {
-    await this.page.getByText("After withdrawing").click()
+    await this.withdrawButton.hover({ timeout: 5_000 })
     await expect(this.withdrawButton).toBeEnabled(shortTimeout)
     await this.withdrawButton.click()
   }

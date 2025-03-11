@@ -53,7 +53,7 @@ test.describe(
       await expect(earnPage.approveButton).toBeDisabled()
     })
 
-    const amount: number = 0.2
+    const amount: number = 0.02
     test(`Confirm that user can deposit ${amount} tokens`, async ({
       context,
       page,
@@ -196,7 +196,7 @@ test.describe(
       await earnPage.clickWithdrawDeposit()
       test.skip(amount > depositedValueBefore, "Not enought funds to withdraw")
       await earnPage.enterAmount(amount)
-      let cookies = await context.cookies()
+      const cookies = await context.cookies()
       console.log(cookies)
       await earnPage.clickWitdrawButton()
       await metamask.confirmTransaction()
@@ -246,7 +246,7 @@ test.describe(
       }
 
       const availableAmount = await earnPage.getAmountOfAvailableBorrowAmount()
-      await earnPage.enterAmount(Number(availableAmount) * 100)
+      await earnPage.enterAmount(availableAmount * 100)
       await earnPage.confirmBorrowButtonIsNotClickable()
     })
 
