@@ -26,7 +26,8 @@ export const test = testWithSynpress(metaMaskFixtures(auroraSetup)).extend<{
       const myCookie: Cookie = {
         name: "aurora-e2e-testing",
         value: "True",
-        domain: "aurora.plus",
+        domain:
+          "https://aurora-plus-git-e2e-automation-debugging-auroraisnear.vercel.app",
         path: "/",
         expires: -1,
         httpOnly: false,
