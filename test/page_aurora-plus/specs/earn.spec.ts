@@ -72,6 +72,7 @@ test.describe(
       await dashboardPage.navigateToEarnPage()
       await earnPage.skipOnboardingIfVisible()
 
+      await dashboardPage.waitForActionToComplete()
       test.skip(
         await earnPage.isAnyDepositsExist(),
         "No entities found for available depositing",
@@ -125,9 +126,6 @@ test.describe(
       const depositBeforeTransaction = await earnPage.getDepositedTokenBalance()
       const depositValueBeforeTransaction =
         await earnPage.getDepositedTokenValue()
-
-      // lets try to delete country cookie here
-      await clearCountryCookie(context)
 
       await earnPage.clickDepositMoreButton()
       await earnPage.enterAmountToDeposit(amount)
