@@ -35,7 +35,7 @@ export const test = testWithSynpress(metaMaskFixtures(auroraSetup)).extend<{
         sameSite: "Lax",
       }
       await context.addCookies([myCookie])
-      await page.route("**/*", (route, request) => {
+      await page.route("**/*", async (route, request) => {
         // Clone the request headers
         const headers = { ...request.headers() }
 
@@ -43,7 +43,7 @@ export const test = testWithSynpress(metaMaskFixtures(auroraSetup)).extend<{
         headers.cookie = "aurora-e2e-testing=True"
 
         // Continue the request with the modified headers
-        void route.continue({ headers })
+        await route.continue({ headers })
       })
     }
 
