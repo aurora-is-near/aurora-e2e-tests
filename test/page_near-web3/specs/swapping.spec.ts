@@ -74,8 +74,15 @@ test.describe(
         await homePage.clickSwapButton()
         await homePage.confirmTransactionPopup()
         await metamask.confirmTransaction()
-        await homePage.confirmTransactionPopup()
-        await metamask.confirmTransaction()
+
+        const isNotificationVisible =
+          await homePage.isSuccessNotificationVisible()
+
+        if (!isNotificationVisible) {
+          await homePage.confirmTransactionPopup()
+          await metamask.confirmTransaction()
+        }
+
         await homePage.confirmSuccessNotificationAppears()
         const balanceAfter = await homePage.getFromTokenBalance()
         homePage.confirmTransactionWasCorrect(

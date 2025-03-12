@@ -1,4 +1,5 @@
 import type { APIRequestContext } from "playwright"
+import { parseFloatWithRounding } from "./helper-functions"
 
 export async function getNearTokenValue(
   apiContextRequest: APIRequestContext,
@@ -8,6 +9,7 @@ export async function getNearTokenValue(
   )
   const responseBody = await response.json()
   const currentValueUSD = responseBody.near.usd
+  const oneCent = parseFloatWithRounding(currentValueUSD, 3)
 
-  return Math.round(parseFloat(currentValueUSD) * 0.01 * 100) / 1000
+  return parseFloatWithRounding((oneCent * 0.001).toString(), 6)
 }

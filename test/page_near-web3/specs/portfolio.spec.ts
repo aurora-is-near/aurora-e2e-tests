@@ -78,6 +78,7 @@ test.describe(
 
       await homePage.navigateToPortfolioPage()
       await portfolioPage.clickSendButton()
+      await homePage.waitForActionToComplete()
       await portfolioPage.selectAsset("NEAR")
       const initialBalance = await portfolioPage.getAvailableBalance()
 
