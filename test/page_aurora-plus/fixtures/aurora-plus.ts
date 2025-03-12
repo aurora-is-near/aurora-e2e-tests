@@ -31,11 +31,20 @@ export const test = testWithSynpress(metaMaskFixtures(auroraSetup)).extend<{
         path: "/",
         expires: -1,
         httpOnly: false,
-        secure: false,
+        secure: true,
         sameSite: "Lax",
       }
-      await context.clearCookies()
       await context.addCookies([myCookie])
+      await page.route("**/*", (route, request) => {
+        // Clone the request headers
+        const headers = { ...request.headers() }
+
+        // Add my cookie to the headers
+        headers.cookie = "aurora-e2e-testing=True"
+
+        // Continue the request with the modified headers
+        void route.continue({ headers })
+      })
     }
 
     const loginToAuroraPlus = async () => {
