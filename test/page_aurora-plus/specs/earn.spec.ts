@@ -83,6 +83,9 @@ test.describe(
 
       await dashboardPage.navigateToEarnPage()
       await earnPage.skipOnboardingIfVisible()
+      page.on("request", async (request) =>
+        console.log(">>", await request.allHeaders()),
+      )
 
       await dashboardPage.waitForActionToComplete()
       test.skip(
