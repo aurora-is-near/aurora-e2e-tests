@@ -27,7 +27,7 @@ export const test = testWithSynpress(metaMaskFixtures(auroraSetup)).extend<{
         name: "aurora-e2e-testing",
         value: "True",
         domain:
-          "aurora-plus-git-e2e-automation-debugging-auroraisnear.vercel.app",
+          "https://aurora-plus-git-e2e-automation-debugging-auroraisnear.vercel.app",
         path: "/",
         expires: -1,
         httpOnly: false,
@@ -35,16 +35,6 @@ export const test = testWithSynpress(metaMaskFixtures(auroraSetup)).extend<{
         sameSite: "Lax",
       }
       await context.addCookies([myCookie])
-      // await page.route("**/*", async (route, request) => {
-      //   // Clone the request headers
-      //   const headers = { ...request.headers() }
-
-      //   // Add my cookie to the headers
-      //   headers.cookie = "aurora-e2e-testing=True"
-
-      //   // Continue the request with the modified headers
-      //   await route.continue({ headers })
-      // })
     }
 
     const loginToAuroraPlus = async () => {

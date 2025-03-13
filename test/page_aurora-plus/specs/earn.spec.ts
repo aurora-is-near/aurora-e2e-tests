@@ -1,4 +1,5 @@
 import { MetaMask } from "@synthetixio/synpress/playwright"
+import type { Cookie } from "playwright"
 import {
   AURORA_PLUS_TAG,
   AURORA_PLUS_TAG_BORROWING,
@@ -23,7 +24,18 @@ test.describe(
     test.beforeEach(
       "Login to Aurora Plus with MetaMask",
       async ({ auroraPlusPreconditions, context }) => {
-        await context.clearCookies()
+        const myCookie: Cookie = {
+          name: "aurora-e2e-testing",
+          value: "1",
+          domain:
+            "aurora-plus-git-e2e-automation-debugging-auroraisnear.vercel.app",
+          path: "/",
+          expires: Date.now() / 1000 + 100000,
+          httpOnly: false,
+          secure: false,
+          sameSite: "None",
+        }
+        await context.addCookies([myCookie])
         await auroraPlusPreconditions.assignCookieToAutomation()
         await auroraPlusPreconditions.loginToAuroraPlus()
       },
@@ -194,8 +206,6 @@ test.describe(
       await earnPage.clickWithdrawDeposit()
       test.skip(amount > depositedValueBefore, "Not enought funds to withdraw")
       await earnPage.enterAmount(amount)
-      const cookies = await context.cookies()
-      console.log(cookies)
       await earnPage.clickWitdrawButton()
       await metamask.confirmTransaction()
       await earnPage.waitForActionToComplete()
