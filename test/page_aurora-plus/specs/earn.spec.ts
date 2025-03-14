@@ -32,11 +32,11 @@ test.describe(
           path: "/",
           expires: Date.now() / 1000 + 100000,
           httpOnly: false,
-          secure: false,
+          secure: true,
           sameSite: "None",
         }
         await context.addCookies([myCookie])
-        await auroraPlusPreconditions.assignCookieToAutomation()
+        // await auroraPlusPreconditions.assignCookieToAutomation()
         await auroraPlusPreconditions.loginToAuroraPlus()
       },
     )
@@ -72,6 +72,10 @@ test.describe(
       page,
       extensionId,
     }) => {
+      // page.on("request", async (request) =>
+      //   console.log(">>", await request.allHeaders()),
+      // )
+
       const dashboardPage = new DashboardPage(page)
       const earnPage = new EarnPage(page)
       const metamask = new MetaMask(
@@ -83,9 +87,6 @@ test.describe(
 
       await dashboardPage.navigateToEarnPage()
       await earnPage.skipOnboardingIfVisible()
-      page.on("request", async (request) =>
-        console.log(">>", await request.allHeaders()),
-      )
 
       await dashboardPage.waitForActionToComplete()
       test.skip(
