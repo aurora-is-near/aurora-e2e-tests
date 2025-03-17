@@ -10,7 +10,7 @@ import auroraSetup from "../../wallet-setup/aurora-plus.setup"
 import { DashboardPage } from "../pages/dashboard.page"
 import { AURORA_PLUS_PAGE } from "../../helpers/constants/pages"
 import { EarnPage } from "../pages/earn.page"
-import { clearCountryCookie } from "../../helpers/functions/helper-functions"
+import { clearCountryCookie, parseFloatWithRounding } from "../../helpers/functions/helper-functions"
 
 const { expect } = test
 
@@ -338,8 +338,9 @@ test.describe(
       )
 
       await earnPage.clickRepayButton()
-      const amountToReturn = await earnPage.getBorrowedAmountToReturn()
-      await earnPage.enterAmount(Number(amountToReturn) + 0.001)
+      let amountToReturn = await earnPage.getBorrowedAmountToReturn()
+      amountToReturn += 0.001
+      await earnPage.enterAmount(parseFloatWithRounding(amountToReturn, 4))
       await earnPage.confirmApproveButtonNotClickable()
     })
 
