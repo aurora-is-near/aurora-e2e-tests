@@ -27,8 +27,7 @@ test.describe(
         const myCookie: Cookie = {
           name: "aurora-e2e-testing",
           value: "1",
-          domain:
-            "aurora-plus-git-e2e-automation-debugging-auroraisnear.vercel.app",
+          domain: "aurora-plus-2jsy4z1gz-auroraisnear.vercel.app",
           path: "/",
           expires: Date.now() / 1000 + 100000,
           httpOnly: false,
