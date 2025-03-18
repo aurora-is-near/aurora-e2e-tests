@@ -113,18 +113,4 @@ export class BasePage {
   async waitForActionToComplete() {
     await this.page.waitForTimeout(15000)
   }
-
-  async setUniqueCookieValue(context: BrowserContext) {
-    const myCookie: Cookie = {
-      name: "aurora-plus-qa-automation",
-      value: "True",
-      domain: "aurora.plus",
-      path: "/",
-      expires: -1,
-      httpOnly: false,
-      secure: false,
-      sameSite: "None",
-    }
-    await context.addCookies([myCookie])
-  }
 }
