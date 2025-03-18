@@ -1,10 +1,4 @@
-import {
-  type BrowserContext,
-  type Cookie,
-  expect,
-  type Locator,
-  type Page,
-} from "@playwright/test"
+import { expect, type Locator, type Page } from "@playwright/test"
 import { AURORA_PLUS_PAGE } from "../../helpers/constants/pages"
 
 export class BasePage {
