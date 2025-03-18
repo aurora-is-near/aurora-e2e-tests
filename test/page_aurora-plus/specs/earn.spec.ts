@@ -53,7 +53,7 @@ test.describe(
       await expect(earnPage.approveButton).toBeDisabled()
     })
 
-    const amount: number = 0.02
+    const amount: number = 0.2
     test(`Confirm that user can deposit ${amount} tokens`, async ({
       context,
       page,

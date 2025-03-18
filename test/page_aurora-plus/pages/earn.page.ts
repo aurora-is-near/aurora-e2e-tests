@@ -141,14 +141,11 @@ export class EarnPage extends BasePage {
     await this.page.waitForTimeout(5000)
 
     if (await this.confirmDepositButton.isVisible(shortTimeout)) {
-      await this.confirmDepositButton.hover(shortTimeout)
       await this.confirmDepositButton.isEnabled(shortTimeout)
       await this.confirmDepositButton.click()
     } else if (await this.approveDepositButton.isVisible(shortTimeout)) {
-      await this.approveDepositButton.hover(shortTimeout)
       await this.approveDepositButton.click()
     } else if (await this.depositButton.isVisible(shortTimeout)) {
-      await this.depositButton.hover(shortTimeout)
       await this.depositButton.click()
     } else {
       throw new Error("None of described buttons is visible")
