@@ -8,7 +8,9 @@ import { DashboardPage } from "../pages/dashboard.page"
 export const test = testWithSynpress(metaMaskFixtures(auroraSetup)).extend<{
   auroraPlusPreconditions: {
     loginToAuroraPlus: () => Promise<void>
-    assignCookieToAutomation: () => Promise<void>
+    assignCookieToAutomation: (auroraPageSetup: {
+      domain: string
+    }) => Promise<void>
   }
 }>({
   auroraPlusPreconditions: async ({ page, context, extensionId }, use) => {
@@ -22,17 +24,18 @@ export const test = testWithSynpress(metaMaskFixtures(auroraSetup)).extend<{
     const homePage = new HomePage(page)
     const dashboardPage = new DashboardPage(page)
 
-    const assignCookieToAutomation = async () => {
+    const assignCookieToAutomation = async (auroraPageSetup: {
+      domain: string
+    }) => {
       const myCookie: Cookie = {
         name: "aurora-e2e-testing",
-        value: "True",
-        domain:
-          "https://aurora-plus-git-e2e-automation-debugging-auroraisnear.vercel.app",
+        value: "1",
+        domain: auroraPageSetup.domain,
         path: "/",
-        expires: -1,
+        expires: Date.now() / 1000 + 100000,
         httpOnly: false,
         secure: true,
-        sameSite: "Lax",
+        sameSite: "None",
       }
       await context.addCookies([myCookie])
     }

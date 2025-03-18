@@ -1,5 +1,4 @@
 import { MetaMask } from "@synthetixio/synpress/playwright"
-import type { Cookie } from "playwright"
 import {
   AURORA_PLUS_TAG,
   AURORA_PLUS_TAG_BORROWING,
@@ -10,7 +9,7 @@ import auroraSetup from "../../wallet-setup/aurora-plus.setup"
 import { DashboardPage } from "../pages/dashboard.page"
 import { AURORA_PLUS_PAGE } from "../../helpers/constants/pages"
 import { EarnPage } from "../pages/earn.page"
-import { clearCountryCookie, parseFloatWithRounding } from "../../helpers/functions/helper-functions"
+import { parseFloatWithRounding } from "../../helpers/functions/helper-functions"
 
 const { expect } = test
 
@@ -23,19 +22,8 @@ test.describe(
   () => {
     test.beforeEach(
       "Login to Aurora Plus with MetaMask",
-      async ({ auroraPlusPreconditions, context }) => {
-        const myCookie: Cookie = {
-          name: "aurora-e2e-testing",
-          value: "1",
-          domain: "aurora-plus-2jsy4z1gz-auroraisnear.vercel.app",
-          path: "/",
-          expires: Date.now() / 1000 + 100000,
-          httpOnly: false,
-          secure: true,
-          sameSite: "None",
-        }
-        await context.addCookies([myCookie])
-        // await auroraPlusPreconditions.assignCookieToAutomation()
+      async ({ auroraPlusPreconditions }) => {
+        await auroraPlusPreconditions.assignCookieToAutomation(AURORA_PLUS_PAGE)
         await auroraPlusPreconditions.loginToAuroraPlus()
       },
     )
@@ -71,10 +59,6 @@ test.describe(
       page,
       extensionId,
     }) => {
-      // page.on("request", async (request) =>
-      //   console.log(">>", await request.allHeaders()),
-      // )
-
       const dashboardPage = new DashboardPage(page)
       const earnPage = new EarnPage(page)
       const metamask = new MetaMask(
@@ -203,9 +187,6 @@ test.describe(
         "No entities found for available depositing",
       )
       const depositedValueBefore = await earnPage.getDepositedTokenBalance()
-      // lets try to delete country cookie here
-      await clearCountryCookie(context)
-
       await earnPage.clickWithdrawDeposit()
       test.skip(amount > depositedValueBefore, "Not enought funds to withdraw")
       await earnPage.enterAmount(amount)
