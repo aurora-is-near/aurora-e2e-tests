@@ -271,39 +271,40 @@ test.describe(
       await earnPage.confirmBorrowExists()
     })
 
-    test.fixme(
-      `Confirm that user can borrow more tokens`,
-      async ({ page, context, extensionId }) => {
-        const dashboardPage = new DashboardPage(page)
-        const earnPage = new EarnPage(page)
-        const metamask = new MetaMask(
-          context,
-          page,
-          auroraSetup.walletPassword,
-          extensionId,
-        )
+    test(`Confirm that user can borrow more tokens`, async ({
+      page,
+      context,
+      extensionId,
+    }) => {
+      const dashboardPage = new DashboardPage(page)
+      const earnPage = new EarnPage(page)
+      const metamask = new MetaMask(
+        context,
+        page,
+        auroraSetup.walletPassword,
+        extensionId,
+      )
 
-        await dashboardPage.navigateToEarnPage()
-        await earnPage.skipOnboardingIfVisible()
+      await dashboardPage.navigateToEarnPage()
+      await earnPage.skipOnboardingIfVisible()
 
-        test.skip(
-          !(await earnPage.borrowExists()),
-          "No entities found for borrowing",
-        )
+      test.skip(
+        !(await earnPage.borrowExists()),
+        "No entities found for borrowing",
+      )
 
-        const amountBefore = await earnPage.getBorrowedAmount()
-        await earnPage.clickBorrowMoreButton()
-        await earnPage.enterAmount(borrowAmount)
-        await earnPage.clickBorrowButton()
-        await metamask.confirmTransaction()
-        const amountAfter = await earnPage.getBorrowedAmount()
-        earnPage.confirmBorrowMoreWasSuccessfull(
-          amountBefore,
-          amountAfter,
-          borrowAmount,
-        )
-      },
-    )
+      const amountBefore = await earnPage.getBorrowedAmount()
+      await earnPage.clickBorrowMoreButton()
+      await earnPage.enterAmount(borrowAmount)
+      await earnPage.clickBorrowButton()
+      await metamask.confirmTransaction()
+      const amountAfter = await earnPage.getBorrowedAmount()
+      earnPage.confirmBorrowMoreWasSuccessfull(
+        amountBefore,
+        amountAfter,
+        borrowAmount,
+      )
+    })
 
     test(`Confirm that user cannot repay more ${tokenName} tokens than borrowed`, async ({
       page,
@@ -325,36 +326,37 @@ test.describe(
       await earnPage.confirmApproveButtonNotClickable()
     })
 
-    test.fixme(
-      `Confirm that user can repay ${tokenName} tokens`,
-      async ({ context, page, extensionId }) => {
-        const dashboardPage = new DashboardPage(page)
-        const earnPage = new EarnPage(page)
-        const metamask = new MetaMask(
-          context,
-          page,
-          auroraSetup.walletPassword,
-          extensionId,
-        )
+    test(`Confirm that user can repay ${tokenName} tokens`, async ({
+      context,
+      page,
+      extensionId,
+    }) => {
+      const dashboardPage = new DashboardPage(page)
+      const earnPage = new EarnPage(page)
+      const metamask = new MetaMask(
+        context,
+        page,
+        auroraSetup.walletPassword,
+        extensionId,
+      )
 
-        await dashboardPage.navigateToEarnPage()
-        await earnPage.skipOnboardingIfVisible()
-        test.skip(
-          !(await earnPage.borrowExists()),
-          "No entities found for borrowing",
-        )
+      await dashboardPage.navigateToEarnPage()
+      await earnPage.skipOnboardingIfVisible()
+      test.skip(
+        !(await earnPage.borrowExists()),
+        "No entities found for borrowing",
+      )
 
-        await earnPage.clickRepayButton()
-        const amountToReturn = await earnPage.getBorrowedAmountToReturn()
-        await earnPage.enterAmount(amountToReturn)
-        await earnPage.clickApproveButton()
-        await metamask.approveTokenPermission()
-        await earnPage.waitForActionToComplete()
-        await earnPage.clickRepayButton()
-        await metamask.confirmTransaction()
-        await earnPage.waitForActionToComplete()
-        await earnPage.confirmBorrowNotExists()
-      },
-    )
+      await earnPage.clickRepayButton()
+      const amountToReturn = await earnPage.getBorrowedAmountToReturn()
+      await earnPage.enterAmount(amountToReturn)
+      await earnPage.clickApproveButton()
+      await metamask.approveTokenPermission()
+      await earnPage.waitForActionToComplete()
+      await earnPage.clickRepayButton()
+      await metamask.confirmTransaction()
+      await earnPage.waitForActionToComplete()
+      await earnPage.confirmBorrowNotExists()
+    })
   },
 )
