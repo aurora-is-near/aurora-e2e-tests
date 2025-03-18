@@ -25,6 +25,13 @@ on:
         options:
           - '@aurora-plus'
           - '@web3-wallet'
+          - '@aurora-plus-borrowing'
+          - '@aurora-plus-depositing'
+          - '@aurora-plus-staking'
+          - '@aurora-plus-swapping'
+          - '@web3-wallet-swapping'
+          - '@web3-wallet-staking'
+          - '@web3-wallet-transfering'
 
 
 jobs:

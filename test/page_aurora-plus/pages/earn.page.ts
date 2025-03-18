@@ -1,6 +1,7 @@
 import { expect, type Locator, type Page } from "playwright/test"
 import { BasePage } from "./base.page"
 import { midTimeout, shortTimeout } from "../../helpers/constants/timeouts"
+import { parseFloatWithRounding } from "../../helpers/functions/helper-functions"
 
 export class EarnPage extends BasePage {
   earnPageTitle: Locator
@@ -133,30 +134,18 @@ export class EarnPage extends BasePage {
     const messageOnFail: string = "Deposit input field not visible"
     await expect(this.depositInputField, messageOnFail).toBeVisible()
     // deposit value seems to need being filled in slowly
-    await this.depositInputField.pressSequentially(amount.toString(), {
-      delay: 1000,
-    })
+    await this.depositInputField.fill(amount.toString())
   }
 
   async confirmDeposit() {
     await this.page.waitForTimeout(5000)
 
-    await this.page.getByText("After Depositing").click()
-
-    if (
-      (await this.confirmDepositButton.isVisible(shortTimeout)) &&
-      (await this.confirmDepositButton.isEnabled(shortTimeout))
-    ) {
+    if (await this.confirmDepositButton.isVisible(shortTimeout)) {
+      await this.confirmDepositButton.isEnabled(shortTimeout)
       await this.confirmDepositButton.click()
-    } else if (
-      (await this.approveDepositButton.isVisible(shortTimeout)) &&
-      (await this.approveDepositButton.isEnabled(shortTimeout))
-    ) {
+    } else if (await this.approveDepositButton.isVisible(shortTimeout)) {
       await this.approveDepositButton.click()
-    } else if (
-      (await this.depositButton.isVisible(shortTimeout)) &&
-      (await this.depositButton.isEnabled(shortTimeout))
-    ) {
+    } else if (await this.depositButton.isVisible(shortTimeout)) {
       await this.depositButton.click()
     } else {
       throw new Error("None of described buttons is visible")
@@ -183,7 +172,7 @@ export class EarnPage extends BasePage {
   async getDepositedTokenBalance(): Promise<number> {
     const balance: string = await this.depositedTokenBalance.innerText()
 
-    return parseFloat(balance)
+    return parseFloatWithRounding(balance, 3)
   }
 
   async getDepositedTokenValue(): Promise<number> {
@@ -229,10 +218,7 @@ export class EarnPage extends BasePage {
 
   async enterAmount(amount: number | string) {
     const string = typeof amount === "string" ? amount : amount.toString()
-    // withdraw value seems to need being filled in slowly
-    await this.amountInputField.pressSequentially(string, {
-      delay: 1000,
-    })
+    await this.amountInputField.fill(string)
   }
 
   confirmBorrowMoreWasSuccessfull(
@@ -293,8 +279,9 @@ export class EarnPage extends BasePage {
     amount: number,
   ) {
     const messageOnFail: string = `Expected depositValue: ${depositedValueBefore - amount}, but received: ${depositedValueAfter}`
+    const currentBalance = depositedValueBefore - amount
     expect(depositedValueAfter, messageOnFail).toBe(
-      depositedValueBefore - amount,
+      parseFloatWithRounding(currentBalance.toString(), 3),
     )
   }
 
@@ -308,16 +295,16 @@ export class EarnPage extends BasePage {
     await expect(this.approveButton, messageOnFail).toBeDisabled()
   }
 
-  async getAmountOfAvailableBorrowAmount() {
+  async getAmountOfAvailableBorrowAmount(): Promise<number> {
     const balanceString = await this.availableBorrowAmount.innerText()
     const amountInfo = balanceString.replace("You may borrow up to ", "")
     const splitInfo = amountInfo.split(" ")
 
-    return splitInfo[0]
+    return parseFloatWithRounding(splitInfo[0], 3)
   }
 
   async clickWitdrawButton() {
-    await this.page.getByText("After withdrawing").click()
+    await this.withdrawButton.hover({ timeout: 5_000 })
     await expect(this.withdrawButton).toBeEnabled(shortTimeout)
     await this.withdrawButton.click()
   }
