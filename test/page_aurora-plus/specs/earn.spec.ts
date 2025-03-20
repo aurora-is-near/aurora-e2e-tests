@@ -319,7 +319,7 @@ test.describe(
 
       await earnPage.clickRepayButton()
       const amountToReturn = await earnPage.getBorrowedAmountToReturn()
-      await earnPage.enterAmount(Number(amountToReturn) + 0.001)
+      await earnPage.enterAmount(Number(amountToReturn) + 0.1)
       await earnPage.confirmApproveButtonNotClickable()
     })
 
