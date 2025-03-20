@@ -25,6 +25,7 @@ export default defineConfig({
             slackWebHookUrl:
               "https://hooks.slack.com/services/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",
             sendResults: "always",
+            meta: [{ key: "Product", value: process.env.RUN_TAG }],
           },
         ],
       ]
