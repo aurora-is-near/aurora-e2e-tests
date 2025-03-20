@@ -45,14 +45,6 @@ export default defineConfig({
       name: "chromium",
       use: {
         ...devices["Desktop Chrome"],
-        contextOptions: {
-          geolocation: {
-            latitude: 57.395, // Example: Latitude (Ventspils)
-            longitude: 21.559, // Example: Longitude (Ventspils)
-            accuracy: 100, // Example: Accuracy of the location
-          },
-          permissions: ["geolocation"], // Allow geolocation access
-        },
       },
     },
   ],

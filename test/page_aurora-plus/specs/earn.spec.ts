@@ -9,6 +9,7 @@ import auroraSetup from "../../wallet-setup/aurora-plus.setup"
 import { DashboardPage } from "../pages/dashboard.page"
 import { AURORA_PLUS_PAGE } from "../../helpers/constants/pages"
 import { EarnPage } from "../pages/earn.page"
+import { parseFloatWithRounding } from "../../helpers/functions/helper-functions"
 
 const { expect } = test
 
@@ -22,6 +23,7 @@ test.describe(
     test.beforeEach(
       "Login to Aurora Plus with MetaMask",
       async ({ auroraPlusPreconditions }) => {
+        await auroraPlusPreconditions.assignCookieToAutomation(AURORA_PLUS_PAGE)
         await auroraPlusPreconditions.loginToAuroraPlus()
       },
     )
@@ -69,7 +71,7 @@ test.describe(
       await dashboardPage.navigateToEarnPage()
       await earnPage.skipOnboardingIfVisible()
 
-      await page.waitForTimeout(2000)
+      await dashboardPage.waitForActionToComplete()
       test.skip(
         await earnPage.isAnyDepositsExist(),
         "No entities found for available depositing",
@@ -96,52 +98,53 @@ test.describe(
       expect(depositValueBeforeTransaction).toBeLessThan(valueAfterDeposit)
     })
 
-    test.fixme(
-      `Confirm that user can deposit more tokens`,
-      async ({ context, page, extensionId }) => {
-        const dashboardPage = new DashboardPage(page)
-        const earnPage = new EarnPage(page)
-        const metamask = new MetaMask(
-          context,
-          page,
-          auroraSetup.walletPassword,
-          extensionId,
-        )
+    test(`Confirm that user can deposit more tokens`, async ({
+      context,
+      page,
+      extensionId,
+    }) => {
+      const dashboardPage = new DashboardPage(page)
+      const earnPage = new EarnPage(page)
+      const metamask = new MetaMask(
+        context,
+        page,
+        auroraSetup.walletPassword,
+        extensionId,
+      )
 
-        await dashboardPage.navigateToEarnPage()
-        await earnPage.skipOnboardingIfVisible()
+      await dashboardPage.navigateToEarnPage()
+      await earnPage.skipOnboardingIfVisible()
 
-        await dashboardPage.setUsersCookieCountry(context)
+      await dashboardPage.waitForActionToComplete()
 
-        test.skip(
-          !(await earnPage.isAnyDepositsExist()),
-          "No entities found for available depositing",
-        )
+      test.skip(
+        !(await earnPage.isAnyDepositsExist()),
+        "No entities found for available depositing",
+      )
 
-        const depositBeforeTransaction =
-          await earnPage.getDepositedTokenBalance()
-        const depositValueBeforeTransaction =
-          await earnPage.getDepositedTokenValue()
+      const depositBeforeTransaction = await earnPage.getDepositedTokenBalance()
+      const depositValueBeforeTransaction =
+        await earnPage.getDepositedTokenValue()
 
-        await earnPage.clickDepositMoreButton()
-        await earnPage.enterAmountToDeposit(amount)
-        await earnPage.confirmDeposit()
-        // Single metamask method does not complete metamask actions
-        await metamask.confirmTransaction()
-        await earnPage.waitForActionToComplete()
-        await metamask.confirmTransaction()
-        await earnPage.waitForActionToComplete()
-        await page.getByRole("button", { name: "Deposit", exact: true }).click()
-        await metamask.confirmTransaction()
-        await earnPage.waitForActionToComplete()
+      await earnPage.clickDepositMoreButton()
+      await earnPage.enterAmountToDeposit(amount)
+      const cookies = await context.cookies()
+      console.log(cookies)
+      await earnPage.confirmDeposit()
+      // Single metamask method does not complete metamask actions
+      await metamask.confirmTransaction()
+      await earnPage.waitForActionToComplete()
+      await metamask.confirmTransaction()
+      await earnPage.waitForActionToComplete()
+      await page.getByRole("button", { name: "Deposit", exact: true }).click()
+      await metamask.confirmTransaction()
+      await earnPage.waitForActionToComplete()
 
-        const depositAfterTransaction =
-          await earnPage.getDepositedTokenBalance()
-        const valueAfterDeposit = await earnPage.getDepositedTokenValue()
-        expect(depositBeforeTransaction).toBeLessThan(depositAfterTransaction)
-        expect(depositValueBeforeTransaction).toBeLessThan(valueAfterDeposit)
-      },
-    )
+      const depositAfterTransaction = await earnPage.getDepositedTokenBalance()
+      const valueAfterDeposit = await earnPage.getDepositedTokenValue()
+      expect(depositBeforeTransaction).toBeLessThan(depositAfterTransaction)
+      expect(depositValueBeforeTransaction).toBeLessThan(valueAfterDeposit)
+    })
 
     test(`Confirm that user cannot withdraw more than deposited`, async ({
       page,
@@ -163,43 +166,40 @@ test.describe(
       await earnPage.confirmIncorrectAmountNotificationVisible()
     })
 
-    test.fixme(
-      `Confirm that user can withdraw ${amount} tokens`,
-      async ({ context, page, extensionId }) => {
-        const dashboardPage = new DashboardPage(page)
-        const earnPage = new EarnPage(page)
-        const metamask = new MetaMask(
-          context,
-          page,
-          auroraSetup.walletPassword,
-          extensionId,
-        )
-        await dashboardPage.navigateToEarnPage()
-        await earnPage.skipOnboardingIfVisible()
+    test(`Confirm that user can withdraw ${amount} tokens`, async ({
+      context,
+      page,
+      extensionId,
+    }) => {
+      const dashboardPage = new DashboardPage(page)
+      const earnPage = new EarnPage(page)
+      const metamask = new MetaMask(
+        context,
+        page,
+        auroraSetup.walletPassword,
+        extensionId,
+      )
+      await dashboardPage.navigateToEarnPage()
+      await earnPage.skipOnboardingIfVisible()
 
-        await dashboardPage.setUsersCookieCountry(context)
-        test.skip(
-          !(await earnPage.isAnyDepositsExist()),
-          "No entities found for available depositing",
-        )
-        const depositedValueBefore = await earnPage.getDepositedTokenBalance()
-        await earnPage.clickWithdrawDeposit()
-        test.skip(
-          amount > depositedValueBefore,
-          "Not enought funds to withdraw",
-        )
-        await earnPage.enterAmount(amount)
-        await earnPage.clickWitdrawButton()
-        await metamask.confirmTransaction()
-        await earnPage.waitForActionToComplete()
-        const depositedValueAfter = await earnPage.getDepositedTokenBalance()
-        earnPage.confirmWithdrawalSuccessfull(
-          depositedValueBefore,
-          depositedValueAfter,
-          amount,
-        )
-      },
-    )
+      test.skip(
+        !(await earnPage.isAnyDepositsExist()),
+        "No entities found for available depositing",
+      )
+      const depositedValueBefore = await earnPage.getDepositedTokenBalance()
+      await earnPage.clickWithdrawDeposit()
+      test.skip(amount > depositedValueBefore, "Not enought funds to withdraw")
+      await earnPage.enterAmount(amount)
+      await earnPage.clickWitdrawButton()
+      await metamask.confirmTransaction()
+      await earnPage.waitForActionToComplete()
+      const depositedValueAfter = await earnPage.getDepositedTokenBalance()
+      earnPage.confirmWithdrawalSuccessfull(
+        depositedValueBefore,
+        depositedValueAfter,
+        amount,
+      )
+    })
   },
 )
 
@@ -211,6 +211,7 @@ test.describe(
     test.beforeEach(
       "Login to Aurora Plus with MetaMask",
       async ({ auroraPlusPreconditions }) => {
+        await auroraPlusPreconditions.assignCookieToAutomation(AURORA_PLUS_PAGE)
         await auroraPlusPreconditions.loginToAuroraPlus()
       },
     )
@@ -228,7 +229,8 @@ test.describe(
       await dashboardPage.navigateToEarnPage()
       await earnPage.skipOnboardingIfVisible()
 
-      await dashboardPage.setUsersCookieCountry(context)
+      const cookies = await context.cookies()
+      console.log(cookies)
 
       if (await earnPage.borrowExists()) {
         await earnPage.clickBorrowMoreButton()
@@ -237,7 +239,7 @@ test.describe(
       }
 
       const availableAmount = await earnPage.getAmountOfAvailableBorrowAmount()
-      await earnPage.enterAmount(Number(availableAmount) * 100)
+      await earnPage.enterAmount(availableAmount * 100)
       await earnPage.confirmBorrowButtonIsNotClickable()
     })
 
@@ -270,39 +272,40 @@ test.describe(
       await earnPage.confirmBorrowExists()
     })
 
-    test.fixme(
-      `Confirm that user can borrow more tokens`,
-      async ({ page, context, extensionId }) => {
-        const dashboardPage = new DashboardPage(page)
-        const earnPage = new EarnPage(page)
-        const metamask = new MetaMask(
-          context,
-          page,
-          auroraSetup.walletPassword,
-          extensionId,
-        )
+    test(`Confirm that user can borrow more tokens`, async ({
+      page,
+      context,
+      extensionId,
+    }) => {
+      const dashboardPage = new DashboardPage(page)
+      const earnPage = new EarnPage(page)
+      const metamask = new MetaMask(
+        context,
+        page,
+        auroraSetup.walletPassword,
+        extensionId,
+      )
 
-        await dashboardPage.navigateToEarnPage()
-        await earnPage.skipOnboardingIfVisible()
+      await dashboardPage.navigateToEarnPage()
+      await earnPage.skipOnboardingIfVisible()
 
-        test.skip(
-          !(await earnPage.borrowExists()),
-          "No entities found for borrowing",
-        )
+      test.skip(
+        !(await earnPage.borrowExists()),
+        "No entities found for borrowing",
+      )
 
-        const amountBefore = await earnPage.getBorrowedAmount()
-        await earnPage.clickBorrowMoreButton()
-        await earnPage.enterAmount(borrowAmount)
-        await earnPage.clickBorrowButton()
-        await metamask.confirmTransaction()
-        const amountAfter = await earnPage.getBorrowedAmount()
-        earnPage.confirmBorrowMoreWasSuccessfull(
-          amountBefore,
-          amountAfter,
-          borrowAmount,
-        )
-      },
-    )
+      const amountBefore = await earnPage.getBorrowedAmount()
+      await earnPage.clickBorrowMoreButton()
+      await earnPage.enterAmount(borrowAmount)
+      await earnPage.clickBorrowButton()
+      await metamask.confirmTransaction()
+      const amountAfter = await earnPage.getBorrowedAmount()
+      earnPage.confirmBorrowMoreWasSuccessfull(
+        amountBefore,
+        amountAfter,
+        borrowAmount,
+      )
+    })
 
     test(`Confirm that user cannot repay more ${tokenName} tokens than borrowed`, async ({
       page,
@@ -318,41 +321,43 @@ test.describe(
       )
 
       await earnPage.clickRepayButton()
-      const amountToReturn = await earnPage.getBorrowedAmountToReturn()
-      await earnPage.enterAmount(Number(amountToReturn) + 0.1)
+      let amountToReturn = await earnPage.getBorrowedAmountToReturn()
+      amountToReturn += 0.1
+      await earnPage.enterAmount(parseFloatWithRounding(amountToReturn, 4))
       await earnPage.confirmApproveButtonNotClickable()
     })
 
-    test.fixme(
-      `Confirm that user can repay ${tokenName} tokens`,
-      async ({ context, page, extensionId }) => {
-        const dashboardPage = new DashboardPage(page)
-        const earnPage = new EarnPage(page)
-        const metamask = new MetaMask(
-          context,
-          page,
-          auroraSetup.walletPassword,
-          extensionId,
-        )
+    test(`Confirm that user can repay ${tokenName} tokens`, async ({
+      context,
+      page,
+      extensionId,
+    }) => {
+      const dashboardPage = new DashboardPage(page)
+      const earnPage = new EarnPage(page)
+      const metamask = new MetaMask(
+        context,
+        page,
+        auroraSetup.walletPassword,
+        extensionId,
+      )
 
-        await dashboardPage.navigateToEarnPage()
-        await earnPage.skipOnboardingIfVisible()
-        test.skip(
-          !(await earnPage.borrowExists()),
-          "No entities found for borrowing",
-        )
+      await dashboardPage.navigateToEarnPage()
+      await earnPage.skipOnboardingIfVisible()
+      test.skip(
+        !(await earnPage.borrowExists()),
+        "No entities found for borrowing",
+      )
 
-        await earnPage.clickRepayButton()
-        const amountToReturn = await earnPage.getBorrowedAmountToReturn()
-        await earnPage.enterAmount(amountToReturn)
-        await earnPage.clickApproveButton()
-        await metamask.approveTokenPermission()
-        await earnPage.waitForActionToComplete()
-        await earnPage.clickRepayButton()
-        await metamask.confirmTransaction()
-        await earnPage.waitForActionToComplete()
-        await earnPage.confirmBorrowNotExists()
-      },
-    )
+      await earnPage.clickRepayButton()
+      const amountToReturn = await earnPage.getBorrowedAmountToReturn()
+      await earnPage.enterAmount(amountToReturn)
+      await earnPage.clickApproveButton()
+      await metamask.approveTokenPermission()
+      await earnPage.waitForActionToComplete()
+      await earnPage.clickRepayButton()
+      await metamask.confirmTransaction()
+      await earnPage.waitForActionToComplete()
+      await earnPage.confirmBorrowNotExists()
+    })
   },
 )
