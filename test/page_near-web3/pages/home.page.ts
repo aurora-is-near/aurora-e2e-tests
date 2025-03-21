@@ -1,7 +1,11 @@
 import { type Locator, type Page } from "playwright/test"
 import { expect } from "@playwright/test"
 import { BasePage } from "./base.page"
-import { longTimeout, midTimeout } from "../../helpers/constants/timeouts"
+import {
+  longTimeout,
+  midTimeout,
+  shortTimeout,
+} from "../../helpers/constants/timeouts"
 
 export class HomePage extends BasePage {
   swapContainer: Locator
@@ -17,6 +21,7 @@ export class HomePage extends BasePage {
   balance: Locator
   successNotificationTitle: Locator
   successNotificationCloseButton: Locator
+  noPoolFound: Locator
 
   constructor(page: Page) {
     super(page)
@@ -45,6 +50,7 @@ export class HomePage extends BasePage {
     this.successNotificationCloseButton = page.getByRole("button", {
       name: "Close",
     })
+    this.noPoolFound = page.getByText("No pool found for the input")
   }
 
   async confirmHomePageLoaded(page = this.page) {
@@ -148,5 +154,11 @@ export class HomePage extends BasePage {
     const messageOnFail: string =
       '"Swap" button is enabled, while it should be disabled'
     await expect(this.swapButton, messageOnFail).toBeDisabled()
+  }
+
+  async poolExists(): Promise<boolean> {
+    const noPoolFoundText = this.noPoolFound.isVisible(shortTimeout)
+
+    return noPoolFoundText
   }
 }

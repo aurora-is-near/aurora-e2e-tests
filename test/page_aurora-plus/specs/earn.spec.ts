@@ -322,7 +322,7 @@ test.describe(
 
       await earnPage.clickRepayButton()
       let amountToReturn = await earnPage.getBorrowedAmountToReturn()
-      amountToReturn += 0.001
+      amountToReturn += 0.1
       await earnPage.enterAmount(parseFloatWithRounding(amountToReturn, 4))
       await earnPage.confirmApproveButtonNotClickable()
     })
