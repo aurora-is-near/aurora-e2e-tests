@@ -71,6 +71,9 @@ test.describe(
           await homePage.canPayGasFee(balanceBefore),
           `Insufficient funds for sending with included gas fee, balance: ${balanceBefore}, transfer: ${swapAmount}`,
         )
+
+        test.skip(await homePage.poolExists(), `Token has no pool to work with`)
+
         await homePage.clickSwapButton()
         await homePage.confirmTransactionPopup()
         await metamask.confirmTransaction()
