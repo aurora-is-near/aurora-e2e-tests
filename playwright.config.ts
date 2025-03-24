@@ -29,7 +29,11 @@ export default defineConfig({
             },
           ],
         ]
-      : [["dot"], ["list"], ["html"]],
+      : [
+          ["dot"],
+          ["list"],
+          ["html", { outputFolder: "my-report", open: "never" }],
+        ],
   reportSlowTests: null,
   timeout: (process.env.CI ? 3 : 2) * 60 * 1000,
   globalTimeout: (process.env.CI ? 60 : 30) * 60 * 1000,
