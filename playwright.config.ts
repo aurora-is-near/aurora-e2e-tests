@@ -7,33 +7,28 @@ export default defineConfig({
   forbidOnly: false,
   retries: process.env.CI ? 1 : 0,
   workers: 1,
-  reporter:
-    process.env.CI && !process.env.MANUAL_TRIGGER
-      ? [
-          ["html", { outputFolder: "my-report", open: "never" }],
-          ["junit", { outputFile: "results.xml", open: "never" }],
-          [
-            "@estruyf/github-actions-reporter",
-            <GitHubActionOptions>{
-              useDetails: true,
-              showError: false,
-              showTags: false,
-            },
-          ],
-          [
-            "./node_modules/playwright-slack-report/dist/src/SlackReporter.js",
-            {
-              slackWebHookUrl:
-                "https://hooks.slack.com/services/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",
-              sendResults: "always",
-            },
-          ],
-        ]
-      : [
-          ["dot"],
-          ["list"],
-          ["html", { outputFolder: "my-report", open: "never" }],
+  reporter: process.env.CI
+    ? [
+        ["html", { outputFolder: "my-report", open: "never" }],
+        ["junit", { outputFile: "results.xml", open: "never" }],
+        [
+          "@estruyf/github-actions-reporter",
+          <GitHubActionOptions>{
+            useDetails: true,
+            showError: false,
+            showTags: false,
+          },
         ],
+        [
+          "./node_modules/playwright-slack-report/dist/src/SlackReporter.js",
+          {
+            slackWebHookUrl:
+              "https://hooks.slack.com/services/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",
+            sendResults: process.env.MANUAL_TRIGGER ? "off" : "always",
+          },
+        ],
+      ]
+    : [["dot"], ["list"], ["html"]],
   reportSlowTests: null,
   timeout: (process.env.CI ? 3 : 2) * 60 * 1000,
   globalTimeout: (process.env.CI ? 60 : 30) * 60 * 1000,
