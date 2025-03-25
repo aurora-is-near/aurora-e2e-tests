@@ -7,6 +7,10 @@ on:
         description: 'Provide tag to run tests by'
         required: true
         type: string
+      manual_trigger:
+        required: false
+        type: boolean
+        default: true
     secrets:
       MM_SEED_PHRASE:
         required: true
@@ -44,7 +48,7 @@ jobs:
       MM_PASSWORD: ${{ secrets.MM_PASSWORD }}
       NEAR_ACCOUNT_TOKEN : ${{ secrets.NEAR_ACCOUNT_TOKEN}}
       AURORA_ACCOUNT_TOKEN: ${{ secrets.AURORA_ACCOUNT_TOKEN}}
-      MANUAL_TRIGGER: ${{ github.event_name == 'workflow_dispatch' }}
+      MANUAL_TRIGGER: ${{ inputs.manual_trigger == true }}
 
     steps:
       - uses: actions/checkout@v4
