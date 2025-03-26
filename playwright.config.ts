@@ -1,5 +1,6 @@
 import type { GitHubActionOptions } from "@estruyf/github-actions-reporter"
 import { defineConfig, devices } from "@playwright/test"
+import generateCustomLayoutSimpleMeta from "./reporter/layout_generator_mine"
 
 export default defineConfig({
   testDir: "./test",
@@ -25,10 +26,7 @@ export default defineConfig({
             slackWebHookUrl:
               "https://hooks.slack.com/services/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",
             sendResults: "always",
-            customLayout: {
-              source: "./reporter/layout_generator_mine.ts",
-              function: "generateCustomLayoutSimpleMeta",
-            },
+            layout: generateCustomLayoutSimpleMeta,
             meta: [{ key: "Product", value: `*${process.env.RUN_TAG}*` }],
           },
         ],
