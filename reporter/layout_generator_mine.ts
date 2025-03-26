@@ -1,5 +1,31 @@
 import type { Block, KnownBlock } from "@slack/types"
 import type { SummaryResults } from "playwright-slack-report/dist/src"
+import * as tags from "../test/helpers/constants/tags"
+
+function getProductFromTag(tagName: string): string {
+  switch (tagName) {
+    case tags.AURORA_PLUS_TAG:
+      return "Aurora+"
+    case tags.AURORA_PLUS_TAG_BORROWING:
+      return "Aurora+ Borrowing"
+    case tags.AURORA_PLUS_TAG_DEPOSITING:
+      return "Aurora+ Depositing"
+    case tags.AURORA_PLUS_TAG_STAKING:
+      return "Aurora+ Staking"
+    case tags.AURORA_PLUS_TAG_SWAPPING:
+      return "Aurora+ Swapping"
+    case tags.WEB3_WALLET_TAG:
+      return "Near3"
+    case tags.WEB3_WALLET_TAG_STAKING:
+      return "Near3 Staking"
+    case tags.WEB3_WALLET_TAG_SWAPPING:
+      return "Near3 Swapping"
+    case tags.WEB3_WALLET_TAG_TRANSFERING:
+      return "Near3 Transferring"
+    default:
+      return "All products - Near3 & Aurora+"
+  }
+}
 
 const generateFailures = (
   summaryResults: SummaryResults,
@@ -55,23 +81,32 @@ const generateFailures = (
   ]
 }
 
-const generateFallbackText = (summaryResults: SummaryResults): string =>
-  `✅ ${summaryResults.passed} ❌ ${summaryResults.failed} ${
-    summaryResults.flaky !== undefined ? ` 🟡 ${summaryResults.flaky} ` : " "
-  }⏩ ${summaryResults.skipped}`
-
-const generateBlocks = (
+export default function generateCustomLayoutSimpleMeta(
   summaryResults: SummaryResults,
-  maxNumberOfFailures: number,
-): Array<KnownBlock | Block> => {
-  const meta = []
-  const header = {
+): Array<Block | KnownBlock> {
+  let header = {
     type: "section",
     text: {
       type: "mrkdwn",
-      text: "🎭 *Playwright Results*",
+      text: `🎭 *Playwright Results`,
     },
   }
+
+  if (summaryResults.meta) {
+    const meta = summaryResults.meta.find(
+      (metaPair) => metaPair.key === "Product",
+    )
+    const product = getProductFromTag(meta!.value)
+
+    header = {
+      type: "section",
+      text: {
+        type: "mrkdwn",
+        text: `🎭 *Playwright Results - *${product}*`,
+      },
+    }
+  }
+
   const summary = {
     type: "section",
     text: {
@@ -84,22 +119,7 @@ const generateBlocks = (
     },
   }
 
-  const fails = generateFailures(summaryResults, maxNumberOfFailures)
+  const fails = generateFailures(summaryResults, 10)
 
-  if (summaryResults.meta) {
-    for (const metaRecord of summaryResults.meta) {
-      const { key, value } = metaRecord
-      meta.push({
-        type: "section",
-        text: {
-          type: "mrkdwn",
-          text: `\n*${key}* :\t${value}`,
-        },
-      })
-    }
-  }
-
-  return [header, summary, ...meta, ...fails]
+  return [header, summary, ...fails]
 }
-
-export { generateBlocks, generateFailures, generateFallbackText }
