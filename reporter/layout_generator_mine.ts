@@ -93,10 +93,16 @@ export default function generateCustomLayoutSimpleMeta(
   }
 
   if (summaryResults.meta) {
-    const meta = summaryResults.meta.find(
-      (metaPair) => metaPair.key === "Product",
-    )
-    const product = getProductFromTag(meta!.value)
+    let foundValue = ""
+    summaryResults.meta.forEach((metaPair) => {
+      console.log(metaPair)
+
+      if (metaPair.key === "Product") {
+        foundValue = metaPair.value
+      }
+    })
+
+    const product = getProductFromTag(foundValue)
 
     header = {
       type: "section",

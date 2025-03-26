@@ -128,8 +128,6 @@ test.describe(
 
       await earnPage.clickDepositMoreButton()
       await earnPage.enterAmountToDeposit(amount)
-      const cookies = await context.cookies()
-      console.log(cookies)
       await earnPage.confirmDeposit()
       // Single metamask method does not complete metamask actions
       await metamask.confirmTransaction()
@@ -221,16 +219,12 @@ test.describe(
 
     test(`Confirm that user cannot borrow more than balance allow ${tokenName} tokens`, async ({
       page,
-      context,
     }) => {
       const dashboardPage = new DashboardPage(page)
       const earnPage = new EarnPage(page)
 
       await dashboardPage.navigateToEarnPage()
       await earnPage.skipOnboardingIfVisible()
-
-      const cookies = await context.cookies()
-      console.log(cookies)
 
       if (await earnPage.borrowExists()) {
         await earnPage.clickBorrowMoreButton()
