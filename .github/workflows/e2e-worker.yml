@@ -7,6 +7,10 @@ on:
         description: 'Provide tag to run tests by'
         required: true
         type: string
+      manual_trigger:
+        required: false
+        type: boolean
+        default: true
     secrets:
       MM_SEED_PHRASE:
         required: true
@@ -45,7 +49,7 @@ jobs:
       NEAR_ACCOUNT_TOKEN : ${{ secrets.NEAR_ACCOUNT_TOKEN}}
       AURORA_ACCOUNT_TOKEN: ${{ secrets.AURORA_ACCOUNT_TOKEN}}
       RUN_TAG: ${{ inputs.tag }}
-
+      MANUAL_TRIGGER: ${{ inputs.manual_trigger }}
 
     steps:
       - uses: actions/checkout@v4

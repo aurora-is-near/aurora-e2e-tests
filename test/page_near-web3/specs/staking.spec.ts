@@ -74,6 +74,7 @@ test.describe(
       await stakingPage.confirmTransaction()
       await metamask.confirmTransaction()
       await stakingPage.confirmSuccessNotificationAppears()
+      await stakingPage.waitForActionToComplete()
       await stakingPage.returnToStakingInputPage()
       const availableBalanceAfter = await stakingPage.getAvalableBalance()
       stakingPage.confirmTransactionWasCorrect(
