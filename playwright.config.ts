@@ -27,7 +27,7 @@ export default defineConfig({
               "https://hooks.slack.com/services/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",
             sendResults: "always",
             layout: generateCustomLayoutSimpleMeta,
-            meta: [{ key: "Product", value: `*${process.env.RUN_TAG}*` }],
+            meta: [{ key: "Product", value: `${process.env.RUN_TAG}` }],
           },
         ],
       ]

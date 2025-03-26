@@ -88,27 +88,22 @@ export default function generateCustomLayoutSimpleMeta(
     type: "section",
     text: {
       type: "mrkdwn",
-      text: `🎭 *Playwright Results`,
+      text: `🎭 Playwright Results`,
     },
   }
 
   if (summaryResults.meta) {
-    let foundValue = ""
-    summaryResults.meta.forEach((metaPair) => {
-      console.log(metaPair)
+    const foundValue = summaryResults.meta.find(
+      (pair) => pair.key === "Product",
+    )
 
-      if (metaPair.key === "Product") {
-        foundValue = metaPair.value
-      }
-    })
-
-    const product = getProductFromTag(foundValue)
+    const product = getProductFromTag(foundValue!.value)
 
     header = {
       type: "section",
       text: {
         type: "mrkdwn",
-        text: `🎭 *Playwright Results - *${product}*`,
+        text: `🎭 Playwright Results - *${product}*`,
       },
     }
   }
