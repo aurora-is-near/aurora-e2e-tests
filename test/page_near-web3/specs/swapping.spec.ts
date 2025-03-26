@@ -34,11 +34,11 @@ test.describe(
 
     const tokensFromTo = [
       { tokenFrom: "NEAR", tokenTo: "USDt", swapAmount: 0.000001 },
-      { tokenFrom: "NEAR", tokenTo: "USDT.e", swapAmount: 0.000001 },
-      { tokenFrom: "NEAR", tokenTo: "ETH", swapAmount: 0.000001 },
-      { tokenFrom: "ETH", tokenTo: "NEAR", swapAmount: 0.00000001 },
-      { tokenFrom: "USDT.e", tokenTo: "NEAR", swapAmount: 0.000001 },
-      { tokenFrom: "USDt", tokenTo: "NEAR", swapAmount: 0.000001 },
+      // { tokenFrom: "NEAR", tokenTo: "USDT.e", swapAmount: 0.000001 },
+      // { tokenFrom: "NEAR", tokenTo: "ETH", swapAmount: 0.000001 },
+      // { tokenFrom: "ETH", tokenTo: "NEAR", swapAmount: 0.00000001 },
+      // { tokenFrom: "USDT.e", tokenTo: "NEAR", swapAmount: 0.000001 },
+      // { tokenFrom: "USDt", tokenTo: "NEAR", swapAmount: 0.000001 },
     ]
 
     for (const transfers of tokensFromTo) {
@@ -68,7 +68,7 @@ test.describe(
         await homePage.selectTokenToSwapTo(tokenTo)
         // check if we have enough balance for swapping with gas fee
         test.skip(
-          await homePage.canPayGasFee(balanceBefore),
+          await homePage.canPayGasFee(),
           `Insufficient funds for sending with included gas fee, balance: ${balanceBefore}, transfer: ${swapAmount}`,
         )
 

@@ -22,6 +22,7 @@ export class HomePage extends BasePage {
   successNotificationTitle: Locator
   successNotificationCloseButton: Locator
   noPoolFound: Locator
+  gasFeePopup: Locator
 
   constructor(page: Page) {
     super(page)
@@ -51,6 +52,9 @@ export class HomePage extends BasePage {
       name: "Close",
     })
     this.noPoolFound = page.getByText("No pool found for the input")
+    this.gasFeePopup = page.getByText(
+      "Must have 0.02N or more left in wallet for gas fee",
+    )
   }
 
   async confirmHomePageLoaded(page = this.page) {
@@ -103,10 +107,10 @@ export class HomePage extends BasePage {
     await this.amountInputField.fill(amount.toFixed(8))
   }
 
-  async canPayGasFee(beforeBalance: number): Promise<boolean> {
-    const amountInInput = parseFloat(await this.amountInputField.innerText())
+  async canPayGasFee(): Promise<boolean> {
+    const gasFeePopupVisible = await this.gasFeePopup.isVisible(midTimeout)
 
-    return beforeBalance - amountInInput > 0.02
+    return gasFeePopupVisible
   }
 
   async clickSwapButton() {
