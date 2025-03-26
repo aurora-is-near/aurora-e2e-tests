@@ -1,6 +1,6 @@
 import type { GitHubActionOptions } from "@estruyf/github-actions-reporter"
 import { defineConfig, devices } from "@playwright/test"
-import generateCustomLayoutSimpleMeta from "./reporter/layout_generator_mine"
+import generateCustomLayoutSimpleMeta from "./reporter/layout_generator"
 
 export default defineConfig({
   testDir: "./test",
