@@ -11,6 +11,7 @@ export class BasePage {
   accountDropdown: Locator
   accountDropdownExpanded: Locator
   disconnectAccountButton: Locator
+  copyAccountAddressButton: Locator
   loginButton: Locator
   balanceElement: Locator
 
@@ -31,6 +32,9 @@ export class BasePage {
       .getByRole("banner")
       .getByRole("button", { name: "Log in with Ethereum" })
     this.balanceElement = page.locator("div.font-sans > span")
+    this.copyAccountAddressButton = page.getByRole("menuitem", {
+      name: "Copy Address",
+    })
   }
 
   async confirmCorrectPageLoaded(page: Page, urlExtension: string) {
@@ -83,6 +87,17 @@ export class BasePage {
     await expect(this.loginButton).toBeVisible()
   }
 
+  async copyAccountAddress() {
+    await expect(this.copyAccountAddressButton).toBeVisible()
+    await this.copyAccountAddressButton.click()
+  }
+
+  async accountAddressInDashboard(): Promise<string> {
+    const innerText = await this.accountDropdown.innerText()
+
+    return innerText
+  }
+
   async checkReceiverBalances(initialBalance: string) {
     expect(
       parseFloat(await this.balanceElement.innerText()),
@@ -95,5 +110,10 @@ export class BasePage {
 
   async waitForTransactionToComplete() {
     await this.page.waitForTimeout(midTimeout.timeout)
+  }
+
+  checkCopiedAccountCorrect(clipboardContent: string, currentAccount: string) {
+    // lets check last 5 characters
+    expect(clipboardContent.slice(-5)).toEqual(currentAccount.slice(-5))
   }
 }
