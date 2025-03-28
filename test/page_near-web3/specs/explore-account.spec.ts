@@ -69,5 +69,20 @@ test.describe(
       // confirm user is logged out
       await homePage.confirmAccountLoggedIn(false)
     })
+
+    test(`Confirm "In Explorer" button redirects to Nearscan page`, async ({
+      page,
+      context,
+    }) => {
+      const homePage = new HomePage(page)
+      // confirm user is logged in
+      await homePage.confirmAccountLoggedIn(false)
+      const newTabPromise = context.waitForEvent("page")
+      await homePage.openAccountDropdown()
+      await homePage.clickInAccountButton()
+      // confirm new tab is opened and the URL is correct
+      const newTab = await newTabPromise
+      homePage.checkNewTabURL(newTab, "https://nearblocks.io/address/")
+    })
   },
 )

@@ -14,6 +14,7 @@ export class BasePage {
   copyAccountAddressButton: Locator
   loginButton: Locator
   balanceElement: Locator
+  inAccountButton: Locator
 
   constructor(page: Page) {
     this.page = page
@@ -35,6 +36,7 @@ export class BasePage {
     this.copyAccountAddressButton = page.getByRole("menuitem", {
       name: "Copy Address",
     })
+    this.inAccountButton = page.getByRole("menuitem", { name: "In Explorer" })
   }
 
   async confirmCorrectPageLoaded(page: Page, urlExtension: string) {
@@ -114,6 +116,11 @@ export class BasePage {
     return innerText
   }
 
+  async clickInAccountButton() {
+    await expect(this.inAccountButton).toBeVisible()
+    await this.inAccountButton.click()
+  }
+
   async checkReceiverBalances(initialBalance: string) {
     expect(
       parseFloat(await this.balanceElement.innerText()),
@@ -131,5 +138,9 @@ export class BasePage {
   checkCopiedAccountCorrect(clipboardContent: string, currentAccount: string) {
     // lets check last 5 characters
     expect(clipboardContent.slice(-5)).toEqual(currentAccount.slice(-5))
+  }
+
+  checkNewTabURL(tab: Page, url: string) {
+    expect(tab.url()).toContain(url)
   }
 }
