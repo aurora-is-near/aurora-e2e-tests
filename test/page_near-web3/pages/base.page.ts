@@ -21,7 +21,7 @@ export class BasePage {
     this.portfolioTab = page.getByRole("link", { name: "Portfolio" })
     this.stakingTab = page.getByRole("link", { name: "Staking" })
     this.exploreTab = page.getByRole("link", { name: "Explore", exact: true })
-    this.accountDropdown = page.locator('button[aria-haspopup="menu"]')
+    this.accountDropdown = page.locator('header button[aria-haspopup="menu"]')
     this.accountDropdownExpanded = page.locator(
       'button[aria-haspopup="menu"][aria-expanded="true"]',
     )
@@ -90,6 +90,22 @@ export class BasePage {
   async copyAccountAddress() {
     await expect(this.copyAccountAddressButton).toBeVisible()
     await this.copyAccountAddressButton.click()
+  }
+
+  async confirmAccountLoggedIn(isLoggedIn: boolean) {
+    if (isLoggedIn) {
+      await expect(
+        this.page
+          .getByRole("banner")
+          .getByRole("button", { name: "Log in with Ethereum" }),
+      ).not.toBeVisible()
+    } else {
+      await expect(
+        this.page
+          .getByRole("banner")
+          .getByRole("button", { name: "Log in with Ethereum" }),
+      ).toBeVisible()
+    }
   }
 
   async accountAddressInDashboard(): Promise<string> {

@@ -29,9 +29,11 @@ test.describe(
       // navigate to explore page
       await homePage.navigateToExplorePage()
       // find a dApp to search from the visible list
-      await explorePage.getRandomdAppName()
+      const randomName = await explorePage.getRandomdAppName()
       // enter the name into search field
+      await explorePage.searchApp(randomName)
       // check if found
+      await explorePage.searchAppFilter(randomName)
     })
 
     test(`Confirm copying account address works`, async ({ page, context }) => {
@@ -55,6 +57,17 @@ test.describe(
         clipboardContent,
         dashboardAccountAddress,
       )
+    })
+
+    test(`Disconnect user from app`, async ({ page }) => {
+      const homePage = new HomePage(page)
+      // confirm user is logged in
+      await homePage.confirmAccountLoggedIn(false)
+      // disconnect from account
+      await homePage.openAccountDropdown()
+      await homePage.disconnectAccount()
+      // confirm user is logged out
+      await homePage.confirmAccountLoggedIn(false)
     })
   },
 )
