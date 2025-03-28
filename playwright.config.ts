@@ -1,5 +1,6 @@
 import type { GitHubActionOptions } from "@estruyf/github-actions-reporter"
 import { defineConfig, devices } from "@playwright/test"
+import generateCustomLayoutSimpleMeta from "./reporter/layout_generator"
 
 export default defineConfig({
   testDir: "./test",
@@ -24,7 +25,10 @@ export default defineConfig({
           {
             slackWebHookUrl:
               "https://hooks.slack.com/services/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",
-            sendResults: process.env.MANUAL_TRIGGER ? "off" : "always",
+            layout: generateCustomLayoutSimpleMeta,
+            meta: [{ key: "Product", value: `${process.env.RUN_TAG}` }],
+            sendResults:
+              process.env.MANUAL_TRIGGER === "true" ? "off" : "always",
           },
         ],
       ]

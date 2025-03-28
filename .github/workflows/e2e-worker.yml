@@ -48,7 +48,8 @@ jobs:
       MM_PASSWORD: ${{ secrets.MM_PASSWORD }}
       NEAR_ACCOUNT_TOKEN : ${{ secrets.NEAR_ACCOUNT_TOKEN}}
       AURORA_ACCOUNT_TOKEN: ${{ secrets.AURORA_ACCOUNT_TOKEN}}
-      MANUAL_TRIGGER: ${{ inputs.manual_trigger == true }}
+      RUN_TAG: ${{ inputs.tag }}
+      MANUAL_TRIGGER: ${{ inputs.manual_trigger }}
 
     steps:
       - uses: actions/checkout@v4
