@@ -10,7 +10,7 @@ on:
       manual_trigger:
         required: false
         type: boolean
-        default: true
+        default: false
     secrets:
       MM_SEED_PHRASE:
         required: true
