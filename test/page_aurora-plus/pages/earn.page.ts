@@ -217,7 +217,7 @@ export class EarnPage extends BasePage {
   }
 
   async enterAmount(amount: number | string) {
-    const string = typeof amount === "string" ? amount : amount.toString()
+    const string = typeof amount === "string" ? amount : amount.toFixed(4)
     await this.amountInputField.fill(string)
   }
 
