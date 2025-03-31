@@ -336,6 +336,8 @@ export class DashboardPage extends BasePage {
     await expect(this.unstakeConfirmButton, messageOnFail).toBeDisabled()
   }
 
+  
+
   /**
    *
    * @param initialAuroraBalance {number} Initial balance
