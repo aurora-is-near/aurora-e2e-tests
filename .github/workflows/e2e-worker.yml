@@ -80,7 +80,9 @@ jobs:
         run: xvfb-run yarn synpress
 
       - name: Run tests
-        run: xvfb-run yarn test-tag ${{ inputs.tag }}
+        run: |
+          echo $MANUAL_TRIGGER
+          xvfb-run yarn test-tag ${{ inputs.tag }}
 
       - uses: actions/upload-artifact@v4
         if: always()
