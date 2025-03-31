@@ -59,6 +59,7 @@ jobs:
 
       - name: Install linux deps
         run: |
+          sudo apt-get update
           sudo apt-get install --no-install-recommends -y \
           fluxbox \
           xvfb
@@ -80,7 +81,8 @@ jobs:
         run: xvfb-run yarn synpress
 
       - name: Run tests
-        run: xvfb-run yarn test-tag ${{ inputs.tag }}
+        run: |
+          xvfb-run yarn test-tag ${{ inputs.tag }}
 
       - uses: actions/upload-artifact@v4
         if: always()
