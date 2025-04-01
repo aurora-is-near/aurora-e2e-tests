@@ -1,4 +1,3 @@
-import { MetaMask } from "@synthetixio/synpress/playwright"
 import {
   AURORA_PLUS_TAG,
   AURORA_PLUS_TAG_SWAPPING,
@@ -31,7 +30,23 @@ test.describe(
         await appsPage.fillAppSearch(randomName)
         // check if found
         await appsPage.searchAppFilter(randomName)
-        await dashboardPage.waitForActionToComplete()
+      },
+    )
+
+    test.fixme(
+      `Confirm user can favorite and see favorite dApp in Apps page and in home page`,
+      async ({ page }) => {
+        const dashboardPage = new DashboardPage(page)
+        const appsPage = new AppsPage(page)
+        await dashboardPage.navigateToAppsPage()
+        const randomName = await appsPage.getRandomdAppName()
+        await appsPage.saveAppAsFavorite(randomName)
+        // confirm it is favorited
+        await appsPage.goToFavoritesSection()
+        await appsPage.confirmFavoritesHasApp(randomName)
+        // check in dashboard page as well if favorites are updated
+        await dashboardPage.navigateToHomePage()
+        await dashboardPage.confirmFavoriteAppsHasApp(randomName)
       },
     )
   },

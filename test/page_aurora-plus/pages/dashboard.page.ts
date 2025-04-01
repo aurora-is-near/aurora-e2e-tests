@@ -336,7 +336,11 @@ export class DashboardPage extends BasePage {
     await expect(this.unstakeConfirmButton, messageOnFail).toBeDisabled()
   }
 
-  
+  async confirmFavoriteAppsHasApp(name: string) {
+    const element = this.page.getByRole("link", { name })
+    await expect(element).toBeVisible()
+    await element.click()
+  }
 
   /**
    *
