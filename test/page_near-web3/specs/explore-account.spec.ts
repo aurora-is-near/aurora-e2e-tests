@@ -6,6 +6,7 @@ import {
 import { test } from "../fixtures/near-web3"
 import { HomePage } from "../pages/home.page"
 import { ExplorePage } from "../pages/explore.page"
+import { DashboardPage } from "../../page_aurora-plus/pages/dashboard.page"
 
 test.use(NEAR_WEB3_PAGE)
 
@@ -83,6 +84,19 @@ test.describe(
       // confirm new tab is opened and the URL is correct
       const newTab = await newTabPromise
       homePage.checkNewTabURL(newTab, "https://nearblocks.io/address/")
+    })
+
+    test(`Confirm Support tab redirects to Discord invite`, async ({
+      page,
+      context,
+    }) => {
+      const homePage = new HomePage(page)
+      const dashboardPage = new DashboardPage(page)
+      await homePage.confirmAccountLoggedIn(false)
+      const newTabPromise = context.waitForEvent("page")
+      await dashboardPage.navigateToSupportPage()
+      const newTab = await newTabPromise
+      homePage.checkNewTabURL(newTab, "https://discord.com/invite/3BNq8VvWN8")
     })
   },
 )
