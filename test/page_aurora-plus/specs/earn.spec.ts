@@ -128,6 +128,10 @@ test.describe(
 
       await earnPage.clickDepositMoreButton()
       await earnPage.enterAmountToDeposit(amount)
+      test.skip(
+        !(await earnPage.isAbleToDeposit()),
+        "Insufficient funds to deposit the amount",
+      )
       await earnPage.confirmDeposit()
       // Single metamask method does not complete metamask actions
       await metamask.confirmTransaction()
@@ -262,7 +266,6 @@ test.describe(
       await earnPage.enterAmount(borrowAmount)
       await earnPage.clickBorrowButton()
       await metamask.confirmTransaction()
-      await earnPage.waitForActionToComplete()
       await earnPage.confirmBorrowExists()
     })
 

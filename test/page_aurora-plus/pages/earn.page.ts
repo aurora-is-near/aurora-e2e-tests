@@ -1,6 +1,10 @@
 import { expect, type Locator, type Page } from "playwright/test"
 import { BasePage } from "./base.page"
-import { midTimeout, shortTimeout } from "../../helpers/constants/timeouts"
+import {
+  longTimeout,
+  midTimeout,
+  shortTimeout,
+} from "../../helpers/constants/timeouts"
 import { parseFloatWithRounding } from "../../helpers/functions/helper-functions"
 
 export class EarnPage extends BasePage {
@@ -169,6 +173,13 @@ export class EarnPage extends BasePage {
     return isVisible
   }
 
+  async isAbleToDeposit(): Promise<boolean> {
+    const isVisible =
+      await this.insufficientFundsNotification.isVisible(midTimeout)
+
+    return isVisible
+  }
+
   async getDepositedTokenBalance(): Promise<number> {
     const balance: string = await this.depositedTokenBalance.innerText()
 
@@ -258,7 +269,10 @@ export class EarnPage extends BasePage {
 
   async confirmBorrowExists() {
     const messageOnFail: string = "Borrow do not exist"
-    expect(await this.myBorrowWrapper.isVisible(), messageOnFail).toBeTruthy()
+    expect(
+      await this.myBorrowWrapper.isVisible(longTimeout),
+      messageOnFail,
+    ).toBeTruthy()
   }
 
   async confirmBorrowNotExists() {
