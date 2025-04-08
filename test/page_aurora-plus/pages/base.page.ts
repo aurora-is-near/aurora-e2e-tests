@@ -110,7 +110,7 @@ export class BasePage {
   }
 
   async timeout(seconds: number) {
-    await this.page.waitForTimeout(seconds)
+    await this.page.waitForTimeout(seconds * 1000)
   }
 
   async waitForActionToComplete() {
