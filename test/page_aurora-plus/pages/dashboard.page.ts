@@ -337,9 +337,17 @@ export class DashboardPage extends BasePage {
   }
 
   async confirmFavoriteAppsHasApp(name: string) {
-    const element = this.page.getByRole("link", { name })
-    await expect(element).toBeVisible()
-    await element.click()
+    const allElem = await this.page
+      .getByTestId("explore-apps-link-favorites")
+      .all()
+    const dAppNames: string[] = []
+    const targetTexts = await Promise.all(
+      allElem.map((elem) =>
+        elem.innerText().then((innerText) => innerText.split("\n")[0]),
+      ),
+    )
+    dAppNames.push(...targetTexts)
+    expect(dAppNames).toContain(name)
   }
 
   /**

@@ -19,35 +19,31 @@ test.describe(
         await auroraPlusPreconditions.loginToAuroraPlus()
       },
     )
-    test.fixme(
-      `Confirm user can search dApp in Apps page`,
-      async ({ page }) => {
-        const dashboardPage = new DashboardPage(page)
-        const appsPage = new AppsPage(page)
-        await dashboardPage.navigateToAppsPage()
-        // fill input field
-        const randomName = await appsPage.getRandomdAppName()
-        await appsPage.fillAppSearch(randomName)
-        // check if found
-        await appsPage.searchAppFilter(randomName)
-      },
-    )
+    test(`Confirm user can search dApp in Apps page`, async ({ page }) => {
+      const dashboardPage = new DashboardPage(page)
+      const appsPage = new AppsPage(page)
+      await dashboardPage.navigateToAppsPage()
+      // fill input field
+      const randomName = await appsPage.getRandomdAppName()
+      await appsPage.fillAppSearch(randomName)
+      // check if found
+      await appsPage.searchAppFilter(randomName)
+    })
 
-    test.fixme(
-      `Confirm user can favorite and see favorite dApp in Apps page and in home page`,
-      async ({ page }) => {
-        const dashboardPage = new DashboardPage(page)
-        const appsPage = new AppsPage(page)
-        await dashboardPage.navigateToAppsPage()
-        const randomName = await appsPage.getRandomdAppName()
-        await appsPage.saveAppAsFavorite(randomName)
-        // confirm it is favorited
-        await appsPage.goToFavoritesSection()
-        await appsPage.confirmFavoritesHasApp(randomName)
-        // check in dashboard page as well if favorites are updated
-        await dashboardPage.navigateToHomePage()
-        await dashboardPage.confirmFavoriteAppsHasApp(randomName)
-      },
-    )
+    test(`Confirm user can favorite and see favorite dApp in Apps page and in home page`, async ({
+      page,
+    }) => {
+      const dashboardPage = new DashboardPage(page)
+      const appsPage = new AppsPage(page)
+      await dashboardPage.navigateToAppsPage()
+      const randomName = await appsPage.getRandomdAppName()
+      await appsPage.saveAppAsFavorite(randomName)
+      // confirm it is favorited
+      await appsPage.goToFavoritesSection()
+      await appsPage.confirmFavoritesHasApp(randomName)
+      // check in dashboard page as well if favorites are updated
+      await dashboardPage.navigateToHomePage()
+      await dashboardPage.confirmFavoriteAppsHasApp(randomName)
+    })
   },
 )
