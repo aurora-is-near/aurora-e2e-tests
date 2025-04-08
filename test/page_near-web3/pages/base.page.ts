@@ -11,8 +11,10 @@ export class BasePage {
   accountDropdown: Locator
   accountDropdownExpanded: Locator
   disconnectAccountButton: Locator
+  copyAccountAddressButton: Locator
   loginButton: Locator
   balanceElement: Locator
+  inAccountButton: Locator
 
   constructor(page: Page) {
     this.page = page
@@ -20,7 +22,7 @@ export class BasePage {
     this.portfolioTab = page.getByRole("link", { name: "Portfolio" })
     this.stakingTab = page.getByRole("link", { name: "Staking" })
     this.exploreTab = page.getByRole("link", { name: "Explore", exact: true })
-    this.accountDropdown = page.locator('button[aria-haspopup="menu"]')
+    this.accountDropdown = page.locator('header button[aria-haspopup="menu"]')
     this.accountDropdownExpanded = page.locator(
       'button[aria-haspopup="menu"][aria-expanded="true"]',
     )
@@ -31,6 +33,10 @@ export class BasePage {
       .getByRole("banner")
       .getByRole("button", { name: "Log in with Ethereum" })
     this.balanceElement = page.locator("div.font-sans > span")
+    this.copyAccountAddressButton = page.getByRole("menuitem", {
+      name: "Copy Address",
+    })
+    this.inAccountButton = page.getByRole("menuitem", { name: "In Explorer" })
   }
 
   async confirmCorrectPageLoaded(page: Page, urlExtension: string) {
@@ -83,6 +89,38 @@ export class BasePage {
     await expect(this.loginButton).toBeVisible()
   }
 
+  async copyAccountAddress() {
+    await expect(this.copyAccountAddressButton).toBeVisible()
+    await this.copyAccountAddressButton.click()
+  }
+
+  async confirmAccountLoggedIn(isLoggedIn: boolean) {
+    if (isLoggedIn) {
+      await expect(
+        this.page
+          .getByRole("banner")
+          .getByRole("button", { name: "Log in with Ethereum" }),
+      ).not.toBeVisible()
+    } else {
+      await expect(
+        this.page
+          .getByRole("banner")
+          .getByRole("button", { name: "Log in with Ethereum" }),
+      ).toBeVisible()
+    }
+  }
+
+  async accountAddressInDashboard(): Promise<string> {
+    const innerText = await this.accountDropdown.innerText()
+
+    return innerText
+  }
+
+  async clickInAccountButton() {
+    await expect(this.inAccountButton).toBeVisible()
+    await this.inAccountButton.click()
+  }
+
   async checkReceiverBalances(initialBalance: string) {
     expect(
       parseFloat(await this.balanceElement.innerText()),
@@ -95,5 +133,14 @@ export class BasePage {
 
   async waitForTransactionToComplete() {
     await this.page.waitForTimeout(midTimeout.timeout)
+  }
+
+  checkCopiedAccountCorrect(clipboardContent: string, currentAccount: string) {
+    // lets check last 5 characters
+    expect(clipboardContent.slice(-5)).toEqual(currentAccount.slice(-5))
+  }
+
+  checkNewTabURL(tab: Page, url: string) {
+    expect(tab.url()).toContain(url)
   }
 }

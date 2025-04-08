@@ -336,6 +336,20 @@ export class DashboardPage extends BasePage {
     await expect(this.unstakeConfirmButton, messageOnFail).toBeDisabled()
   }
 
+  async confirmFavoriteAppsHasApp(name: string) {
+    const allElem = await this.page
+      .getByTestId("explore-apps-link-favorites")
+      .all()
+    const dAppNames: string[] = []
+    const targetTexts = await Promise.all(
+      allElem.map((elem) =>
+        elem.innerText().then((innerText) => innerText.split("\n")[0]),
+      ),
+    )
+    dAppNames.push(...targetTexts)
+    expect(dAppNames).toContain(name)
+  }
+
   /**
    *
    * @param initialAuroraBalance {number} Initial balance

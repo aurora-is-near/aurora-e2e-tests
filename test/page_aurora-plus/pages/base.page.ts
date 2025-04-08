@@ -9,6 +9,7 @@ export class BasePage {
   swapTab: Locator
   earnTab: Locator
   appsTab: Locator
+  supportTab: Locator
   bridgeDropdown: Locator
   svgLogo: Locator
 
@@ -22,6 +23,7 @@ export class BasePage {
     this.earnTab = page.getByTestId("earn-tab-button")
     this.appsTab = page.getByTestId("apps-tab-button")
     this.bridgeDropdown = page.getByRole("link", { name: "Bridge" })
+    this.supportTab = page.getByRole("link", { name: "Support", exact: true })
   }
 
   async confirmCorrectPageLoaded(page: Page, url: string) {
@@ -90,6 +92,13 @@ export class BasePage {
     await this.appsTab.click()
     await this.page.waitForLoadState("domcontentloaded")
     await this.confirmCorrectPageLoaded(this.page, url)
+  }
+
+  async navigateToSupportPage() {
+    const messageOnFail: string = "Support tab button not visible"
+    await expect(this.supportTab, messageOnFail).toBeVisible()
+
+    await this.supportTab.click()
   }
 
   async selectDropDownOption(option: string) {
