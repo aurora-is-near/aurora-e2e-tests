@@ -1,6 +1,10 @@
 import { expect, type Locator, type Page } from "playwright/test"
 import { BasePage } from "./base.page"
-import { longTimeout, midTimeout, shortTimeout } from "../../helpers/constants/timeouts"
+import {
+  longTimeout,
+  midTimeout,
+  shortTimeout,
+} from "../../helpers/constants/timeouts"
 import { parseFloatWithRounding } from "../../helpers/functions/helper-functions"
 
 export class EarnPage extends BasePage {
