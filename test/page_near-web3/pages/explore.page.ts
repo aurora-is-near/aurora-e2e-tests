@@ -8,9 +8,7 @@ export class ExplorePage extends BasePage {
   constructor(page: Page) {
     super(page)
     this.page = page
-    this.allAppElements = page.locator(
-      `a.shadow-custom[target="_blank"][rel="noreferrer noopener"]`,
-    )
+    this.allAppElements = page.getByTestId("explore-apps-link")
     this.searchInputField = page.getByPlaceholder("Search dapps on NEAR")
   }
 
@@ -18,9 +16,8 @@ export class ExplorePage extends BasePage {
     const allElem = await this.allAppElements.all()
     const randomApp = allElem[Math.floor(Math.random() * allElem.length)]
     const randomAppText = await randomApp.innerText()
-    const [tempArr] = randomAppText.split("\n")
 
-    return tempArr
+    return randomAppText.split("\n")[0]
   }
 
   async searchApp(name: string) {
@@ -32,13 +29,13 @@ export class ExplorePage extends BasePage {
     const allElem = await this.allAppElements.all()
     const dAppNames: string[] = []
 
-    await Promise.all(
-      allElem.map(async (elem) => {
-        const innerText = await elem.innerText()
-        const [targetText] = innerText.split("\n")
-        dAppNames.push(targetText)
-      }),
+    const targetTexts = await Promise.all(
+      allElem.map((elem) =>
+        elem.innerText().then((innerText) => innerText.split("\n")[0]),
+      ),
     )
+
+    dAppNames.push(...targetTexts)
     expect(dAppNames).toContain(name)
     expect(dAppNames.length).toEqual(1)
   }

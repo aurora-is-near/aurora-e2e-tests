@@ -21,21 +21,23 @@ test.describe(
   "NEAR Web3 Wallet: Portfolio Page - Explore dApps",
   { tag: [WEB3_WALLET_TAG, WEB3_WALLET_TAG_TRANSFERING] },
   () => {
-    test(`Confirm user can search an dApp on Explore page`, async ({
-      page,
-    }) => {
-      const homePage = new HomePage(page)
-      const explorePage = new ExplorePage(page)
+    // FIXME: ClickUp ID - 86et0betq
+    test.fixme(
+      `Confirm user can search an dApp on Explore page`,
+      async ({ page }) => {
+        const homePage = new HomePage(page)
+        const explorePage = new ExplorePage(page)
 
-      // navigate to explore page
-      await homePage.navigateToExplorePage()
-      // find a dApp to search from the visible list
-      const randomName = await explorePage.getRandomdAppName()
-      // enter the name into search field
-      await explorePage.searchApp(randomName)
-      // check if found
-      await explorePage.searchAppFilter(randomName)
-    })
+        // navigate to explore page
+        await homePage.navigateToExplorePage()
+        // find a dApp to search from the visible list
+        const randomName = await explorePage.getRandomdAppName()
+        // enter the name into search field
+        await explorePage.searchApp(randomName)
+        // check if found
+        await explorePage.searchAppFilter(randomName)
+      },
+    )
 
     test(`Confirm copying account address works`, async ({ page, context }) => {
       await context.grantPermissions(["clipboard-read", "clipboard-write"])

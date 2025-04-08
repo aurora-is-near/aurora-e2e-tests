@@ -9,18 +9,17 @@ export class AppsPage extends BasePage {
   constructor(page: Page) {
     super(page)
     this.page = page
-    this.allAppElements = page.locator(`a[target="_blank"]`)
+    this.allAppElements = page.getByTestId("explore-apps-link")
     this.searchInputField = page.getByPlaceholder("Search projects by name")
     this.favoritesSection = page.getByRole("button", { name: "Favourites" })
   }
 
   async getRandomdAppName(): Promise<string> {
     const allElem = await this.allAppElements.all()
-    const randomApp = allElem[Math.floor(Math.random() * (allElem.length - 5))]
+    const randomApp = allElem[Math.floor(Math.random() * allElem.length)]
     const randomAppText = await randomApp.innerText()
-    const [tempArr] = randomAppText.split("\n")
 
-    return tempArr
+    return randomAppText.split("\n")[0]
   }
 
   async fillAppSearch(name: string) {
@@ -28,18 +27,17 @@ export class AppsPage extends BasePage {
     await this.searchInputField.fill(name)
   }
 
-  // TODO: Try to find a good way to do this
   async searchAppFilter(name: string) {
     const allElem = await this.allAppElements.all()
     const dAppNames: string[] = []
 
-    await Promise.all(
-      allElem.map(async (elem) => {
-        const innerText = await elem.innerText()
-        const [targetText] = innerText.split("\n")
-        dAppNames.push(targetText)
-      }),
+    const targetTexts = await Promise.all(
+      allElem.map((elem) =>
+        elem.innerText().then((innerText) => innerText.split("\n")[0]),
+      ),
     )
+
+    dAppNames.push(...targetTexts)
     expect(dAppNames).toContain(name)
     expect(dAppNames.length).toEqual(1)
   }
@@ -58,18 +56,17 @@ export class AppsPage extends BasePage {
     await this.favoritesSection.click()
   }
 
-  // TODO: Try to find a good way to do this
   async confirmFavoritesHasApp(name: string) {
     const allElem = await this.allAppElements.all()
     const dAppNames: string[] = []
 
-    await Promise.all(
-      allElem.map(async (elem) => {
-        const innerText = await elem.innerText()
-        const [targetText] = innerText.split("\n")
-        dAppNames.push(targetText)
-      }),
+    const targetTexts = await Promise.all(
+      allElem.map((elem) =>
+        elem.innerText().then((innerText) => innerText.split("\n")[0]),
+      ),
     )
+
+    dAppNames.push(...targetTexts)
     expect(dAppNames).toContain(name)
     expect(dAppNames.length).toEqual(1)
   }
