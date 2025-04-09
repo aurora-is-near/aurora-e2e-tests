@@ -1,10 +1,12 @@
 import { expect, type Locator, type Page } from "playwright/test"
 import { BasePage } from "./base.page"
+import { shortTimeout } from "../../helpers/constants/timeouts"
 
 export class AppsPage extends BasePage {
   allAppElements: Locator
   searchInputField: Locator
   favoritesSection: Locator
+  appsHeader: Locator
 
   constructor(page: Page) {
     super(page)
@@ -12,9 +14,11 @@ export class AppsPage extends BasePage {
     this.allAppElements = page.getByTestId("explore-apps-link")
     this.searchInputField = page.getByPlaceholder("Search projects by name")
     this.favoritesSection = page.getByRole("button", { name: "Favourites" })
+    this.appsHeader = page.getByRole("heading", { name: "Ecosystem Apps" })
   }
 
   async getRandomdAppName(): Promise<string> {
+    await expect(this.appsHeader).toBeVisible(shortTimeout)
     const allElem = await this.allAppElements.all()
     const randomApp = allElem[Math.floor(Math.random() * allElem.length)]
     const randomAppText = await randomApp.innerText()
