@@ -10,7 +10,7 @@ import { AppsPage } from "../pages/apps.page"
 test.use(AURORA_PLUS_PAGE)
 
 test.describe(
-  "Aurora Plus: Swap Page - Swapping",
+  "Aurora Plus: App Page - dApps",
   { tag: [AURORA_PLUS_TAG, AURORA_PLUS_TAG_SWAPPING] },
   () => {
     test.beforeEach(
