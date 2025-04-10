@@ -79,7 +79,9 @@ jobs:
 
       - name: Create Synpress cache
         run: |
-          while [ $count -lt 10 ]; do
+          count=0
+          max_attempts=10
+          while [ $count -lt $max_attempts ]; do
             ((count++))
             xvfb-run yarn synpress
 
