@@ -78,7 +78,20 @@ jobs:
         run: yarn playwright install
 
       - name: Create Synpress cache
-        run: xvfb-run yarn synpress
+        run: |
+          while [ $count -lt 10 ]; do
+            ((count++))
+            xvfb-run yarn synpress
+
+            exit_code=$?
+            if [ $exit_code -eq 0 ]; then
+              break
+            else
+              if [ $count -eq $max_attempts ]; then
+                break
+              fi
+            fi
+          done
 
       - name: Run tests
         run: |
