@@ -77,8 +77,8 @@ test.describe(
       )
 
       await homePage.navigateToPortfolioPage()
-      await portfolioPage.clickSendButton()
       const initialBalance = await portfolioPage.getAvailableBalance()
+      await portfolioPage.clickSendButton()
       await portfolioPage.selectAsset("NEAR")
 
       const transferAmountToSend = await getNearTokenValue(request)
