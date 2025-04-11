@@ -79,21 +79,7 @@ jobs:
 
       - name: Create Synpress cache
         run: |
-          count=0
-          max_attempts=10
-          while [ $count -lt $max_attempts ]; do
-            ((count++))
-            xvfb-run yarn synpress
-
-            exit_code=$?
-            if [ $exit_code -eq 0 ]; then
-              break
-            else
-              if [ $count -eq $max_attempts ]; then
-                break
-              fi
-            fi
-          done
+          xvfb-run yarn synpress
 
       - name: Run tests
         run: |
