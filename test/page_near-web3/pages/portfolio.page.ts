@@ -1,7 +1,6 @@
 import { expect, type Locator, type Page } from "playwright/test"
 import { BasePage } from "./base.page"
 import { midTimeout } from "../../helpers/constants/timeouts"
-import { waitForStablePosition } from "../../helpers/functions/helper-functions"
 
 export class PortfolioPage extends BasePage {
   exampleLocator: Locator
@@ -96,7 +95,7 @@ export class PortfolioPage extends BasePage {
 
   async getAvailableBalance(): Promise<number> {
     // we need to wait a bit since there is animation on the amount, starting from 0
-    await waitForStablePosition(this.balanceElement)
+    await this.page.waitForTimeout(5_000)
     const balance = await this.balanceElement.innerText()
 
     return parseFloat(balance)

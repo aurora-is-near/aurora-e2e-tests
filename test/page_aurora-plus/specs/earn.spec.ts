@@ -36,9 +36,8 @@ test.describe(
       await dashboardPage.navigateToEarnPage()
       await earnPage.skipOnboardingIfVisible()
 
-      const depositAlradyExists = await earnPage.isAnyDepositsExist()
-
       await page.waitForTimeout(2000)
+      const depositAlradyExists = await earnPage.isAnyDepositsExist()
 
       if (depositAlradyExists) {
         await earnPage.clickDepositMoreButton()
