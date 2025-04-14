@@ -9,4 +9,5 @@ export const NEAR_WEB3_PAGE = {
 
 export const AURORA_CLOUD_CONSOLE_PAGE = {
   baseURL: "https://app.auroracloud.dev/dashboard/",
+  domain: "app.auroracloud.dev",
 }

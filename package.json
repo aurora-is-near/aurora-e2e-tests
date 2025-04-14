@@ -11,6 +11,8 @@
     "test": "playwright test --workers=1",
     "test-aurora": "playwright test --workers=1 --grep @aurora-plus",
     "test-web-wallet": "playwright test --workers=1 --grep @web3-wallet",
+    "test-cloud-console": "playwright test --workers=1 --grep @aurora-cloud-console",
+    "ui-mode": "playwright test --ui --workers=1",
     "test-tag": "playwright test --workers=1 --grep",
     "debug": "yarn playwright test --debug",
     "console": "PWDEBUG=console yarn playwright test",
@@ -24,6 +26,7 @@
   "dependencies": {
     "@estruyf/github-actions-reporter": "^1.10.0",
     "@slack/types": "^2.14.0",
+    "@supabase/supabase-js": "^2.49.4",
     "@synthetixio/synpress": "4.0.3",
     "dotenv": "16.4.5",
     "playwright": "1.44.0",

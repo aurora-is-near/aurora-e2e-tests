@@ -1,21 +1,24 @@
-import {
-  AURORA_PLUS_TAG,
-  AURORA_PLUS_TAG_SWAPPING,
-} from "../../helpers/constants/tags"
 import { test } from "../fixtures/aurora-cloud-console"
+import { AURORA_CLOUD_CONSOLE_TAG } from "../../helpers/constants/tags"
 import { AURORA_CLOUD_CONSOLE_PAGE } from "../../helpers/constants/pages"
 
 test.use(AURORA_CLOUD_CONSOLE_PAGE)
 
 test.describe(
-  "Aurora Plus: App Page - dApps",
-  { tag: [AURORA_PLUS_TAG, AURORA_PLUS_TAG_SWAPPING] },
+  "Aurora Cloud Console: Temp",
+  { tag: [AURORA_CLOUD_CONSOLE_TAG] },
   () => {
     test.beforeEach(
-      "Login to Aurora Cloud Console",
-      async ({ auroraPlusPreconditions }) => {},
+      "Login to Aurora Plus with MetaMask",
+      async ({ auroraCloudPreconditions }) => {
+        await auroraCloudPreconditions.loginToSupabase()
+      },
     )
-    test(`temp`, async ({ page }) => {
+
+    test(`temp`, async ({ page, context }) => {
+      const temp = await context.cookies()
+      console.log(temp)
+      await page.goto(`${AURORA_CLOUD_CONSOLE_PAGE.baseURL}/tdl/silos/103`)
       await page.pause()
     })
   },

@@ -1,0 +1,53 @@
+{
+  "cookies": [
+    {
+      "name": "__cf_bm",
+      "value": ".UgMl4i_Bwyn_merC1VNXnMKjel6SkCRbJLT218hdMI-1744629631-1.0.1.1-LIeNb5o1tXvioGpVGIBFvq7wiPVeMneLlGyKp0Gzy3cBpMe0PuC1XwHh5ukCoatPVtWgUIHJd_9p9whytxl0V8klCueDj075uJOYX7Qgqw0",
+      "domain": ".metafi.codefi.network",
+      "path": "/",
+      "expires": 1744631431.61482,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "None"
+    },
+    {
+      "name": "__cflb",
+      "value": "0H28vuaMkXgj5SrLUDdNw3FkKatYLoB5F5Jd5Lz8wJM",
+      "domain": "mainnet.aurora.dev",
+      "path": "/",
+      "expires": 1744631431.673287,
+      "httpOnly": true,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "sb-xqharbhfobwuhpcdsapg-auth-token",
+      "value": "base64-eyJhbGciOiJIUzI1NiIsImtpZCI6InduMzQxQWFSd0U4RjBJM0YiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3hxaGFyYmhmb2J3dWhwY2RzYXBnLnN1cGFiYXNlLmNvL2F1dGgvdjEiLCJzdWIiOiI5NmZjYzhhMC0wNmIxLTQwNzItYjBiYy1jODhmOWI0YjU0MjEiLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzQ0NjMzMjM1LCJpYXQiOjE3NDQ2Mjk2MzUsImVtYWlsIjoibWFrc2ltLnZhc2hjaHVrK2UyZUBhdXJvcmEuZGV2IiwicGhvbmUiOiIiLCJhcHBfbWV0YWRhdGEiOnsicHJvdmlkZXIiOiJlbWFpbCIsInByb3ZpZGVycyI6WyJlbWFpbCJdfSwidXNlcl9tZXRhZGF0YSI6eyJjb21wYW55IjoiQXVyb3JhIiwiZW1haWwiOiJtYWtzaW0udmFzaGNodWsrZTJlQGF1cm9yYS5kZXYiLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwibWFya2V0aW5nX2NvbnNlbnQiOmZhbHNlLCJuYW1lIjoiTWFrc2ltIiwicGhvbmVfdmVyaWZpZWQiOmZhbHNlLCJzdWIiOiI5NmZjYzhhMC0wNmIxLTQwNzItYjBiYy1jODhmOWI0YjU0MjEiLCJ0ZWFtcyI6WyJhdXJvcmEtOGMyNjJiMWU1NiJdfSwicm9sZSI6ImF1dGhlbnRpY2F0ZWQiLCJhYWwiOiJhYWwxIiwiYW1yIjpbeyJtZXRob2QiOiJwYXNzd29yZCIsInRpbWVzdGFtcCI6MTc0NDYyOTYzNX1dLCJzZXNzaW9uX2lkIjoiYjQyZTY0YTEtN2ZjZi00ZDMyLWI3ODctYmYzOGZhMzY0NTJkIiwiaXNfYW5vbnltb3VzIjpmYWxzZX0.jl0gIRgqDsB-dSen5OGEyDyXzoI2bMI6peQMtrWdt-0",
+      "domain": "app.auroracloud.dev",
+      "path": "/",
+      "expires": 1744729636.463,
+      "httpOnly": false,
+      "secure": true,
+      "sameSite": "None"
+    }
+  ],
+  "origins": [
+    {
+      "origin": "https://app.auroracloud.dev",
+      "localStorage": [
+        {
+          "name": "mp_3e9da77cc06eb83e3bb68ab6a6f3c14b_mixpanel",
+          "value": "{\"distinct_id\": \"$device:196340797962e8-08ab1c9b823832-12323479-e1000-196340797962e8\",\"$device_id\": \"196340797962e8-08ab1c9b823832-12323479-e1000-196340797962e8\",\"$initial_referrer\": \"$direct\",\"$initial_referring_domain\": \"$direct\",\"__mps\": {},\"__mpso\": {\"$initial_referrer\": \"$direct\",\"$initial_referring_domain\": \"$direct\"},\"__mpus\": {},\"__mpa\": {},\"__mpu\": {},\"__mpr\": [],\"__mpap\": []}"
+        },
+        {
+          "name": "__mpq_3e9da77cc06eb83e3bb68ab6a6f3c14b_ev",
+          "value": "[{\"id\":\"fuhkmu4zv49giyq3\",\"flushAfter\":1744629644967,\"payload\":{\"event\":\"$mp_web_page_view\",\"properties\":{\"$os\":\"Windows\",\"$browser\":\"Chrome\",\"$current_url\":\"https://app.auroracloud.dev/auth/login\",\"$browser_version\":125,\"$screen_height\":720,\"$screen_width\":1280,\"mp_lib\":\"web\",\"$lib_version\":\"2.58.0\",\"$insert_id\":\"gwhzn5zbn7zqnv2s\",\"time\":1744629634.967,\"distinct_id\":\"$device:196340797962e8-08ab1c9b823832-12323479-e1000-196340797962e8\",\"$device_id\":\"196340797962e8-08ab1c9b823832-12323479-e1000-196340797962e8\",\"$initial_referrer\":\"$direct\",\"$initial_referring_domain\":\"$direct\",\"current_page_title\":\"Aurora Cloud Console\",\"current_domain\":\"app.auroracloud.dev\",\"current_url_path\":\"/auth/login\",\"current_url_protocol\":\"https:\",\"token\":\"3e9da77cc06eb83e3bb68ab6a6f3c14b\",\"mp_sent_by_lib_version\":\"2.58.0\"}}},{\"id\":\"ragv0nof7use9sg0\",\"flushAfter\":1744629645899,\"payload\":{\"event\":\"$mp_web_page_view\",\"properties\":{\"$os\":\"Windows\",\"$browser\":\"Chrome\",\"$current_url\":\"https://app.auroracloud.dev/auth/login\",\"$browser_version\":125,\"$screen_height\":720,\"$screen_width\":1280,\"mp_lib\":\"web\",\"$lib_version\":\"2.58.0\",\"$insert_id\":\"6gl2adzkhax5k7s8\",\"time\":1744629635.898,\"distinct_id\":\"$device:196340797962e8-08ab1c9b823832-12323479-e1000-196340797962e8\",\"$device_id\":\"196340797962e8-08ab1c9b823832-12323479-e1000-196340797962e8\",\"$initial_referrer\":\"$direct\",\"$initial_referring_domain\":\"$direct\",\"current_page_title\":\"Aurora Cloud Console\",\"current_domain\":\"app.auroracloud.dev\",\"current_url_path\":\"/auth/login\",\"current_url_protocol\":\"https:\",\"token\":\"3e9da77cc06eb83e3bb68ab6a6f3c14b\"}}}]"
+        },
+        {
+          "name": "sb-xqharbhfobwuhpcdsapg-auth-token",
+          "value": "{\"access_token\":\"eyJhbGciOiJIUzI1NiIsImtpZCI6InduMzQxQWFSd0U4RjBJM0YiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3hxaGFyYmhmb2J3dWhwY2RzYXBnLnN1cGFiYXNlLmNvL2F1dGgvdjEiLCJzdWIiOiI5NmZjYzhhMC0wNmIxLTQwNzItYjBiYy1jODhmOWI0YjU0MjEiLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzQ0NjMzMjM1LCJpYXQiOjE3NDQ2Mjk2MzUsImVtYWlsIjoibWFrc2ltLnZhc2hjaHVrK2UyZUBhdXJvcmEuZGV2IiwicGhvbmUiOiIiLCJhcHBfbWV0YWRhdGEiOnsicHJvdmlkZXIiOiJlbWFpbCIsInByb3ZpZGVycyI6WyJlbWFpbCJdfSwidXNlcl9tZXRhZGF0YSI6eyJjb21wYW55IjoiQXVyb3JhIiwiZW1haWwiOiJtYWtzaW0udmFzaGNodWsrZTJlQGF1cm9yYS5kZXYiLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwibWFya2V0aW5nX2NvbnNlbnQiOmZhbHNlLCJuYW1lIjoiTWFrc2ltIiwicGhvbmVfdmVyaWZpZWQiOmZhbHNlLCJzdWIiOiI5NmZjYzhhMC0wNmIxLTQwNzItYjBiYy1jODhmOWI0YjU0MjEiLCJ0ZWFtcyI6WyJhdXJvcmEtOGMyNjJiMWU1NiJdfSwicm9sZSI6ImF1dGhlbnRpY2F0ZWQiLCJhYWwiOiJhYWwxIiwiYW1yIjpbeyJtZXRob2QiOiJwYXNzd29yZCIsInRpbWVzdGFtcCI6MTc0NDYyOTYzNX1dLCJzZXNzaW9uX2lkIjoiYjQyZTY0YTEtN2ZjZi00ZDMyLWI3ODctYmYzOGZhMzY0NTJkIiwiaXNfYW5vbnltb3VzIjpmYWxzZX0.jl0gIRgqDsB-dSen5OGEyDyXzoI2bMI6peQMtrWdt-0\",\"refresh_token\":\"vLnItGtebFnKd6cAYfb2wQ\",\"user\":{\"id\":\"96fcc8a0-06b1-4072-b0bc-c88f9b4b5421\",\"aud\":\"authenticated\",\"role\":\"authenticated\",\"email\":\"maksim.vashchuk+e2e@aurora.dev\",\"email_confirmed_at\":\"2025-03-28T08:38:48.396397Z\",\"phone\":\"\",\"confirmed_at\":\"2025-03-28T08:38:48.396397Z\",\"last_sign_in_at\":\"2025-04-14T11:20:35.320654Z\",\"app_metadata\":{\"provider\":\"email\",\"providers\":[\"email\"]},\"user_metadata\":{\"company\":\"Aurora\",\"email\":\"maksim.vashchuk+e2e@aurora.dev\",\"email_verified\":true,\"marketing_consent\":false,\"name\":\"Maksim\",\"phone_verified\":false,\"sub\":\"96fcc8a0-06b1-4072-b0bc-c88f9b4b5421\",\"teams\":[\"aurora-8c262b1e56\"]},\"identities\":[{\"identity_id\":\"db9a758a-df3b-4fa8-b3a6-e1d6d9f7c8a3\",\"id\":\"96fcc8a0-06b1-4072-b0bc-c88f9b4b5421\",\"user_id\":\"96fcc8a0-06b1-4072-b0bc-c88f9b4b5421\",\"identity_data\":{\"company\":\"Aurora\",\"email\":\"maksim.vashchuk+e2e@aurora.dev\",\"email_verified\":true,\"marketing_consent\":false,\"name\":\"Maksim\",\"phone_verified\":false,\"sub\":\"96fcc8a0-06b1-4072-b0bc-c88f9b4b5421\",\"teams\":[\"aurora-8c262b1e56\"]},\"provider\":\"email\",\"last_sign_in_at\":\"2025-03-28T08:38:03.255255Z\",\"created_at\":\"2025-03-28T08:38:03.255308Z\",\"updated_at\":\"2025-03-28T08:38:03.255308Z\",\"email\":\"maksim.vashchuk+e2e@aurora.dev\"}],\"created_at\":\"2025-03-28T08:38:03.247176Z\",\"updated_at\":\"2025-04-14T11:20:35.322228Z\",\"is_anonymous\":false},\"token_type\":\"bearer\",\"expires_in\":3598.789999961853,\"expires_at\":1744633235}"
+        }
+      ]
+    }
+  ]
+}
