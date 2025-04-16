@@ -15,9 +15,7 @@ test.describe(
       },
     )
 
-    test(`temp`, async ({ page, context }) => {
-      const temp = await context.cookies()
-      console.log(temp)
+    test(`temp`, async ({ page }) => {
       await page.goto(`${AURORA_CLOUD_CONSOLE_PAGE.baseURL}/tdl/silos/103`)
       await page.pause()
     })
