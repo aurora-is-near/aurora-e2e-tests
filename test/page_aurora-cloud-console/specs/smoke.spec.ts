@@ -11,7 +11,7 @@ test.describe(
     test.beforeEach(
       "Login to Aurora Plus with MetaMask",
       async ({ auroraCloudPreconditions }) => {
-        await auroraCloudPreconditions.loginToSupabase()
+        // await auroraCloudPreconditions.loginToSupabase()
       },
     )
 

@@ -1,6 +1,9 @@
 import type { GitHubActionOptions } from "@estruyf/github-actions-reporter"
 import { defineConfig, devices } from "@playwright/test"
+import * as dotenv from "dotenv"
 import generateCustomLayoutSimpleMeta from "./reporter/layout_generator"
+
+dotenv.config()
 
 export default defineConfig({
   testDir: "./test",
@@ -45,10 +48,17 @@ export default defineConfig({
     timeout: 50 * 1000,
   },
   projects: [
+    // Setup project
+    {
+      name: "setup",
+      testMatch: /test\/page_aurora-cloud-console\/.auth\/setup\.ts/,
+    },
+
     {
       name: "chromium",
       use: {
         ...devices["Desktop Chrome"],
+        storageState: "playwright/.auth/user.json",
       },
     },
   ],

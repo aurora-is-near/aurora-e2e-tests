@@ -1,35 +1,31 @@
-import { chromium, test as setup } from '@playwright/test'
-import path from 'path'
-import { fileURLToPath } from 'url'
+import { type Cookie, test as setup } from "@playwright/test"
+import path from "path"
+import { fileURLToPath } from "url"
 import { createClient as supabaseCreateClient } from "@supabase/supabase-js"
-import { AURORA_CLOUD_CONSOLE_PAGE } from "../helpers/constants/pages"
-import { getSupabaseKey, getSupabaseURL } from "../helpers/functions/system-variables"
-
+import {
+  getSupabaseKey,
+  getSupabaseURL,
+  getTestUserPass,
+} from "../../helpers/functions/system-variables"
+import { AURORA_CLOUD_CONSOLE_PAGE } from "../../helpers/constants/pages"
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
-const authFile = path.join(__dirname, '../.auth/user.json')
+const authFile = path.join(__dirname, "../.auth/user.json")
 const SUPABASE_URL = getSupabaseURL()
+const supabase_domain = SUPABASE_URL.split(".supabase.co")[0].split("//")[1]
 const SUPABASE_KEY = getSupabaseKey()
-
 const TEST_USER_EMAIL = "maksim.vashchuk+e2e@aurora.dev"
-const { TEST_USER_PASSWORD } = process.env
+const test_user_password = getTestUserPass()
 
-setup('authenticate', async ({ page, context }) => {
-  const browser = await chromium.launch();
-  // Perform authentication steps. Replace these actions with your own.
+setup("authenticate", async ({ page }) => {
+  console.log(SUPABASE_URL, SUPABASE_KEY)
   const supabaseClient = supabaseCreateClient(SUPABASE_URL, SUPABASE_KEY)
-
-  if (!TEST_USER_PASSWORD) {
-    throw new Error("TEST_USER_PASSWORD is not set")
-  }
 
   const { data, error } = await supabaseClient.auth.signInWithPassword({
     email: TEST_USER_EMAIL,
-    password: TEST_USER_PASSWORD,
+    password: test_user_password,
   })
-
-  console.log(`Test ${data} ${error}`)
 
   if (error ?? !data.session) {
     throw new Error(`Login failed: ${error?.message}`)
@@ -37,7 +33,7 @@ setup('authenticate', async ({ page, context }) => {
 
   const { access_token, refresh_token } = data.session
 
-  await page.goto(`${AURORA_CLOUD_CONSOLE_PAGE}`)
+  await page.goto(`${AURORA_CLOUD_CONSOLE_PAGE.baseURL}`)
 
   await page.evaluate(
     async ([supabaseUrl, supabaseAnonKey, accessToken, refreshToken]) => {
@@ -56,7 +52,5 @@ setup('authenticate', async ({ page, context }) => {
     [SUPABASE_URL, SUPABASE_KEY, access_token, refresh_token],
   )
 
-  await context.storageState({ path: authFile })
-
-  // End of authentication steps.
+  await page.context().storageState({ path: authFile })
 })
