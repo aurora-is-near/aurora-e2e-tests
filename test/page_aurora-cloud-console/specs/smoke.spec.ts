@@ -8,15 +8,11 @@ test.describe(
   "Aurora Cloud Console: Temp",
   { tag: [AURORA_CLOUD_CONSOLE_TAG] },
   () => {
-    test.beforeEach(
-      "Login to Aurora Plus with MetaMask",
-      async ({ auroraCloudPreconditions }) => {
-        // await auroraCloudPreconditions.loginToSupabase()
-      },
-    )
-
-    test(`temp`, async ({ page }) => {
+    test(`temp test`, async ({ page, context }) => {
       await page.goto(`${AURORA_CLOUD_CONSOLE_PAGE.baseURL}/tdl/silos/103`)
+      await page.reload()
+      const cookies = await context.cookies()
+      console.log(cookies)
       await page.pause()
     })
   },

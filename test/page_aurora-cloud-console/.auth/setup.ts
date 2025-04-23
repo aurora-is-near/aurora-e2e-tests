@@ -18,8 +18,8 @@ const SUPABASE_KEY = getSupabaseKey()
 const TEST_USER_EMAIL = "maksim.vashchuk+e2e@aurora.dev"
 const test_user_password = getTestUserPass()
 
-setup("authenticate", async ({ page }) => {
-  console.log(SUPABASE_URL, SUPABASE_KEY)
+
+setup("authenticate", async ({ page, context }) => {
   const supabaseClient = supabaseCreateClient(SUPABASE_URL, SUPABASE_KEY)
 
   const { data, error } = await supabaseClient.auth.signInWithPassword({
@@ -51,6 +51,19 @@ setup("authenticate", async ({ page }) => {
     },
     [SUPABASE_URL, SUPABASE_KEY, access_token, refresh_token],
   )
+
+      // Add cookie
+      const myCookie: Cookie = {
+        name: `sb-${supabase_domain}-auth-token`,
+        value: `base64-${access_token}`,
+        domain: AURORA_CLOUD_CONSOLE_PAGE.domain,
+        path: "/",
+        expires: Date.now() / 1000 + 100000,
+        httpOnly: false,
+        secure: true,
+        sameSite: "None",
+      }
+      await context.addCookies([myCookie])
 
   await page.context().storageState({ path: authFile })
 })
