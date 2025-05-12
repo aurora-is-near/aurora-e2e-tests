@@ -50,6 +50,8 @@ jobs:
       AURORA_ACCOUNT_TOKEN: ${{ secrets.AURORA_ACCOUNT_TOKEN}}
       RUN_TAG: ${{ inputs.tag }}
       MANUAL_TRIGGER: ${{ inputs.manual_trigger }}
+      EXTENSION_LOAD_TIMEOUT: 60000
+      CHROME_ARGS: "--no-sandbox --disable-dev-shm-usage"
 
     steps:
       - uses: actions/checkout@v4
@@ -78,12 +80,8 @@ jobs:
         run: yarn playwright install
 
       - name: Create Synpress cache
-        uses: nick-fields/retry@v3
-        with:
-          timeout_minutes: 5
-          max_attempts: 5
-          shell: bash
-          command: xvfb-run yarn synpress
+        run: |
+          xvfb-run yarn synpress
 
       - name: Run tests
         run: |
