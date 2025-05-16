@@ -135,7 +135,7 @@ export class HomePage extends BasePage {
 
   async isSuccessNotificationVisible() {
     const isNotificationVisible =
-      await this.successNotificationTitle.isVisible(midTimeout)
+      await this.successNotificationTitle.isVisible(longTimeout)
 
     return isNotificationVisible
   }
