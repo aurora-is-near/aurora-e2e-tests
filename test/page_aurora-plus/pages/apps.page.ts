@@ -11,7 +11,7 @@ export class AppsPage extends BasePage {
   constructor(page: Page) {
     super(page)
     this.page = page
-    this.allAppElements = page.getByTestId("explore-apps-link")
+    this.allAppElements = page.getByTestId("explore-apps-link-name")
     this.searchInputField = page.getByPlaceholder("Search projects by name")
     this.favoritesSection = page.getByRole("button", { name: "Favourites" })
     this.appsHeader = page.getByRole("heading", { name: "Ecosystem Apps" })
