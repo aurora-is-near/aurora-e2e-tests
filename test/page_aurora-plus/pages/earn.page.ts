@@ -269,10 +269,7 @@ export class EarnPage extends BasePage {
 
   async confirmBorrowExists() {
     const messageOnFail: string = "Borrow do not exist"
-    expect(
-      await this.myBorrowWrapper.isVisible(longTimeout),
-      messageOnFail,
-    ).toBeTruthy()
+    await expect(this.myBorrowWrapper, messageOnFail).toBeVisible(longTimeout)
   }
 
   async confirmBorrowNotExists() {

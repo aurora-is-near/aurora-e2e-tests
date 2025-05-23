@@ -218,7 +218,6 @@ test.describe(
     )
 
     const tokenName: string = "USDC.e"
-    const borrowAmount = 0.01
 
     test(`Confirm that user cannot borrow more than balance allow ${tokenName} tokens`, async ({
       page,
@@ -240,7 +239,7 @@ test.describe(
       await earnPage.confirmBorrowButtonIsNotClickable()
     })
 
-    test(`Confirm that user can borrow ${borrowAmount} ${tokenName} tokens`, async ({
+    test(`Confirm that user can borrow ${tokenName} tokens`, async ({
       page,
       context,
       extensionId,
@@ -262,6 +261,9 @@ test.describe(
       )
 
       await earnPage.selectTokenByTokenName(tokenName)
+      let borrowAmount = await earnPage.getAmountOfAvailableBorrowAmount()
+      // Use 10% of available borrow amount
+      borrowAmount *= 0.1
       await earnPage.enterAmount(borrowAmount)
       await earnPage.clickBorrowButton()
       await metamask.confirmTransaction()
@@ -292,6 +294,9 @@ test.describe(
 
       const amountBefore = await earnPage.getBorrowedAmount()
       await earnPage.clickBorrowMoreButton()
+      let borrowAmount = await earnPage.getAmountOfAvailableBorrowAmount()
+      // Use 10% of available borrow amount
+      borrowAmount *= 0.1
       await earnPage.enterAmount(borrowAmount)
       await earnPage.clickBorrowButton()
       await metamask.confirmTransaction()
