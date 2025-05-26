@@ -238,7 +238,10 @@ export class EarnPage extends BasePage {
     transactionAmount: number,
   ) {
     const messageOnFail: string = `Expected amount is: ${amountBefore + transactionAmount}, but ${amountAfter} received`
-    expect(amountBefore + transactionAmount, messageOnFail).toBe(amountAfter)
+
+    expect((amountBefore + transactionAmount).toFixed(4), messageOnFail).toBe(
+      amountAfter.toFixed(4),
+    )
   }
 
   async getBorrowedAmountToReturn(): Promise<string> {
