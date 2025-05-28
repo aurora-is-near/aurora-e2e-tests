@@ -72,7 +72,7 @@ export class EarnPage extends BasePage {
     this.approveButton = page.getByRole("button", { name: "Approve" })
     this.borrowMoreButton = page.getByRole("button", { name: "Borrow More" })
     this.borrowedAmount = page.locator(
-      '//*[@id="__next"]/div[1]/main/div[3]/div[2]/div[1]/div[2]/div[2]/div[2]',
+      '//*[@id="__next"]/div/main/div[3]/div[2]/div[1]/div[2]/div[2]/div[1]/span[1]',
     )
     this.amountInputField = page.getByPlaceholder("0.00")
     this.borrowedAmountLine = page.getByText("You need to repay")
