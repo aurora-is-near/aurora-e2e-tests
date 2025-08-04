@@ -9,7 +9,6 @@ import { HomePage } from "../pages/home.page"
 import { PortfolioPage } from "../pages/portfolio.page"
 import nearWeb3ProdSetup from "../../wallet-setup/near-web3-prod.setup"
 import { getNearTokenValue } from "../../helpers/functions/api.helper"
-import { parseFloatWithRounding } from "../../helpers/functions/helper-functions"
 
 test.use(NEAR_WEB3_PAGE)
 
