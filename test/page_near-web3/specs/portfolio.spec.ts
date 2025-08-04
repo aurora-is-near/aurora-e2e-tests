@@ -9,6 +9,7 @@ import { HomePage } from "../pages/home.page"
 import { PortfolioPage } from "../pages/portfolio.page"
 import nearWeb3ProdSetup from "../../wallet-setup/near-web3-prod.setup"
 import { getNearTokenValue } from "../../helpers/functions/api.helper"
+import { parseFloatWithRounding } from "../../helpers/functions/helper-functions"
 
 test.use(NEAR_WEB3_PAGE)
 
@@ -92,7 +93,10 @@ test.describe(
       await portfolioPage.confirmSuccessNotificationAppears()
       await portfolioPage.closeSuccessfulSentFunds()
       await portfolioPage.waitForActionToComplete()
-      await portfolioPage.checkSenderBalance(initialBalance)
+      const expectedBalance = Number(
+        (initialBalance - transferAmountToSend).toFixed(2),
+      )
+      await portfolioPage.checkSenderBalance(expectedBalance)
     })
   },
 )

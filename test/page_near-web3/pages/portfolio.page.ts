@@ -93,16 +93,33 @@ export class PortfolioPage extends BasePage {
     await this.closeSuccessfulSentFundsBtn.click()
   }
 
-  async getAvailableBalance(): Promise<number> {
-    // we need to wait a bit since there is animation on the amount, starting from 0
-    await this.page.waitForTimeout(5_000)
-    const balance = await this.balanceElement.innerText()
+  private async waitForBalanceToSettle(
+    expectedValue: number,
+    fractionDigits = 2,
+    timeout = 5_000,
+  ): Promise<string> {
+    const expectedText = new Intl.NumberFormat("en-US", {
+      minimumFractionDigits: fractionDigits,
+      maximumFractionDigits: fractionDigits,
+    }).format(expectedValue)
 
-    return parseFloat(balance)
+    await expect(this.balanceElement).toHaveText(expectedText, { timeout })
+
+    return this.balanceElement.innerText()
   }
 
-  async checkSenderBalance(previousBalance: number) {
-    const currentBalance = await this.getAvailableBalance()
-    expect(currentBalance).toBeLessThan(previousBalance)
+  async getAvailableBalance(): Promise<number> {
+    // assuming initial animation starts from 0.00 and goes up
+    await this.waitForBalanceToSettle(0.01, 2, 3_000).catch(() => {
+      // ignore: perhaps it jumped straight to final value
+    })
+    const text = await this.balanceElement.innerText()
+
+    // strip commas, parse
+    return parseFloat(text.replace(/,/g, ""))
+  }
+
+  async checkSenderBalance(expectedBalance: number): Promise<void> {
+    await this.waitForBalanceToSettle(expectedBalance, 2, 5_000)
   }
 }
