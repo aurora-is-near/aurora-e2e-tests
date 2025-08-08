@@ -92,7 +92,10 @@ test.describe(
       await portfolioPage.confirmSuccessNotificationAppears()
       await portfolioPage.closeSuccessfulSentFunds()
       await portfolioPage.waitForActionToComplete()
-      await portfolioPage.checkSenderBalance(initialBalance)
+      const expectedBalance = Number(
+        (initialBalance - transferAmountToSend).toFixed(2),
+      )
+      await portfolioPage.checkSenderBalance(expectedBalance)
     })
   },
 )
