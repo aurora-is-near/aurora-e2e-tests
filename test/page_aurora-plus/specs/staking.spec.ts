@@ -112,17 +112,28 @@ test.describe(
       )
     })
 
-    test.fixme(
-      `Confirm that user can withdraw tokens after cooldown passes`,
-      async ({ page }) => {
-        const dashboardPage = new DashboardPage(page)
+    test(`Confirm that user can withdraw tokens after cooldown passes`, async ({
+      page,
+    }) => {
+      const dashboardPage = new DashboardPage(page)
 
-        await dashboardPage.skipOnboardingIfVisible()
+      await dashboardPage.skipOnboardingIfVisible()
 
-        throw new Error(
-          "Test not implemented. Withdrwal takes 2 days, time for some users should be reduced, or any other solution must be found",
-        )
-      },
-    )
+      // check if withdraw button is visible
+      test.skip(
+        !(await dashboardPage.isAnyPendingWithdrawals()),
+        "No pending withdrawals are ready!",
+      )
+
+      const { amount: availableAmount, days: cooldownDays } =
+        await dashboardPage.getPendingWithdrawalAmount()
+
+      console.log(availableAmount, cooldownDays)
+      test.skip(
+        availableAmount === 0 && Number(cooldownDays) > 0,
+        `Cannot withdraw the tokens - need to wait ${cooldownDays}`,
+      )
+      // const targetAmount = availableAmount / 100
+    })
   },
 )

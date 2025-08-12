@@ -8,6 +8,11 @@ import {
 } from "../../helpers/constants/timeouts"
 import { AURORA_PLUS_PAGE } from "../../helpers/constants/pages"
 
+type PendingWithdrawal = {
+  amount: number
+  days: string | null
+}
+
 export class DashboardPage extends BasePage {
   page: Page
   stakeButton: Locator
@@ -23,6 +28,8 @@ export class DashboardPage extends BasePage {
   unstakeConfirmModalButton: Locator
   withdrawalCooldownButton: Locator
   auroraPendingWithdrawalAmount: Locator
+  auroraPendingWithdrawalBtn: Locator
+  auroraPendingWithdrawalDays: Locator
   auroraBalance: Locator
   auroraStakedBalance: Locator
   gettingStartedTitle: Locator
@@ -64,6 +71,11 @@ export class DashboardPage extends BasePage {
     this.auroraPendingWithdrawalAmount = page.getByTestId(
       "aurora-pending-withdrawal-amount",
     )
+
+    this.auroraPendingWithdrawalBtn = page.getByTestId(
+      "aurora-pending-withdrawal",
+    )
+    this.auroraPendingWithdrawalDays = page.getByText("Available in")
     this.auroraBalance = page.getByTestId("aurora-balance-value")
     this.auroraStakedBalance = page.getByTestId("aurora-staked-value")
     this.unstakeConfirmModal = page.getByTestId("unstake-confirm-modal")
@@ -173,7 +185,7 @@ export class DashboardPage extends BasePage {
     return isVisible
   }
 
-  async getPendingWithdrawalAmount(): Promise<number> {
+  async getPendingWithdrawalAmount(): Promise<PendingWithdrawal> {
     let messageOnFail: string = "Withdrawal cooldown button is not visible"
     await expect(this.withdrawalCooldownButton, messageOnFail).toBeVisible(
       midTimeout,
@@ -189,9 +201,18 @@ export class DashboardPage extends BasePage {
     const amount = Number(
       await this.auroraPendingWithdrawalAmount.textContent(),
     )
+
+    const daysRaw = await this.auroraPendingWithdrawalDays.textContent()
+    const days = daysRaw!.split("Available in")[1].split(" days")[0]
     await this.withdrawalCooldownButton.click()
 
-    return amount
+    return { amount, days }
+  }
+
+  async isPendingWithdrawalAvailable(): Promise<boolean> {
+    const isEnabled: boolean = await this.auroraPendingWithdrawalBtn.isEnabled()
+
+    return isEnabled
   }
 
   async skipOnboardingIfVisible() {

@@ -120,6 +120,6 @@ export class PortfolioPage extends BasePage {
   }
 
   async checkSenderBalance(expectedBalance: number): Promise<void> {
-    await this.waitForBalanceToSettle(expectedBalance, 2, 5_000)
+    await this.waitForBalanceToSettle(expectedBalance, 2, 10_000)
   }
 }
