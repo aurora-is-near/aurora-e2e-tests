@@ -22,3 +22,6 @@ yarn-error.log*
 # Env
 .env
 my-report/
+
+# Storage state for tests
+ test/page_aurora-cloud-console/.auth/user.json
