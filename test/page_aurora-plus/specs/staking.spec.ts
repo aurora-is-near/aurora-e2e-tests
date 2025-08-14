@@ -128,12 +128,10 @@ test.describe(
       const { amount: availableAmount, days: cooldownDays } =
         await dashboardPage.getPendingWithdrawalAmount()
 
-      console.log(availableAmount, cooldownDays)
       test.skip(
         availableAmount === 0 && Number(cooldownDays) > 0,
-        `Cannot withdraw the tokens - need to wait ${cooldownDays}`,
+        `Cannot withdraw the tokens - need to wait ${cooldownDays} days`,
       )
-      // const targetAmount = availableAmount / 100
     })
   },
 )
