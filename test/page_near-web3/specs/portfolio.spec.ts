@@ -81,7 +81,11 @@ test.describe(
       await portfolioPage.clickSendButton()
       await portfolioPage.selectAsset("NEAR")
 
-      const transferAmountToSend = await getNearTokenValue(request)
+      const usdAmountToSend = 0.001
+      const transferAmountToSend = await getNearTokenValue(
+        request,
+        usdAmountToSend,
+      )
       await portfolioPage.enterTransferAmount(transferAmountToSend)
       await portfolioPage.clickContinueButton()
       await portfolioPage.enterNearAccountId(transferAccountAddress)
@@ -93,7 +97,7 @@ test.describe(
       await portfolioPage.closeSuccessfulSentFunds()
       await portfolioPage.waitForActionToComplete()
       const expectedBalance = Number(
-        (initialBalance - transferAmountToSend).toFixed(2),
+        (initialBalance - usdAmountToSend).toFixed(2),
       )
       await portfolioPage.checkSenderBalance(expectedBalance)
     })

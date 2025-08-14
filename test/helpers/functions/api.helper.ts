@@ -3,6 +3,7 @@ import { parseFloatWithRounding } from "./helper-functions"
 
 export async function getNearTokenValue(
   apiContextRequest: APIRequestContext,
+  usdAmount: number = 0.001,
 ): Promise<number> {
   const response = await apiContextRequest.get(
     "https://welcome-to-near.org/api/coingecko/all",
@@ -11,5 +12,5 @@ export async function getNearTokenValue(
   const currentValueUSD = responseBody.near.usd
   const oneCent = parseFloatWithRounding(currentValueUSD, 3)
 
-  return parseFloatWithRounding((oneCent * 0.001).toString(), 6)
+  return parseFloatWithRounding((oneCent * usdAmount).toString(), 6)
 }
