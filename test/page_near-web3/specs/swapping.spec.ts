@@ -62,6 +62,7 @@ test.describe(
         )
 
         await homePage.confirmHomePageLoaded()
+        await homePage.waitForActionToComplete()
         await homePage.scrollToSwapContainer()
         await homePage.selectTokenToSwapFrom(tokenFrom)
         await homePage.enterSwapFromAmount(swapAmount)
