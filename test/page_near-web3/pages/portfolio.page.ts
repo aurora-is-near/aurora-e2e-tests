@@ -110,7 +110,7 @@ export class PortfolioPage extends BasePage {
 
   async getAvailableBalance(): Promise<number> {
     // assuming initial animation starts from 0.00 and goes up
-    await this.waitForBalanceToSettle(0.01, 2, 3_000).catch(() => {
+    await this.waitForBalanceToSettle(0.01, 2, 10_000).catch(() => {
       // ignore: perhaps it jumped straight to final value
     })
     const text = await this.balanceElement.innerText()
