@@ -14,8 +14,10 @@ test.use(TRISOLARIS_PAGE)
 
 test.beforeEach(
   "Login to Trisolaris wallet with MetaMask",
-  async ({ trisolarisPreconditions }) => {
+  async ({ trisolarisPreconditions, page }) => {
     await trisolarisPreconditions.loginToTrisolaris()
+    await page.waitForTimeout(2_000)
+    await page.reload()
   },
 )
 test.describe(
@@ -51,8 +53,6 @@ test.describe(
 
       const transferAmount = 0.01
       await homePage.confirmHomePageLoaded()
-      await page.waitForTimeout(2000)
-      await page.reload()
       await homePage.navigateToSwapPage()
       await swapPage.selectTokenToSwapFrom("AURORA", true)
       await swapPage.selectTokenToSwapTo("TRI", true)
