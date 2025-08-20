@@ -1,4 +1,4 @@
-import { expect, type Locator, type Page } from "playwright/test"
+import test, { expect, type Locator, type Page } from "playwright/test"
 import { BasePage } from "./base.page"
 import { midTimeout } from "../../helpers/constants/timeouts"
 
@@ -99,10 +99,9 @@ export class PortfolioPage extends BasePage {
     timeout = 5_000,
   ): Promise<string> {
     const expectedText = new Intl.NumberFormat("en-US", {
-      minimumFractionDigits: fractionDigits,
+      minimumFractionDigits: 0,
       maximumFractionDigits: fractionDigits,
     }).format(expectedValue)
-
     await expect(this.balanceElement).toHaveText(expectedText, { timeout })
 
     return this.balanceElement.innerText()
