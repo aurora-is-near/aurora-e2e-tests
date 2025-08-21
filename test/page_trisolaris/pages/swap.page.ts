@@ -14,6 +14,7 @@ export class SwapPage extends BasePage {
   swapAnywayBtn: Locator
   swapBtn: Locator
   confirmSwapBtn: Locator
+  priceImpactHigh: Locator
 
   constructor(page: Page) {
     super(page)
@@ -34,6 +35,7 @@ export class SwapPage extends BasePage {
       .getByPlaceholder("0.0")
 
     this.noLiquidity = page.getByText("Insufficient liquidity for")
+    this.priceImpactHigh = page.getByText("Price Impact High")
     this.searchTokenField = page.getByPlaceholder(
       "Search name or paste address",
     )
@@ -85,6 +87,13 @@ export class SwapPage extends BasePage {
 
   async isAvailableToSwap(): Promise<boolean> {
     const isVisible: boolean = await this.swapBtn.isVisible(shortTimeout)
+
+    return isVisible
+  }
+
+  async isPriceImpactTooHigh(): Promise<boolean> {
+    const isVisible: boolean =
+      await this.priceImpactHigh.isVisible(shortTimeout)
 
     return isVisible
   }

@@ -3,7 +3,6 @@ import {
   TRISOLARIS_TAG,
   TRISOLARIS_TAG_SWAPPING,
 } from "../../helpers/constants/tags"
-// import trisolarisSetup from "../../wallet-setup/trisolaris.setup"
 import { test } from "../fixtures/trisolaris"
 import { TRISOLARIS_PAGE } from "../../helpers/constants/pages"
 import { HomePage } from "../pages/home.page"
@@ -37,53 +36,75 @@ test.describe(
       await swapPage.confirmInsufficientLiquidity()
     })
 
-    test(`Confirm that user can swap some tokens from AURORA, to TRI for 0.01`, async ({
-      page,
-      context,
-      extensionId,
-    }) => {
-      const homePage = new HomePage(page)
-      const swapPage = new SwapPage(page)
-      const metamask = new MetaMask(
-        context,
+    const tokensFromTo = [
+      { tokenFrom: "AURORA", tokenTo: "BRRR", swapAmount: 0.01 },
+      { tokenFrom: "AURORA", tokenTo: "wNEAR", swapAmount: 0.000001 },
+      { tokenFrom: "AURORA", tokenTo: "USDC.e", swapAmount: 0.01 },
+      { tokenFrom: "AURORA", tokenTo: "ETH", swapAmount: 0.00000001 },
+      { tokenFrom: "BRRR", tokenTo: "AURORA", swapAmount: 0.000001 },
+      { tokenFrom: "ETH", tokenTo: "AURORA", swapAmount: 0.00000001 },
+      { tokenFrom: "USDC.e", tokenTo: "AURORA", swapAmount: 0.000001 },
+    ]
+
+    for (const transfers of tokensFromTo) {
+      const {
+        tokenFrom,
+        tokenTo,
+        swapAmount,
+      }: { tokenFrom: string; tokenTo: string; swapAmount: number } = transfers
+      test(`Confirm that user can swap some tokens from ${tokenFrom}, to ${tokenTo} for ${swapAmount}`, async ({
         page,
-        trisolarisSetup.walletPassword,
+        context,
         extensionId,
-      )
+      }) => {
+        const homePage = new HomePage(page)
+        const swapPage = new SwapPage(page)
+        const metamask = new MetaMask(
+          context,
+          page,
+          trisolarisSetup.walletPassword,
+          extensionId,
+        )
 
-      const transferAmount = 0.01
-      await homePage.confirmHomePageLoaded()
-      await homePage.navigateToSwapPage()
-      await swapPage.selectTokenToSwapFrom("AURORA", true)
-      await swapPage.selectTokenToSwapTo("TRI", true)
-      await page.waitForTimeout(2000)
-      await swapPage.enterSwapFromAmount(transferAmount)
-      const balanceBefore = await swapPage.getFromTokenBalance()
-      // check if we have enough balance for swapping with gas fee
-      test.skip(
-        !(await swapPage.isAvailableToSwap()),
-        `Insufficient funds for sending with included gas fee, balance: ${balanceBefore}, transfer: ${transferAmount}`,
-      )
+        // const transferAmount = 0.01
+        await homePage.confirmHomePageLoaded()
+        await homePage.navigateToSwapPage()
+        await swapPage.selectTokenToSwapFrom("AURORA", true)
+        await swapPage.selectTokenToSwapTo("TRI", true)
+        await page.waitForTimeout(2000)
+        await swapPage.enterSwapFromAmount(swapAmount)
+        const balanceBefore = await swapPage.getFromTokenBalance()
+        // check if we have enough balance for swapping with gas fee
+        test.skip(
+          !(await swapPage.isAvailableToSwap()),
+          `Insufficient funds for sending with included gas fee, balance: ${balanceBefore}, transfer: ${swapAmount}`,
+        )
+        // check if the price impact isn't too high
+        test.skip(
+          await swapPage.isPriceImpactTooHigh(),
+          `Price impact too high for the combination ${tokenFrom} <-> ${tokenTo}`,
+        )
 
-      await swapPage.clickSwapButton()
-      await swapPage.confirmSwapping()
-      await metamask.confirmTransaction()
-
-      const isNotificationVisible =
-        await swapPage.isSuccessNotificationVisible()
-
-      if (!isNotificationVisible) {
+        await swapPage.clickSwapButton()
         await swapPage.confirmSwapping()
         await metamask.confirmTransaction()
-      }
 
-      await swapPage.closeSuccessNotificationDialog()
-      const balanceAfter = await homePage.getFromTokenBalance()
-      swapPage.confirmTransactionWasCorrect(
-        balanceBefore,
-        balanceAfter,
-        transferAmount,
-      )
-    })
+        const isNotificationVisible =
+          await swapPage.isSuccessNotificationVisible()
+
+        if (!isNotificationVisible) {
+          await swapPage.confirmSwapping()
+          await metamask.confirmTransaction()
+        }
+
+        await swapPage.closeSuccessNotificationDialog()
+        const balanceAfter = await homePage.getFromTokenBalance()
+        swapPage.confirmTransactionWasCorrect(
+          balanceBefore,
+          balanceAfter,
+          swapAmount,
+        )
+      })
+    }
   },
 )
