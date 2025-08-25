@@ -11,3 +11,5 @@ export const WEB3_WALLET_TAG_TRANSFERING = "@web3-wallet-transfering"
 
 export const TRISOLARIS_TAG = "@trisolaris-wallet"
 export const TRISOLARIS_TAG_SWAPPING = "@trisolaris-swapping"
+export const TRISOLARIS_TAG_STAKING = "@trisolaris-staking"
+export const TRISOLARIS_TAG_LIQUIDITY = "@trisolaris-liquidity"

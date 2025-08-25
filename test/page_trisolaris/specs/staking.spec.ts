@@ -1,6 +1,7 @@
 import { MetaMask } from "@synthetixio/synpress/playwright"
 import {
   TRISOLARIS_TAG,
+  TRISOLARIS_TAG_STAKING,
   TRISOLARIS_TAG_SWAPPING,
 } from "../../helpers/constants/tags"
 import { test } from "../fixtures/trisolaris"
@@ -21,7 +22,7 @@ test.beforeEach(
 )
 test.describe(
   "Trisolars Wallet: Stake Page - Staking/Unstaking",
-  { tag: [TRISOLARIS_TAG, TRISOLARIS_TAG_SWAPPING] },
+  { tag: [TRISOLARIS_TAG, TRISOLARIS_TAG_STAKING] },
   () => {
     const stakeAmount = 0.01
     const unstakeAmount = 0.1

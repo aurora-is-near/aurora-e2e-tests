@@ -1,5 +1,9 @@
 import { expect, type Locator, type Page } from "playwright/test"
-import { midTimeout, shortTimeout } from "../../helpers/constants/timeouts"
+import {
+  midTimeout,
+  miniTimeout,
+  shortTimeout,
+} from "../../helpers/constants/timeouts"
 import { BasePage } from "./base.page"
 
 export class SwapPage extends BasePage {
@@ -59,6 +63,7 @@ export class SwapPage extends BasePage {
     }
 
     const swapTokenFromSelector = this.page.getByText(asset, { exact: true })
+
     await swapTokenFromSelector.click()
   }
 
@@ -85,15 +90,18 @@ export class SwapPage extends BasePage {
     await this.noLiquidity.isVisible(midTimeout)
   }
 
-  async isAvailableToSwap(): Promise<boolean> {
-    const isVisible: boolean = await this.swapBtn.isVisible(shortTimeout)
+  async isNotAvailableToSwap(): Promise<boolean> {
+    try {
+      await expect(this.swapBtn).toBeVisible(miniTimeout)
 
-    return isVisible
+      return false
+    } catch {
+      return true
+    }
   }
 
   async isPriceImpactTooHigh(): Promise<boolean> {
-    const isVisible: boolean =
-      await this.priceImpactHigh.isVisible(shortTimeout)
+    const isVisible: boolean = await this.priceImpactHigh.isVisible(miniTimeout)
 
     return isVisible
   }

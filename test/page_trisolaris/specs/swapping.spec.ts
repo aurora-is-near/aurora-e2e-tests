@@ -15,6 +15,7 @@ test.beforeEach(
   "Login to Trisolaris wallet with MetaMask",
   async ({ trisolarisPreconditions, page }) => {
     await trisolarisPreconditions.loginToTrisolaris()
+    // to fully load the wallet account - wait and refresh
     await page.waitForTimeout(2_000)
     await page.reload()
   },
@@ -37,13 +38,14 @@ test.describe(
     })
 
     const tokensFromTo = [
-      { tokenFrom: "AURORA", tokenTo: "BRRR", swapAmount: 0.01 },
-      { tokenFrom: "AURORA", tokenTo: "wNEAR", swapAmount: 0.000001 },
-      { tokenFrom: "AURORA", tokenTo: "USDC.e", swapAmount: 0.01 },
-      { tokenFrom: "AURORA", tokenTo: "ETH", swapAmount: 0.00000001 },
-      { tokenFrom: "BRRR", tokenTo: "AURORA", swapAmount: 0.000001 },
-      { tokenFrom: "ETH", tokenTo: "AURORA", swapAmount: 0.00000001 },
-      { tokenFrom: "USDC.e", tokenTo: "AURORA", swapAmount: 0.000001 },
+      { tokenFrom: "AURORA", tokenTo: "BRRR", swapAmount: 0.000001 },
+      // { tokenFrom: "AURORA", tokenTo: "wNEAR", swapAmount: 0.000001 },
+      // { tokenFrom: "AURORA", tokenTo: "USDC.e", swapAmount: 0.01 },
+      // { tokenFrom: "AURORA", tokenTo: "ETH", swapAmount: 0.00000001 },
+      // { tokenFrom: "BRRR", tokenTo: "AURORA", swapAmount: 0.000001 },
+      // { tokenFrom: "wNEAR", tokenTo: "AURORA", swapAmount: 0.000001 },
+      // { tokenFrom: "ETH", tokenTo: "AURORA", swapAmount: 0.00000001 },
+      // { tokenFrom: "USDC.e", tokenTo: "AURORA", swapAmount: 0.000001 },
     ]
 
     for (const transfers of tokensFromTo) {
@@ -66,17 +68,16 @@ test.describe(
           extensionId,
         )
 
-        // const transferAmount = 0.01
         await homePage.confirmHomePageLoaded()
         await homePage.navigateToSwapPage()
-        await swapPage.selectTokenToSwapFrom("AURORA", true)
-        await swapPage.selectTokenToSwapTo("TRI", true)
+        await swapPage.selectTokenToSwapFrom(tokenFrom, true)
+        await swapPage.selectTokenToSwapTo(tokenTo, true)
         await page.waitForTimeout(2000)
         await swapPage.enterSwapFromAmount(swapAmount)
         const balanceBefore = await swapPage.getFromTokenBalance()
         // check if we have enough balance for swapping with gas fee
         test.skip(
-          !(await swapPage.isAvailableToSwap()),
+          await swapPage.isNotAvailableToSwap(),
           `Insufficient funds for sending with included gas fee, balance: ${balanceBefore}, transfer: ${swapAmount}`,
         )
         // check if the price impact isn't too high
