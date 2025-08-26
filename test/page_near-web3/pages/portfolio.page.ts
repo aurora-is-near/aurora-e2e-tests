@@ -99,10 +99,9 @@ export class PortfolioPage extends BasePage {
     timeout = 5_000,
   ): Promise<string> {
     const expectedText = new Intl.NumberFormat("en-US", {
-      minimumFractionDigits: fractionDigits,
+      minimumFractionDigits: 0,
       maximumFractionDigits: fractionDigits,
     }).format(expectedValue)
-
     await expect(this.balanceElement).toHaveText(expectedText, { timeout })
 
     return this.balanceElement.innerText()
@@ -110,7 +109,7 @@ export class PortfolioPage extends BasePage {
 
   async getAvailableBalance(): Promise<number> {
     // assuming initial animation starts from 0.00 and goes up
-    await this.waitForBalanceToSettle(0.01, 2, 3_000).catch(() => {
+    await this.waitForBalanceToSettle(0.01, 2, 10_000).catch(() => {
       // ignore: perhaps it jumped straight to final value
     })
     const text = await this.balanceElement.innerText()

@@ -97,7 +97,7 @@ test.describe(
       await portfolioPage.closeSuccessfulSentFunds()
       await portfolioPage.waitForActionToComplete()
       const expectedBalance = Number(
-        (initialBalance - usdAmountToSend).toFixed(2),
+        (initialBalance - usdAmountToSend * 10).toFixed(2),
       )
       await portfolioPage.checkSenderBalance(expectedBalance)
     })

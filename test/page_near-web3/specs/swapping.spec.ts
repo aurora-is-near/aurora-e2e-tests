@@ -65,6 +65,7 @@ test.describe(
         await homePage.waitForActionToComplete()
         await homePage.scrollToSwapContainer()
         await homePage.selectTokenToSwapFrom(tokenFrom)
+        await page.reload()
         await homePage.enterSwapFromAmount(swapAmount)
         const balanceBefore = await homePage.getFromTokenBalance()
         await homePage.selectTokenToSwapTo(tokenTo)
