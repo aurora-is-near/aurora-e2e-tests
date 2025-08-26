@@ -2,7 +2,6 @@ import { MetaMask } from "@synthetixio/synpress/playwright"
 import {
   TRISOLARIS_TAG,
   TRISOLARIS_TAG_STAKING,
-  TRISOLARIS_TAG_SWAPPING,
 } from "../../helpers/constants/tags"
 import { test } from "../fixtures/trisolaris"
 import { TRISOLARIS_PAGE } from "../../helpers/constants/pages"

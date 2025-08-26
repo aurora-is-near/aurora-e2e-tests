@@ -1,6 +1,10 @@
 import { expect, type Locator, type Page } from "playwright/test"
 import { BasePage } from "./base.page"
-import { longTimeout, miniTimeout, shortTimeout } from "../../helpers/constants/timeouts"
+import {
+  longTimeout,
+  miniTimeout,
+  shortTimeout,
+} from "../../helpers/constants/timeouts"
 
 export class PoolPage extends BasePage {
   addLiquidityBtn: Locator
@@ -117,10 +121,6 @@ export class PoolPage extends BasePage {
   async closeSuccessNotificationDialog() {
     await expect(this.closeSuccefulTxDialog).toBeVisible(shortTimeout)
     await this.closeSuccefulTxDialog.click()
-  }
-
-  async assertLiquidityPairCount(count: number) {
-    await this.page.pause()
   }
 
   async confirmTransactionIsDone(
