@@ -129,7 +129,6 @@ export class PoolPage extends BasePage {
     amountFrom: number,
     amountTo: number,
   ) {
-    await this.page.pause()
     const txConfirmedDialog = this.page.getByText(
       `Add ${amountFrom} ${txFrom} and ${amountTo} ${txTo}`,
     )

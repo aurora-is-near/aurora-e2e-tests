@@ -48,7 +48,6 @@ test.describe(
       await poolPage.selectTokenToPoolTo("AURORA", true)
       await page.waitForTimeout(2000)
       await poolPage.enterPoolFromAmount(swapAmount)
-      await page.pause()
 
       test.skip(
         await poolPage.isNotAvailableToPool("USDC.e"),
