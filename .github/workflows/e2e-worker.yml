@@ -36,6 +36,10 @@ on:
           - '@web3-wallet-swapping'
           - '@web3-wallet-staking'
           - '@web3-wallet-transfering'
+          - '@trisolaris-wallet'
+          - '@trisolaris-swapping'
+          - '@trisolaris-staking'
+          - '@trisolaris-liquidity'
 
 
 jobs:
