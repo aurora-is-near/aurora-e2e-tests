@@ -1,7 +1,6 @@
 import { defineWalletSetup } from "@synthetixio/synpress"
 import "dotenv/config"
 import { getExtensionId, MetaMask } from "@synthetixio/synpress/playwright"
-// import { setTimeout } from "timers/promises"
 import { NEAR_WALLET_MAINNET } from "../helpers/constants/networks"
 import {
   getPassword,
