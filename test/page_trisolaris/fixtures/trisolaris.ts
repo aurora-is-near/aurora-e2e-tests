@@ -3,7 +3,7 @@ import { MetaMask, metaMaskFixtures } from "@synthetixio/synpress/playwright"
 import { testWithSynpress } from "@synthetixio/synpress"
 
 import { shortTimeout } from "../../helpers/constants/timeouts"
-import trisolarisSetup from "../../wallet-setup/trisolaris.setup"
+import trisolarisSetup from "../../wallet-setup/aurora-plus.setup"
 
 export const test = testWithSynpress(metaMaskFixtures(trisolarisSetup)).extend<{
   trisolarisPreconditions: {

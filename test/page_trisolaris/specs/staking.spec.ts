@@ -6,7 +6,7 @@ import {
 import { test } from "../fixtures/trisolaris"
 import { TRISOLARIS_PAGE } from "../../helpers/constants/pages"
 import { HomePage } from "../pages/home.page"
-import trisolarisSetup from "../../wallet-setup/trisolaris.setup"
+import trisolarisSetup from "../../wallet-setup/aurora-plus.setup"
 import { StakingPage } from "../pages/staking.page"
 
 test.use(TRISOLARIS_PAGE)
