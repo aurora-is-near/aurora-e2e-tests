@@ -2,7 +2,7 @@ import { expect } from "@playwright/test"
 import { MetaMask, metaMaskFixtures } from "@synthetixio/synpress/playwright"
 import { testWithSynpress } from "@synthetixio/synpress"
 
-import { shortTimeout } from "../../helpers/constants/timeouts"
+import { midTimeout, shortTimeout } from "../../helpers/constants/timeouts"
 import trisolarisSetup from "../../wallet-setup/aurora-plus.setup"
 
 export const test = testWithSynpress(metaMaskFixtures(trisolarisSetup)).extend<{
@@ -24,6 +24,8 @@ export const test = testWithSynpress(metaMaskFixtures(trisolarisSetup)).extend<{
 
     const accountDetailsCloseBtn = page.getByRole("img").first()
 
+    const accountIndicator = page.getByRole("button", { name: "0x" })
+
     const loginToTrisolaris = async () => {
       let messageOnFail: string = '"Connect Wallet" button is not visible'
       await expect(loginButton, messageOnFail).toBeVisible(shortTimeout)
@@ -38,6 +40,8 @@ export const test = testWithSynpress(metaMaskFixtures(trisolarisSetup)).extend<{
       await metamask.connectToDapp()
 
       await accountDetailsCloseBtn.click()
+
+      await expect(accountIndicator).toBeVisible(midTimeout)
     }
 
     await use({

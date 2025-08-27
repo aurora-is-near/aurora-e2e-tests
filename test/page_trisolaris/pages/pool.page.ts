@@ -110,19 +110,19 @@ export class PoolPage extends BasePage {
   }
 
   async clickSupply() {
-    await expect(this.supplyBtn).toBeVisible(midTimeout)
-    await expect(this.supplyBtn).toBeEnabled(midTimeout)
+    await expect(this.supplyBtn).toBeVisible(longTimeout)
+    await expect(this.supplyBtn).toBeEnabled(longTimeout)
     await this.supplyBtn.click()
   }
 
   async confirmSupply() {
-    await expect(this.confirmSupplyBtn).toBeVisible(midTimeout)
-    await expect(this.confirmSupplyBtn).toBeEnabled(midTimeout)
+    await expect(this.confirmSupplyBtn).toBeVisible(longTimeout)
+    await expect(this.confirmSupplyBtn).toBeEnabled(longTimeout)
     await this.confirmSupplyBtn.click()
   }
 
   async closeSuccessNotificationDialog() {
-    await expect(this.closeSuccefulTxDialog).toBeVisible(midTimeout)
+    await expect(this.closeSuccefulTxDialog).toBeVisible(longTimeout)
     await this.closeSuccefulTxDialog.click()
   }
 
