@@ -2,6 +2,7 @@ import { expect, type Locator, type Page } from "playwright/test"
 import { BasePage } from "./base.page"
 import {
   longTimeout,
+  midTimeout,
   miniTimeout,
   shortTimeout,
 } from "../../helpers/constants/timeouts"
@@ -103,23 +104,25 @@ export class PoolPage extends BasePage {
     })
 
     const isVisible: boolean =
-      await insufficientBalanceBtn.isVisible(shortTimeout)
+      await insufficientBalanceBtn.isVisible(midTimeout)
 
     return isVisible
   }
 
   async clickSupply() {
-    await expect(this.supplyBtn).toBeVisible(shortTimeout)
+    await expect(this.supplyBtn).toBeVisible(midTimeout)
+    await expect(this.supplyBtn).toBeEnabled(midTimeout)
     await this.supplyBtn.click()
   }
 
   async confirmSupply() {
-    await expect(this.confirmSupplyBtn).toBeVisible(shortTimeout)
+    await expect(this.confirmSupplyBtn).toBeVisible(midTimeout)
+    await expect(this.confirmSupplyBtn).toBeEnabled(midTimeout)
     await this.confirmSupplyBtn.click()
   }
 
   async closeSuccessNotificationDialog() {
-    await expect(this.closeSuccefulTxDialog).toBeVisible(shortTimeout)
+    await expect(this.closeSuccefulTxDialog).toBeVisible(midTimeout)
     await this.closeSuccefulTxDialog.click()
   }
 

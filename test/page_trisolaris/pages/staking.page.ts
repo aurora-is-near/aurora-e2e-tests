@@ -55,6 +55,8 @@ export class StakingPage extends BasePage {
 
   async getAvalableBalance() {
     await this.balanceAmountLocator.isVisible(midTimeout)
+    // wait a bit until the balance actually looks for 5 seconds
+    await this.page.waitForTimeout(5_000)
     const temp = await this.balanceAmountLocator.innerText()
     const m = temp.match(/[-+]?\d+(?:\.\d+)?/)
     const num = m ? parseFloat(m[0]) : NaN

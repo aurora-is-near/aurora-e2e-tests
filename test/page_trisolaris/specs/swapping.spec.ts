@@ -39,13 +39,13 @@ test.describe(
 
     const tokensFromTo = [
       { tokenFrom: "AURORA", tokenTo: "BRRR", swapAmount: 0.000001 },
-      // { tokenFrom: "AURORA", tokenTo: "wNEAR", swapAmount: 0.000001 },
-      // { tokenFrom: "AURORA", tokenTo: "USDC.e", swapAmount: 0.01 },
-      // { tokenFrom: "AURORA", tokenTo: "ETH", swapAmount: 0.00000001 },
-      // { tokenFrom: "BRRR", tokenTo: "AURORA", swapAmount: 0.000001 },
-      // { tokenFrom: "wNEAR", tokenTo: "AURORA", swapAmount: 0.000001 },
-      // { tokenFrom: "ETH", tokenTo: "AURORA", swapAmount: 0.00000001 },
-      // { tokenFrom: "USDC.e", tokenTo: "AURORA", swapAmount: 0.000001 },
+      { tokenFrom: "AURORA", tokenTo: "wNEAR", swapAmount: 0.000001 },
+      { tokenFrom: "AURORA", tokenTo: "USDC.e", swapAmount: 0.01 },
+      { tokenFrom: "AURORA", tokenTo: "ETH", swapAmount: 0.00000001 },
+      { tokenFrom: "BRRR", tokenTo: "AURORA", swapAmount: 0.000001 },
+      { tokenFrom: "wNEAR", tokenTo: "AURORA", swapAmount: 0.000001 },
+      { tokenFrom: "ETH", tokenTo: "AURORA", swapAmount: 0.00000001 },
+      { tokenFrom: "USDC.e", tokenTo: "AURORA", swapAmount: 0.000001 },
     ]
 
     for (const transfers of tokensFromTo) {
@@ -70,7 +70,11 @@ test.describe(
 
         await homePage.confirmHomePageLoaded()
         await homePage.navigateToSwapPage()
-        await swapPage.selectTokenToSwapFrom(tokenFrom, true)
+
+        if (tokenFrom !== "ETH") {
+          await swapPage.selectTokenToSwapFrom(tokenFrom, true)
+        }
+
         await swapPage.selectTokenToSwapTo(tokenTo, true)
         await page.waitForTimeout(2000)
         await swapPage.enterSwapFromAmount(swapAmount)

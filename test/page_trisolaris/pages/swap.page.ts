@@ -62,7 +62,9 @@ export class SwapPage extends BasePage {
       await this.searchTokenField.fill(asset)
     }
 
-    const swapTokenFromSelector = this.page.getByText(asset, { exact: true })
+    const swapTokenFromSelector = (
+      await this.page.locator("div.css-8mokm4").all()
+    ).filter(async (element) => (await element.innerText()) === asset)[0]
 
     await swapTokenFromSelector.click()
   }
@@ -77,7 +79,10 @@ export class SwapPage extends BasePage {
       await this.searchTokenField.fill(asset)
     }
 
-    const swapTokenToSelector = this.page.getByText(asset, { exact: true })
+    const swapTokenToSelector = (
+      await this.page.locator("div.css-8mokm4").all()
+    ).filter(async (element) => (await element.innerText()) === asset)[0]
+
     await swapTokenToSelector.click()
   }
 
