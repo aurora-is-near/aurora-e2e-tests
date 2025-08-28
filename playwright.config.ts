@@ -50,12 +50,14 @@ export default defineConfig({
       use: {
         ...devices["Desktop Chrome"],
         launchOptions: {
-          args: [
-            "--disable-web-security",
-            "--disable-features=IsolateOrigins,site-per-process",
-            "--no-sandbox",
-            "--disable-setuid-sandbox",
-          ],
+          args: process.env.CI
+            ? [
+                "--disable-web-security",
+                "--disable-features=IsolateOrigins,site-per-process",
+                "--no-sandbox",
+                "--disable-setuid-sandbox",
+              ]
+            : [],
         },
       },
     },
