@@ -18,6 +18,7 @@ export class PoolPage extends BasePage {
   supplyBtn: Locator
   confirmSupplyBtn: Locator
   closeSuccefulTxDialog: Locator
+  trisolarisBalance: Locator
 
   constructor(page: Page) {
     super(page)
@@ -48,6 +49,7 @@ export class PoolPage extends BasePage {
     this.confirmSupplyBtn = page.getByRole("button", { name: "Confirm Supply" })
     this.closeSuccefulTxDialog = page.getByRole("button", { name: "Close" })
     this.createPairBtn = page.getByRole("link", { name: "Create a pair" })
+    this.trisolarisBalance = page.getByRole("button", { name: "$0." })
   }
 
   async confirmPoolPageLoaded(page = this.page) {
@@ -143,5 +145,9 @@ export class PoolPage extends BasePage {
     const result = await this.poolCurrentOutputField.innerText()
 
     return Number(result)
+  }
+
+  async waitForBalanceToLoad() {
+    await expect(this.trisolarisBalance).toBeVisible(longTimeout)
   }
 }

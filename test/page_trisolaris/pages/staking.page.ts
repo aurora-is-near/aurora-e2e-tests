@@ -20,6 +20,7 @@ export class StakingPage extends BasePage {
   stakeToggleBtn: Locator
   unstakeBtn: Locator
   confirmUnstakeBtn: Locator
+  trisolarisBalance: Locator
 
   constructor(page: Page) {
     super(page)
@@ -47,6 +48,7 @@ export class StakingPage extends BasePage {
     this.confirmUnstakeBtn = page.getByRole("button", {
       name: "Confirm Unstake",
     })
+    this.trisolarisBalance = page.getByRole("button", { name: "$0." })
   }
 
   async confirmStakingPageLoaded(page = this.page) {
@@ -55,8 +57,6 @@ export class StakingPage extends BasePage {
 
   async getAvalableBalance() {
     await this.balanceAmountLocator.isVisible(midTimeout)
-    // wait a bit until the balance actually looks for 5 seconds
-    await this.page.waitForTimeout(5_000)
     await expect(this.balanceAmountLocator).toBeVisible(longTimeout)
     const temp = await this.balanceAmountLocator.innerText()
     const m = temp.match(/[-+]?\d+(?:\.\d+)?/)
@@ -113,6 +113,10 @@ export class StakingPage extends BasePage {
   async confirmUnstake() {
     await this.confirmUnstakeBtn.isVisible(shortTimeout)
     await this.confirmUnstakeBtn.click()
+  }
+
+  async waitForBalanceToLoad() {
+    await expect(this.trisolarisBalance).toBeVisible(longTimeout)
   }
 
   confirmTransactionWasCorrect(

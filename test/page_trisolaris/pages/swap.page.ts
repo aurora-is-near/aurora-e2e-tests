@@ -1,5 +1,6 @@
 import { expect, type Locator, type Page } from "playwright/test"
 import {
+  longTimeout,
   midTimeout,
   miniTimeout,
   shortTimeout,
@@ -19,6 +20,8 @@ export class SwapPage extends BasePage {
   swapBtn: Locator
   confirmSwapBtn: Locator
   priceImpactHigh: Locator
+  trisolarisBalance: Locator
+  closeSuccessNotificationDialogBtn: Locator
 
   constructor(page: Page) {
     super(page)
@@ -50,6 +53,10 @@ export class SwapPage extends BasePage {
     this.swapAnywayBtn = page.getByRole("button", { name: "Swap  Anyway" })
     this.swapBtn = page.getByRole("button", { name: "Swap" })
     this.confirmSwapBtn = page.getByRole("button", { name: "Confirm Swap" })
+    this.trisolarisBalance = page.getByRole("button", { name: "$0." })
+    this.closeSuccessNotificationDialogBtn = page.getByRole("button", {
+      name: "Close",
+    })
   }
 
   async selectTokenToSwapFrom(asset: string, searchForAsset: boolean = false) {
@@ -144,9 +151,12 @@ export class SwapPage extends BasePage {
   }
 
   async closeSuccessNotificationDialog() {
-    const temp = this.page.getByRole("button", { name: "Close" })
-    await expect(temp).toBeVisible()
-    await temp.click()
+    await expect(this.closeSuccessNotificationDialogBtn).toBeVisible()
+    await this.closeSuccessNotificationDialogBtn.click()
+  }
+
+  async waitForBalanceToLoad() {
+    await expect(this.trisolarisBalance).toBeVisible(longTimeout)
   }
 
   confirmTransactionWasCorrect(

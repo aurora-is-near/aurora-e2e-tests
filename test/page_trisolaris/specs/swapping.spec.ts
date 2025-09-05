@@ -76,6 +76,7 @@ test.describe(
         await swapPage.selectTokenToSwapTo(tokenTo, true)
         await page.waitForTimeout(2000)
         await swapPage.enterSwapFromAmount(swapAmount)
+        await swapPage.waitForBalanceToLoad()
         const balanceBefore = await swapPage.getFromTokenBalance()
         // check if we have enough balance for swapping with gas fee
         test.skip(

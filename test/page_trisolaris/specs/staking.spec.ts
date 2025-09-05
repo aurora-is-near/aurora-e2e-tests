@@ -35,6 +35,7 @@ test.describe(
       await homePage.confirmHomePageLoaded()
       await homePage.navigateToStakePage()
       await stakingPage.confirmStakingPageLoaded()
+      await stakingPage.waitForBalanceToLoad()
 
       const availableBalance = await stakingPage.getAvalableBalance()
       await stakingPage.enterAmount(availableBalance * 100)
@@ -61,6 +62,7 @@ test.describe(
       await homePage.confirmHomePageLoaded()
       await homePage.navigateToStakePage()
       await stakingPage.confirmStakingPageLoaded()
+      await stakingPage.waitForBalanceToLoad()
 
       const availableBalance = await stakingPage.getAvalableBalance()
       await stakingPage.enterAmount(stakeAmount)
@@ -91,6 +93,7 @@ test.describe(
       await homePage.confirmHomePageLoaded()
       await homePage.navigateToStakePage()
       await stakingPage.confirmStakingPageLoaded()
+      await stakingPage.waitForBalanceToLoad()
 
       await stakingPage.setStakeMode()
       const availableToUnstake = await stakingPage.getAvalableBalance()
@@ -118,6 +121,7 @@ test.describe(
 
       await stakingPage.setStakeMode()
       await stakingPage.enterAmount(unstakeAmount)
+      await stakingPage.waitForBalanceToLoad()
       const availableToUnstake = await stakingPage.getAvalableBalance()
       test.skip(
         availableToUnstake < unstakeAmount,

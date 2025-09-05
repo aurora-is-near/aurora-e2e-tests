@@ -48,6 +48,7 @@ test.describe(
       await poolPage.selectTokenToPoolTo("AURORA", true)
       await page.waitForTimeout(2000)
       await poolPage.enterPoolFromAmount(swapAmount)
+      await poolPage.waitForBalanceToLoad()
 
       test.skip(
         await poolPage.isNotAvailableToPool("USDC.e"),
@@ -58,6 +59,7 @@ test.describe(
       await metamask.confirmTransaction()
       await poolPage.closeSuccessNotificationDialog()
     })
+
     // test - create a pair
     test(`Confirm that user can create a liquidity pair`, async ({
       page,
@@ -83,6 +85,7 @@ test.describe(
       await poolPage.selectTokenToPoolTo("AURORA", true)
       await page.waitForTimeout(2000)
       await poolPage.enterPoolFromAmount(swapAmount)
+      await poolPage.waitForBalanceToLoad()
 
       // get amount as end result - for later confirmation that tx is done
       const convertedAmount = await poolPage.getConvertedAmount()
