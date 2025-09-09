@@ -1,0 +1,104 @@
+import { expect, type Locator, type Page } from "@playwright/test"
+import { BasePage } from "./base.page"
+import { NEAR_INTENTS_PAGE } from "../../helpers/constants/pages"
+import {
+  longTimeout,
+  midTimeout,
+  shortTimeout,
+} from "../../helpers/constants/timeouts"
+
+export class DepositPage extends BasePage {
+  page: Page
+  selectNetworkSelectionDropdown: Locator
+  selectNetworkSearchBar: Locator
+  selectTokenSelectionDropdown: Locator
+  selectTokenSearchBar: Locator
+  depositInputField: Locator
+  depositBtn: Locator
+  transactionCompleted: Locator
+
+  constructor(page: Page) {
+    super(page)
+    this.page = page
+    this.selectNetworkSelectionDropdown = page.getByRole("button", {
+      name: "Select network",
+    })
+    this.selectNetworkSearchBar = page.getByPlaceholder("Search")
+    this.selectTokenSelectionDropdown = page
+      .locator('button[data-sentry-element="SelectTriggerLike"]')
+      .first()
+
+    this.selectTokenSearchBar = page.getByPlaceholder("Search")
+    this.depositInputField = page.getByPlaceholder("0")
+    this.depositBtn = page
+      .getByRole("main")
+      .getByRole("button", { name: "Deposit" })
+
+    this.transactionCompleted = page.getByText("Completed")
+  }
+
+  async confirmDepositPageLoaded() {
+    await expect(this.page).toHaveURL(`${NEAR_INTENTS_PAGE.baseURL}/deposit`)
+  }
+
+  async selectAssetNetwork(searchNetwork: string | null) {
+    await expect(this.selectNetworkSelectionDropdown).toBeVisible(shortTimeout)
+    await this.selectNetworkSelectionDropdown.click()
+
+    if (searchNetwork) {
+      await expect(this.selectNetworkSearchBar).toBeVisible(shortTimeout)
+      await this.selectNetworkSearchBar.fill(searchNetwork)
+      const targetNetwork = this.page
+        .locator('div[data-sentry-component="NetworkList"]')
+        .getByRole("button")
+        .first()
+      await expect(targetNetwork).toBeVisible(shortTimeout)
+      await targetNetwork.click()
+    } else {
+      const allVisibleNetworks = this.page
+        .locator('div[data-sentry-component="NetworkList"]')
+        .first()
+        .getByRole("button")
+        .first()
+      await expect(allVisibleNetworks).toBeVisible(midTimeout)
+      await allVisibleNetworks.click()
+    }
+  }
+
+  async selectAssetToken(searchToken: string | null) {
+    await expect(this.selectTokenSelectionDropdown).toBeVisible(shortTimeout)
+    await this.selectTokenSelectionDropdown.click()
+
+    if (searchToken) {
+      await expect(this.selectTokenSearchBar).toBeVisible(shortTimeout)
+      await this.selectTokenSearchBar.fill(searchToken)
+      const targetToken = this.page.getByRole("button", {
+        name: searchToken,
+      })
+      await expect(targetToken).toBeVisible(shortTimeout)
+      await targetToken.click()
+    } else {
+      const allVisibleTokens = this.page
+        .locator('div[data-sentry-component="AssetList"]')
+        .first()
+        .getByRole("button")
+        .first()
+      await expect(allVisibleTokens).toBeVisible(midTimeout)
+      await allVisibleTokens.click()
+    }
+  }
+
+  async enterDepositValue(value: number) {
+    await expect(this.depositInputField).toBeVisible(shortTimeout)
+    await this.depositInputField.fill(value.toString())
+  }
+
+  async clickDeposit() {
+    await expect(this.depositBtn).toBeVisible(midTimeout)
+    await this.depositBtn.click()
+  }
+
+  async confirmTransactionCompleted() {
+    await expect(this.transactionCompleted).toBeVisible(longTimeout)
+  }
+}

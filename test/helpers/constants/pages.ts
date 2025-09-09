@@ -8,5 +8,5 @@ export const NEAR_WEB3_PAGE = {
 }
 
 export const NEAR_INTENTS_PAGE = {
-  baseURL: "https://near-intents.org/",
+  baseURL: "https://near-intents.org",
 }
