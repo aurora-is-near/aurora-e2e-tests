@@ -15,6 +15,7 @@ test.beforeEach(
   "Login to Near Web3 wallet with MetaMask",
   async ({ nearWeb3Preconditions }, testInfo) => {
     await nearWeb3Preconditions.loginToNearWeb3()
+    await nearWeb3Preconditions.confirmAccountLoggedIn()
     testInfo.setTimeout(30_000)
   },
 )
