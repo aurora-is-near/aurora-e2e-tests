@@ -73,14 +73,16 @@ export const test = testWithSynpress(
       const address = await page.waitForFunction(
         () => {
           if (
-            !window.ethereum ||
-            typeof window.ethereum.request !== "function"
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            !(window as any).ethereum ||
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            typeof (window as any).ethereum.request !== "function"
           ) {
             return null
           }
 
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-          return window.ethereum
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-explicit-any
+          return (window as any).ethereum
             .request({ method: "eth_accounts" })
             .then((accounts: string[]) => {
               return accounts?.length ? accounts[0] : null
