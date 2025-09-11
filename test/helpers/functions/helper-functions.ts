@@ -7,3 +7,15 @@ export function parseFloatWithRounding(
 
   return Math.round(parsed * factor) / factor
 }
+
+export function truncateAddress(addr: string, startChars = 6, endChars = 5) {
+  if (!addr) {
+    return addr
+  }
+
+  if (addr.length <= startChars + endChars) {
+    return addr
+  }
+
+  return `${addr.slice(0, startChars)}…${addr.slice(-endChars)}`
+}

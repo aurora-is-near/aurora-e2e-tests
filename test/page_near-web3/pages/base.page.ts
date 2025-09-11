@@ -1,6 +1,6 @@
 import { expect, type Locator, type Page } from "@playwright/test"
 import { NEAR_WEB3_PAGE } from "../../helpers/constants/pages"
-import { midTimeout } from "../../helpers/constants/timeouts"
+import { longTimeout, midTimeout } from "../../helpers/constants/timeouts"
 
 export class BasePage {
   page: Page
@@ -133,6 +133,11 @@ export class BasePage {
 
   async waitForTransactionToComplete() {
     await this.page.waitForTimeout(midTimeout.timeout)
+  }
+
+  async waitForAccountToBeLoggedIn() {
+    const accElem = this.page.locator('[id="headlessui-menu-button-\\:rc\\:"]')
+    await expect(accElem).toBeVisible(longTimeout)
   }
 
   checkCopiedAccountCorrect(clipboardContent: string, currentAccount: string) {

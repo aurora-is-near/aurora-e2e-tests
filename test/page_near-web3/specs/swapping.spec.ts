@@ -14,6 +14,7 @@ test.beforeEach(
   "Login to Near Web3 wallet with MetaMask",
   async ({ nearWeb3Preconditions }) => {
     await nearWeb3Preconditions.loginToNearWeb3()
+    await nearWeb3Preconditions.confirmAccountLoggedIn()
   },
 )
 test.describe(
@@ -60,12 +61,11 @@ test.describe(
           nearWeb3ProdSetup.walletPassword,
           extensionId,
         )
-
         await homePage.confirmHomePageLoaded()
         await homePage.waitForActionToComplete()
         await homePage.scrollToSwapContainer()
         await homePage.selectTokenToSwapFrom(tokenFrom)
-        await page.reload()
+        // wait for the account to load
         await homePage.enterSwapFromAmount(swapAmount)
         const balanceBefore = await homePage.getFromTokenBalance()
         await homePage.selectTokenToSwapTo(tokenTo)
