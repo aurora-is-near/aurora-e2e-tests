@@ -19,6 +19,7 @@ export class PoolPage extends BasePage {
   confirmSupplyBtn: Locator
   closeSuccefulTxDialog: Locator
   trisolarisBalance: Locator
+  importPoolLink: Locator
 
   constructor(page: Page) {
     super(page)
@@ -50,6 +51,7 @@ export class PoolPage extends BasePage {
     this.closeSuccefulTxDialog = page.getByRole("button", { name: "Close" })
     this.createPairBtn = page.getByRole("link", { name: "Create a pair" })
     this.trisolarisBalance = page.getByRole("button", { name: "$0." })
+    this.importPoolLink = page.getByRole("link", { name: "Import it." })
   }
 
   async confirmPoolPageLoaded(page = this.page) {
@@ -149,5 +151,65 @@ export class PoolPage extends BasePage {
 
   async waitForBalanceToLoad() {
     await expect(this.trisolarisBalance).toBeVisible(longTimeout)
+  }
+
+  async importPool(
+    fromToken: string,
+    toToken: string,
+    searchForAsset: boolean,
+  ) {
+    await expect(this.importPoolLink).toBeVisible(shortTimeout)
+    await this.importPoolLink.click()
+
+    const temp1 = this.page.getByRole("button", { name: "ETH" })
+    const temp2 = this.page.getByRole("button", { name: "Select a Token" })
+
+    await temp1.click()
+
+    if (searchForAsset) {
+      await expect(this.searchTokenField).toBeVisible()
+      await this.searchTokenField.fill(fromToken)
+    }
+
+    const swapTokenFromSelector = this.page.getByText(fromToken, {
+      exact: true,
+    })
+    await swapTokenFromSelector.click()
+
+    await temp2.click()
+
+    if (searchForAsset) {
+      await expect(this.searchTokenField).toBeVisible()
+      await this.searchTokenField.fill(toToken)
+    }
+
+    const swapTokenToSelector = this.page.getByText(toToken, {
+      exact: true,
+    })
+    await swapTokenToSelector.click()
+
+    const importThisPoolLink = this.page.getByRole("link", {
+      name: "Import this pool",
+    })
+
+    await expect(importThisPoolLink).toBeVisible(midTimeout)
+    await importThisPoolLink.click()
+  }
+
+  async assertLiquidityPairVisible(fromToken, toToken) {
+    await this.page.pause()
+  }
+
+  private escapeRegExp(text: string) {
+    return String(text).replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
+  }
+
+  composeExactRegex(tokenFrom: string, tokenTo: string, separator = "/") {
+    const t1 = this.escapeRegExp(tokenFrom)
+    const t2 = this.escapeRegExp(tokenTo)
+    const sep = this.escapeRegExp(separator)
+    const pattern = `^${t1}${sep}${t2}$`
+
+    return new RegExp(pattern)
   }
 }

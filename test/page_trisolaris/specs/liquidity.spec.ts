@@ -107,8 +107,9 @@ test.describe(
         swapAmount,
         convertedAmount,
       )
-      // FIXME find solution for this below
-      //   await poolPage.assertLiquidityPairCount(1)
+      // need to import it to show up
+      await poolPage.importPool("USDC.e", "AURORA", false)
+      await poolPage.assertLiquidityPairVisible("USDC.e", "AURORA")
     })
 
     // TODO - remove a pair
