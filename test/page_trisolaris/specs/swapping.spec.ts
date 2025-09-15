@@ -15,9 +15,8 @@ test.beforeEach(
   "Login to Trisolaris wallet with MetaMask",
   async ({ trisolarisPreconditions, page }) => {
     await trisolarisPreconditions.loginToTrisolaris()
-    // to fully load the wallet account - wait and refresh
+    await trisolarisPreconditions.confirmAccountLoggedIn()
     await page.waitForTimeout(2_000)
-    await page.reload()
   },
 )
 test.describe(

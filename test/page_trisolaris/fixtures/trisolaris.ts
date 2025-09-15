@@ -4,10 +4,13 @@ import { testWithSynpress } from "@synthetixio/synpress"
 
 import { midTimeout, shortTimeout } from "../../helpers/constants/timeouts"
 import trisolarisSetup from "../../wallet-setup/aurora-plus.setup"
+import { truncateAddress } from "../../helpers/functions/helper-functions"
+import { a } from "../../../playwright-report/trace/assets/testServerConnection-Dj8RHZjQ"
 
 export const test = testWithSynpress(metaMaskFixtures(trisolarisSetup)).extend<{
   trisolarisPreconditions: {
     loginToTrisolaris: () => Promise<void>
+    confirmAccountLoggedIn: () => Promise<void>
   }
 }>({
   trisolarisPreconditions: async ({ page, context, extensionId }, use) => {
@@ -44,8 +47,66 @@ export const test = testWithSynpress(metaMaskFixtures(trisolarisSetup)).extend<{
       await expect(accountIndicator).toBeVisible(midTimeout)
     }
 
+    const getAccountAddress = async (
+      opts = { timeout: 5000, polling: 200 },
+    ) => {
+      const { timeout, polling } = opts
+
+      const address = await page.waitForFunction(
+        () => {
+          if (
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            !(window as any).ethereum ||
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            typeof (window as any).ethereum.request !== "function"
+          ) {
+            return null
+          }
+
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-explicit-any
+          return (window as any).ethereum
+            .request({ method: "eth_accounts" })
+            .then((accounts: string[]) => {
+              return accounts?.length ? accounts[0] : null
+            })
+            .catch(() => null)
+        },
+        { timeout, polling },
+      )
+
+      console.log(address)
+      await page.pause()
+      const currentAddress = await address.jsonValue()
+
+      if (currentAddress) {
+        return String(currentAddress)
+      }
+
+      return ""
+    }
+
+    const confirmAccountLoggedIn = async (
+      opts = { timeout: 5000, polling: 200 },
+    ) => {
+      const currentAddress = await getAccountAddress(opts)
+
+      const truncatedAddress = currentAddress
+        ? truncateAddress(currentAddress, 6, 4)
+        : ""
+
+      const uiAccountIndicator = await accountIndicator.innerText()
+      console.log(truncatedAddress, uiAccountIndicator)
+
+      if (truncatedAddress !== "") {
+        expect(truncatedAddress).toEqual(uiAccountIndicator)
+      } else {
+        test.fail()
+      }
+    }
+
     await use({
       loginToTrisolaris,
+      confirmAccountLoggedIn,
     })
   },
 })
