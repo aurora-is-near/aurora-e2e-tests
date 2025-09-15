@@ -1,3 +1,6 @@
+export const miniTimeout = {
+  timeout: 5_000,
+}
 export const shortTimeout = {
   timeout: 20000,
 }

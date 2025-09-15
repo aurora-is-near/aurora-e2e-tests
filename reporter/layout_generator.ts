@@ -22,6 +22,14 @@ function getProductFromTag(tagName: string): string {
       return "Near3 Swapping"
     case tags.WEB3_WALLET_TAG_TRANSFERING:
       return "Near3 Transferring"
+    case tags.TRISOLARIS_TAG:
+      return "Trisolaris"
+    case tags.TRISOLARIS_TAG_STAKING:
+      return "Trisolaris Staking"
+    case tags.TRISOLARIS_TAG_SWAPPING:
+      return "Trisolaris Swapping"
+    case tags.TRISOLARIS_TAG_LIQUIDITY:
+      return "Trisolaris Liquidity"
     default:
       return "All products - Near3 & Aurora+"
   }
