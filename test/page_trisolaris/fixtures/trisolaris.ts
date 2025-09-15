@@ -5,7 +5,6 @@ import { testWithSynpress } from "@synthetixio/synpress"
 import { midTimeout, shortTimeout } from "../../helpers/constants/timeouts"
 import trisolarisSetup from "../../wallet-setup/aurora-plus.setup"
 import { truncateAddress } from "../../helpers/functions/helper-functions"
-import { a } from "../../../playwright-report/trace/assets/testServerConnection-Dj8RHZjQ"
 
 export const test = testWithSynpress(metaMaskFixtures(trisolarisSetup)).extend<{
   trisolarisPreconditions: {
@@ -74,7 +73,6 @@ export const test = testWithSynpress(metaMaskFixtures(trisolarisSetup)).extend<{
         { timeout, polling },
       )
 
-      console.log(address)
       await page.pause()
       const currentAddress = await address.jsonValue()
 
@@ -95,7 +93,6 @@ export const test = testWithSynpress(metaMaskFixtures(trisolarisSetup)).extend<{
         : ""
 
       const uiAccountIndicator = await accountIndicator.innerText()
-      console.log(truncatedAddress, uiAccountIndicator)
 
       if (truncatedAddress !== "") {
         expect(truncatedAddress).toEqual(uiAccountIndicator)

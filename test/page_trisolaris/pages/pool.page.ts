@@ -196,8 +196,8 @@ export class PoolPage extends BasePage {
     await importThisPoolLink.click()
   }
 
-  async assertLiquidityPairVisible(fromToken, toToken) {
-    await this.page.pause()
+  async assertLiquidityPairVisible() {
+    // await this.page.pause()
   }
 
   private escapeRegExp(text: string) {
