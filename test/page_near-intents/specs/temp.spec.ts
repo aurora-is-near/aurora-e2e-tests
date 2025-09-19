@@ -20,10 +20,8 @@ test.beforeEach(
 )
 
 test.describe("NEAR Intents Wallet: temp", { tag: [NEAR_INTENTS_TAG] }, () => {
-  // DEPOSIT
-  // SWAP
-  // OTC
-  // WITHDRAW
+  const transferAccountAddress: string =
+    "0x2a8ac9f504ea4c9da5eb435b92027cb86c793ce4"
 
   // TODO
   test(`Confirm user can deposit`, async ({ page, context, extensionId }) => {
@@ -122,7 +120,12 @@ test.describe("NEAR Intents Wallet: temp", { tag: [NEAR_INTENTS_TAG] }, () => {
     await accountsPage.pressAccountsBtn()
     await accountsPage.selectToken("Aurora")
     await accountsPage.enterAmount(0.0001)
-    
-    await page.pause()
+    await accountsPage.selectTargetNetwork("Near")
+    await accountsPage.enterTargetAccount(transferAccountAddress)
+    await accountsPage.confirmWithdrawal()
+
+    await metamask.confirmSignature()
+    await accountsPage.confirmWithdrawalState("Pending")
+    await accountsPage.confirmWithdrawalState("Completed")
   })
 })
