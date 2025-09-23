@@ -16,6 +16,8 @@ export class DepositPage extends BasePage {
   depositInputField: Locator
   depositBtn: Locator
   transactionCompleted: Locator
+  insufficientBalanceBtn: Locator
+  withdrawInsufficientBalanceField: Locator
 
   constructor(page: Page) {
     super(page)
@@ -35,6 +37,12 @@ export class DepositPage extends BasePage {
       .getByRole("button", { name: "Deposit" })
 
     this.transactionCompleted = page.getByText("Completed")
+    this.insufficientBalanceBtn = page.getByRole("button", {
+      name: "Insufficient Balance",
+    })
+    this.withdrawInsufficientBalanceField = page.getByText(
+      "Insufficient balance",
+    )
   }
 
   async confirmDepositPageLoaded() {
@@ -100,5 +108,9 @@ export class DepositPage extends BasePage {
 
   async confirmTransactionCompleted() {
     await expect(this.transactionCompleted).toBeVisible(longTimeout)
+  }
+
+  async confirmInsufficientBalance() {
+    await expect(this.insufficientBalanceBtn).toBeVisible(midTimeout)
   }
 }

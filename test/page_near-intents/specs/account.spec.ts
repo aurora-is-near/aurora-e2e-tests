@@ -1,6 +1,10 @@
 import { MetaMask } from "@synthetixio/synpress/playwright"
 import { NEAR_INTENTS_PAGE } from "../../helpers/constants/pages"
-import { NEAR_INTENTS_TAG } from "../../helpers/constants/tags"
+import {
+  NEAR_INTENTS_TAG,
+  NEAR_INTENTS_TAG_DEPOSIT,
+  NEAR_INTENTS_TAG_WITHDRAW,
+} from "../../helpers/constants/tags"
 import { test } from "../fixtures/near-intents"
 import { DepositPage } from "../pages/deposit.page"
 import { HomePage } from "../pages/home.page"
@@ -19,13 +23,22 @@ test.beforeEach(
 )
 
 test.describe(
-  "NEAR Intents Wallet: Account",
-  { tag: [NEAR_INTENTS_TAG] },
+  "NEAR Intents Wallet: Deposit",
+  { tag: [NEAR_INTENTS_TAG, NEAR_INTENTS_TAG_DEPOSIT] },
   () => {
-    const transferAccountAddress: string =
-      "0x2a8ac9f504ea4c9da5eb435b92027cb86c793ce4"
+    test(`Confirm user cannot deposit more than balance allows`, async ({
+      page,
+    }) => {
+      const homePage = new HomePage(page)
+      const depositPage = new DepositPage(page)
+      await homePage.navigateToDepositPage()
+      await depositPage.confirmDepositPageLoaded()
+      await depositPage.selectAssetToken("Aurora")
+      await depositPage.selectAssetNetwork("Aurora")
+      await depositPage.enterDepositValue(1000000)
+      await depositPage.confirmInsufficientBalance()
+    })
 
-    // TODO
     test(`Confirm user can deposit`, async ({ page, context, extensionId }) => {
       const homePage = new HomePage(page)
       const depositPage = new DepositPage(page)
@@ -48,6 +61,31 @@ test.describe(
 
       // here need to check if already completed deposit - if not then metamask confirm again
       await depositPage.confirmTransactionCompleted()
+    })
+  },
+)
+
+test.describe(
+  "NEAR Intents Wallet: Withdraw",
+  { tag: [NEAR_INTENTS_TAG, NEAR_INTENTS_TAG_WITHDRAW] },
+  () => {
+    const transferAccountAddress: string =
+      "0x2a8ac9f504ea4c9da5eb435b92027cb86c793ce4"
+
+    test(`Confirm that user cannot withdraw more than allowed`, async ({
+      page,
+    }) => {
+      const homePage = new HomePage(page)
+      const accountsPage = new AccountPage(page)
+      await homePage.navigateToAccountPage()
+      await accountsPage.confirmAccountPageLoaded()
+      await accountsPage.pressAccountsBtn()
+      await accountsPage.selectToken("Aurora")
+      await accountsPage.enterAmount(10000)
+      await accountsPage.selectTargetNetwork("Near")
+      await accountsPage.enterTargetAccount(transferAccountAddress)
+      await accountsPage.confirmWithdrawal()
+      await accountsPage.confirmWithdrawInsufficientBalance()
     })
 
     test(`Confirm that user can withdraw`, async ({

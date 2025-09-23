@@ -21,6 +21,11 @@ export class TradePage extends BasePage {
   transactionCompleted: Locator
   otcSellTokenSelectionDropdown: Locator
   otcBuyTokenSelectionDropdown: Locator
+  insufficientBalanceBtn: Locator
+  rejectedSignatureMessage: Locator
+  rejectedOTCSignatureMessage: Locator
+  otcCannotBeFilledField: Locator
+  cancelOTCOrderConfirm: Locator
 
   constructor(page: Page) {
     super(page)
@@ -49,6 +54,25 @@ export class TradePage extends BasePage {
     this.otcBuyTokenSelectionDropdown = page
       .locator('button[data-sentry-component="SelectAssets"]')
       .last()
+
+    this.insufficientBalanceBtn = page.getByRole("button", {
+      name: "Insufficient Balance",
+    })
+
+    this.rejectedSignatureMessage = page.getByText(
+      "It seems the message wasn’t signed in your wallet. Please try again",
+    )
+
+    this.rejectedOTCSignatureMessage = page.locator(
+      'div[data-sentry-component="ErrorReason"]',
+    )
+    this.otcCannotBeFilledField = page.getByText(
+      "The order cannot be filled. Your balance is incorrect. Please cancel the order",
+    )
+
+    this.cancelOTCOrderConfirm = page.getByRole("button", {
+      name: "Cancel order",
+    })
   }
 
   async confirmTradePageLoaded() {
@@ -256,5 +280,46 @@ export class TradePage extends BasePage {
     expect(tokens[1]).toEqual(sellToken.toUpperCase())
     expect(Number(tokens[2])).toEqual(buyAmount)
     expect(tokens[3]).toEqual(buyToken.toUpperCase())
+  }
+
+  async confirmInsufficientBalance() {
+    await expect(this.insufficientBalanceBtn).toBeVisible(longTimeout)
+    await expect(this.insufficientBalanceBtn).toBeDisabled()
+  }
+
+  async confirmUserRejectedSignature() {
+    await expect(this.rejectedSignatureMessage).toBeVisible(longTimeout)
+  }
+
+  async confirmOTCRejectedSignature() {
+    await expect(this.rejectedOTCSignatureMessage).toBeVisible(longTimeout)
+    await expect(this.rejectedOTCSignatureMessage).toHaveText(
+      "ERR_USER_DIDNT_SIGN",
+    )
+  }
+
+  async confirmOrderCannotBeFilled() {
+    await expect(this.otcCannotBeFilledField).toBeVisible(midTimeout)
+  }
+
+  async removeCreatedOTCOffer() {
+    const offerElem = this.page
+      .locator('div[data-sentry-component="OtcMakerTradeItem"]')
+      .first()
+    await expect(offerElem).toBeVisible(midTimeout)
+
+    const deleteBtn = offerElem.locator('button[data-accent-color="red"]')
+    await expect(deleteBtn).toBeVisible(shortTimeout)
+    await deleteBtn.click()
+
+    await expect(this.cancelOTCOrderConfirm).toBeVisible(shortTimeout)
+    await this.cancelOTCOrderConfirm.click()
+  }
+
+  async confirmOTCCancelled() {
+    const offerElem = this.page.locator(
+      'div[data-sentry-component="OtcMakerTradeItem"]',
+    )
+    await expect(offerElem).not.toBeVisible(shortTimeout)
   }
 }

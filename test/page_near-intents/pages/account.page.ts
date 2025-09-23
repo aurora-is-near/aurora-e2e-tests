@@ -12,6 +12,7 @@ export class AccountPage extends BasePage {
   withdrawTargetNetwork: Locator
   withdrawTargetAccountField: Locator
   withdrawConfirmBtn: Locator
+  withdrawInsufficientBalanceField: Locator
 
   constructor(page: Page) {
     super(page)
@@ -29,6 +30,9 @@ export class AccountPage extends BasePage {
       "Enter wallet address",
     )
     this.withdrawConfirmBtn = page.getByRole("button", { name: "Withdraw" })
+    this.withdrawInsufficientBalanceField = page.getByText(
+      "Insufficient balance",
+    )
   }
 
   async confirmAccountPageLoaded() {
@@ -106,5 +110,9 @@ export class AccountPage extends BasePage {
   async confirmWithdrawalState(state: string) {
     const txState = this.page.getByText(state)
     await expect(txState).toBeVisible(midTimeout)
+  }
+
+  async confirmWithdrawInsufficientBalance() {
+    await expect(this.withdrawInsufficientBalanceField).toBeVisible(midTimeout)
   }
 }
