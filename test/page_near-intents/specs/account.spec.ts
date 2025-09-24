@@ -88,7 +88,7 @@ test.describe(
       await page.waitForTimeout(5_000)
       await metamask.confirmTransaction()
 
-      if (!(await depositPage.isTransactionCompleted())) {
+      if (!(await depositPage.isTransactionProcessing())) {
         await metamask.confirmTransaction()
         await page.waitForTimeout(5_000)
         await metamask.confirmTransaction()
