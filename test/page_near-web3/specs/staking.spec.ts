@@ -30,6 +30,9 @@ test.describe(
     test(`Confirm that user can't stake more than balance allows`, async ({
       page,
     }) => {
+      // specifically set timeout here since this test on CI seems to take a
+      // long time
+      test.setTimeout(120_000)
       const homePage = new HomePage(page)
       const stakingPage = new StakingPage(page)
 
@@ -87,6 +90,9 @@ test.describe(
     test(`Confirm that user can't unstake more than staked amount`, async ({
       page,
     }) => {
+      // specifically set timeout here since this test on CI seems to take a
+      // long time
+      test.setTimeout(120_000)
       const homePage = new HomePage(page)
       const stakingPage = new StakingPage(page)
 
@@ -109,6 +115,9 @@ test.describe(
       context,
       extensionId,
     }) => {
+      // specifically set timeout here since this test on CI seems to take a
+      // long time
+      test.setTimeout(120_000)
       const homePage = new HomePage(page)
       const stakingPage = new StakingPage(page)
       const metamask = new MetaMask(
@@ -140,6 +149,9 @@ test.describe(
       context,
       extensionId,
     }) => {
+      // specifically set timeout here since this test on CI seems to take a
+      // long time
+      test.setTimeout(120_000)
       const homePage = new HomePage(page)
       const stakingPage = new StakingPage(page)
       const metamask = new MetaMask(
