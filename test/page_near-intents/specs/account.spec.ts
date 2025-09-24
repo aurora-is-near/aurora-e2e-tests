@@ -81,7 +81,6 @@ test.describe(
       await depositPage.selectAssetToken("Aurora")
       await depositPage.selectAssetNetwork("Aurora")
       await depositPage.enterDepositValue(0.001)
-      await page.waitForTimeout(1_000)
       await depositPage.clickDeposit()
       await metamask.approveNewNetwork()
       await metamask.approveSwitchNetwork()
