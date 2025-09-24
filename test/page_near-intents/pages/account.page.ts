@@ -1,7 +1,7 @@
 import { expect, type Locator, type Page } from "@playwright/test"
 import { BasePage } from "./base.page"
 import { NEAR_INTENTS_PAGE } from "../../helpers/constants/pages"
-import { midTimeout, shortTimeout } from "../../helpers/constants/timeouts"
+import { longTimeout, midTimeout, shortTimeout } from "../../helpers/constants/timeouts"
 
 export class AccountPage extends BasePage {
   page: Page
@@ -13,6 +13,7 @@ export class AccountPage extends BasePage {
   withdrawTargetAccountField: Locator
   withdrawConfirmBtn: Locator
   withdrawInsufficientBalanceField: Locator
+  rejectedSignatureMessage: Locator
 
   constructor(page: Page) {
     super(page)
@@ -32,6 +33,9 @@ export class AccountPage extends BasePage {
     this.withdrawConfirmBtn = page.getByRole("button", { name: "Withdraw" })
     this.withdrawInsufficientBalanceField = page.getByText(
       "Insufficient balance",
+    )
+     this.rejectedSignatureMessage = page.getByText(
+      "It seems the message wasn’t signed in your wallet. Please try again",
     )
   }
 
@@ -114,5 +118,9 @@ export class AccountPage extends BasePage {
 
   async confirmWithdrawInsufficientBalance() {
     await expect(this.withdrawInsufficientBalanceField).toBeVisible(midTimeout)
+  }
+
+  async confirmTransactionCancelled() {
+    await expect(this.rejectedSignatureMessage).toBeVisible(longTimeout)
   }
 }

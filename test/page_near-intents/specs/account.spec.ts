@@ -39,6 +39,34 @@ test.describe(
       await depositPage.confirmInsufficientBalance()
     })
 
+    test(`Confirm user can deny the deposit`, async ({
+      page,
+      context,
+      extensionId,
+    }) => {
+      const homePage = new HomePage(page)
+      const depositPage = new DepositPage(page)
+      const metamask = new MetaMask(
+        context,
+        page,
+        nearWeb3ProdSetup.walletPassword,
+        extensionId,
+      )
+      await homePage.navigateToDepositPage()
+      await depositPage.confirmDepositPageLoaded()
+      await depositPage.selectAssetToken("Aurora")
+      await depositPage.selectAssetNetwork("Aurora")
+      await depositPage.enterDepositValue(0.001)
+      await page.waitForTimeout(1_000)
+      await depositPage.clickDeposit()
+      await metamask.approveNewNetwork()
+      await metamask.approveSwitchNetwork()
+      await page.waitForTimeout(5_000)
+      await metamask.rejectTransaction()
+      await depositPage.confirmTransactionCancelled()
+    })
+
+    // TODO stabilise?
     test(`Confirm user can deposit`, async ({ page, context, extensionId }) => {
       const homePage = new HomePage(page)
       const depositPage = new DepositPage(page)
@@ -53,6 +81,7 @@ test.describe(
       await depositPage.selectAssetToken("Aurora")
       await depositPage.selectAssetNetwork("Aurora")
       await depositPage.enterDepositValue(0.001)
+      await page.waitForTimeout(1_000)
       await depositPage.clickDeposit()
       await metamask.approveNewNetwork()
       await metamask.approveSwitchNetwork()
@@ -86,6 +115,32 @@ test.describe(
       await accountsPage.enterTargetAccount(transferAccountAddress)
       await accountsPage.confirmWithdrawal()
       await accountsPage.confirmWithdrawInsufficientBalance()
+    })
+
+    test(`Confirm user can deny withdraw`, async ({
+      page,
+      context,
+      extensionId,
+    }) => {
+      const homePage = new HomePage(page)
+      const accountsPage = new AccountPage(page)
+      const metamask = new MetaMask(
+        context,
+        page,
+        nearWeb3ProdSetup.walletPassword,
+        extensionId,
+      )
+      await homePage.navigateToAccountPage()
+      await accountsPage.confirmAccountPageLoaded()
+      await accountsPage.pressAccountsBtn()
+      await accountsPage.selectToken("Aurora")
+      await accountsPage.enterAmount(0.0001)
+      await accountsPage.selectTargetNetwork("Near")
+      await accountsPage.enterTargetAccount(transferAccountAddress)
+      await accountsPage.confirmWithdrawal()
+
+      await metamask.rejectSignature()
+      await accountsPage.confirmTransactionCancelled()
     })
 
     test(`Confirm that user can withdraw`, async ({

@@ -18,6 +18,7 @@ export class DepositPage extends BasePage {
   transactionCompleted: Locator
   insufficientBalanceBtn: Locator
   withdrawInsufficientBalanceField: Locator
+  rejectedSignatureMessage: Locator
 
   constructor(page: Page) {
     super(page)
@@ -42,6 +43,9 @@ export class DepositPage extends BasePage {
     })
     this.withdrawInsufficientBalanceField = page.getByText(
       "Insufficient balance",
+    )
+    this.rejectedSignatureMessage = page.getByText(
+      "It seems the message wasn’t signed in your wallet. Please try again",
     )
   }
 
@@ -112,5 +116,9 @@ export class DepositPage extends BasePage {
 
   async confirmInsufficientBalance() {
     await expect(this.insufficientBalanceBtn).toBeVisible(midTimeout)
+  }
+
+  async confirmTransactionCancelled() {
+    await expect(this.rejectedSignatureMessage).toBeVisible(longTimeout)
   }
 }
