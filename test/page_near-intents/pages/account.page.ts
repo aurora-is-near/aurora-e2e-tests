@@ -1,7 +1,11 @@
 import { expect, type Locator, type Page } from "@playwright/test"
 import { BasePage } from "./base.page"
 import { NEAR_INTENTS_PAGE } from "../../helpers/constants/pages"
-import { longTimeout, midTimeout, shortTimeout } from "../../helpers/constants/timeouts"
+import {
+  longTimeout,
+  midTimeout,
+  shortTimeout,
+} from "../../helpers/constants/timeouts"
 
 export class AccountPage extends BasePage {
   page: Page
@@ -34,7 +38,7 @@ export class AccountPage extends BasePage {
     this.withdrawInsufficientBalanceField = page.getByText(
       "Insufficient balance",
     )
-     this.rejectedSignatureMessage = page.getByText(
+    this.rejectedSignatureMessage = page.getByText(
       "It seems the message wasn’t signed in your wallet. Please try again",
     )
   }
