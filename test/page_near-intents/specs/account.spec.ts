@@ -88,7 +88,12 @@ test.describe(
       await page.waitForTimeout(5_000)
       await metamask.confirmTransaction()
 
-      // here need to check if already completed deposit - if not then metamask confirm again
+      if (!(await depositPage.isTransactionCompleted())) {
+        await metamask.confirmTransaction()
+        await page.waitForTimeout(5_000)
+        await metamask.confirmTransaction()
+      }
+
       await depositPage.confirmTransactionCompleted()
     })
   },

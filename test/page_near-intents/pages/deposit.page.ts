@@ -45,7 +45,7 @@ export class DepositPage extends BasePage {
       "Insufficient balance",
     )
     this.rejectedSignatureMessage = page.getByText(
-      "It seems the message wasn’t signed in your wallet. Please try again",
+      "It seems the transaction was rejected in your wallet. Please try again.",
     )
   }
 
@@ -108,6 +108,12 @@ export class DepositPage extends BasePage {
   async clickDeposit() {
     await expect(this.depositBtn).toBeVisible(midTimeout)
     await this.depositBtn.click()
+  }
+
+  async isTransactionCompleted(): Promise<boolean> {
+    const result = await this.transactionCompleted.isVisible()
+
+    return result
   }
 
   async confirmTransactionCompleted() {
