@@ -15,9 +15,8 @@ test.use(NEAR_INTENTS_PAGE)
 
 test.beforeEach(
   "Login to Near Web3 wallet with MetaMask",
-  async ({ nearIntentsPreconditions, page }) => {
+  async ({ nearIntentsPreconditions }) => {
     await nearIntentsPreconditions.loginToNearIntents()
-    await page.waitForTimeout(5_000)
     await nearIntentsPreconditions.isSignatureCheckRequired()
   },
 )
@@ -57,7 +56,6 @@ test.describe(
       await depositPage.selectAssetToken("Aurora")
       await depositPage.selectAssetNetwork("Aurora")
       await depositPage.enterDepositValue(0.001)
-      await page.waitForTimeout(1_000)
       await depositPage.clickDeposit()
       await metamask.approveNewNetwork()
       await metamask.approveSwitchNetwork()
@@ -81,6 +79,7 @@ test.describe(
       await depositPage.selectAssetToken("Aurora")
       await depositPage.selectAssetNetwork("Aurora")
       await depositPage.enterDepositValue(0.001)
+      await page.waitForTimeout(1_000)
       await depositPage.clickDeposit()
       await metamask.approveNewNetwork()
       await metamask.approveSwitchNetwork()

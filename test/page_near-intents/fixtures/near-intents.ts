@@ -63,14 +63,10 @@ export const test = testWithSynpress(
     }
 
     const isSignatureCheckRequired = async () => {
-      const isPopupVisible =
-        await signatureCheckRequiredPopup.isVisible(shortTimeout)
-
-      if (isPopupVisible) {
-        await expect(checkCompatibility).toBeVisible(shortTimeout)
-        await checkCompatibility.click()
-        await metamask.confirmSignature()
-      }
+      await expect(signatureCheckRequiredPopup).toBeVisible(shortTimeout)
+      await expect(checkCompatibility).toBeVisible(shortTimeout)
+      await checkCompatibility.click()
+      await metamask.confirmSignature()
     }
 
     await use({

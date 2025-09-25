@@ -107,6 +107,7 @@ export class DepositPage extends BasePage {
 
   async clickDeposit() {
     await expect(this.depositBtn).toBeVisible(midTimeout)
+    await expect(this.depositBtn).toBeEnabled(midTimeout)
     await this.depositBtn.click()
   }
 

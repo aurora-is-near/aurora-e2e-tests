@@ -14,9 +14,8 @@ test.use(NEAR_INTENTS_PAGE)
 
 test.beforeEach(
   "Login to Near Web3 wallet with MetaMask",
-  async ({ nearIntentsPreconditions, page }) => {
+  async ({ nearIntentsPreconditions }) => {
     await nearIntentsPreconditions.loginToNearIntents()
-    await page.waitForTimeout(5_000)
     await nearIntentsPreconditions.isSignatureCheckRequired()
   },
 )
