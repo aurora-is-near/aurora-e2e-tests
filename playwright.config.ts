@@ -49,6 +49,16 @@ export default defineConfig({
       name: "chromium",
       use: {
         ...devices["Desktop Chrome"],
+        launchOptions: {
+          args: process.env.CI
+            ? [
+                "--disable-web-security",
+                "--disable-features=IsolateOrigins,site-per-process",
+                "--no-sandbox",
+                "--disable-setuid-sandbox",
+              ]
+            : [],
+        },
       },
     },
   ],

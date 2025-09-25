@@ -1,7 +1,7 @@
 import { type Locator, type Page } from "playwright/test"
 import { expect } from "@playwright/test"
 import { BasePage } from "./base.page"
-import { midTimeout } from "../../helpers/constants/timeouts"
+import { longTimeout, midTimeout } from "../../helpers/constants/timeouts"
 
 export class StakingPage extends BasePage {
   stakeTokensButton: Locator
@@ -44,7 +44,13 @@ export class StakingPage extends BasePage {
 
   async clickStakeTokensButton() {
     const messageOnFail: string = '"Stake tokens" button is not visible'
-    await expect(this.stakeTokensButton, messageOnFail).toBeVisible()
+    await expect(this.stakeTokensButton, messageOnFail).toBeVisible(midTimeout)
+    // since it is not a button, there is pointer-events-none class while loading
+    // we wait until it dissapears
+    await expect(this.stakeTokensButton).not.toHaveClass(
+      /pointer-events-none/,
+      longTimeout,
+    )
     await this.stakeTokensButton.click()
   }
 

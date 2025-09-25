@@ -4,6 +4,7 @@ import { testWithSynpress } from "@synthetixio/synpress"
 
 import { shortTimeout } from "../../helpers/constants/timeouts"
 import nearWeb3ProdSetup from "../../wallet-setup/near-web3-prod.setup"
+import { truncateAddress } from "../../helpers/functions/helper-functions"
 
 export const test = testWithSynpress(
   metaMaskFixtures(nearWeb3ProdSetup),
@@ -11,6 +12,7 @@ export const test = testWithSynpress(
   nearWeb3Preconditions: {
     loginToNearWeb3: () => Promise<void>
     loginToNearWeb3Account: (accountString: string) => Promise<void>
+    confirmAccountLoggedIn: () => Promise<void>
   }
 }>({
   nearWeb3Preconditions: async ({ page, context, extensionId }, use) => {
@@ -26,6 +28,10 @@ export const test = testWithSynpress(
     const metamaskOptionInPopUp = page.getByRole("button", {
       name: "MetaMask MetaMask installed",
     })
+
+    const accountIndicator = page.locator(
+      '[id="headlessui-menu-button-\\:rc\\:"]',
+    )
 
     const loginToNearWeb3 = async () => {
       let messageOnFail: string = '"Log in with Ethereum" button is not visible'
@@ -59,9 +65,64 @@ export const test = testWithSynpress(
       await metamask.connectToDapp([accountString])
     }
 
+    const getAccountAddress = async (
+      opts = { timeout: 5000, polling: 200 },
+    ) => {
+      const { timeout, polling } = opts
+
+      const address = await page.waitForFunction(
+        () => {
+          if (
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            !(window as any).ethereum ||
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            typeof (window as any).ethereum.request !== "function"
+          ) {
+            return null
+          }
+
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-explicit-any
+          return (window as any).ethereum
+            .request({ method: "eth_accounts" })
+            .then((accounts: string[]) => {
+              return accounts?.length ? accounts[0] : null
+            })
+            .catch(() => null)
+        },
+        { timeout, polling },
+      )
+
+      const currentAddress = await address.jsonValue()
+
+      if (currentAddress) {
+        return String(currentAddress).toLowerCase()
+      }
+
+      return ""
+    }
+
+    const confirmAccountLoggedIn = async (
+      opts = { timeout: 5000, polling: 200 },
+    ) => {
+      const currentAddress = await getAccountAddress(opts)
+
+      const truncatedAddress = currentAddress
+        ? truncateAddress(currentAddress)
+        : ""
+
+      const uiAccountIndicator = await accountIndicator.innerText()
+
+      if (truncatedAddress !== "") {
+        expect(truncatedAddress).toEqual(uiAccountIndicator)
+      } else {
+        test.fail()
+      }
+    }
+
     await use({
       loginToNearWeb3,
       loginToNearWeb3Account,
+      confirmAccountLoggedIn,
     })
   },
 })
