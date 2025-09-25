@@ -185,7 +185,11 @@ test.describe(
       await tradePage.confirmOTCCancelled()
     })
 
-    test(`Confirm user can OTC`, async ({ page, context, extensionId }) => {
+    test(`Confirm user can create OTC offer`, async ({
+      page,
+      context,
+      extensionId,
+    }) => {
       await context.grantPermissions(["clipboard-read", "clipboard-write"])
       const homePage = new HomePage(page)
       const tradePage = new TradePage(page)

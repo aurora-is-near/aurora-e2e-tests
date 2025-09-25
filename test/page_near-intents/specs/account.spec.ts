@@ -64,7 +64,6 @@ test.describe(
       await depositPage.confirmTransactionCancelled()
     })
 
-    // TODO stabilise?
     test(`Confirm user can deposit`, async ({ page, context, extensionId }) => {
       const homePage = new HomePage(page)
       const depositPage = new DepositPage(page)
