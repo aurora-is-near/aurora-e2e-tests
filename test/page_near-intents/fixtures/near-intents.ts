@@ -4,6 +4,7 @@ import { testWithSynpress } from "@synthetixio/synpress"
 
 import { shortTimeout } from "../../helpers/constants/timeouts"
 import nearWeb3ProdSetup from "../../wallet-setup/near-web3-prod.setup"
+import { waitForMetaMaskPage } from "../../helpers/functions/helper-functions"
 
 export const test = testWithSynpress(
   metaMaskFixtures(nearWeb3ProdSetup),
@@ -65,7 +66,9 @@ export const test = testWithSynpress(
     const isSignatureCheckRequired = async () => {
       await expect(signatureCheckRequiredPopup).toBeVisible(shortTimeout)
       await expect(checkCompatibility).toBeVisible(shortTimeout)
+      await expect(checkCompatibility).toBeEnabled(shortTimeout)
       await checkCompatibility.click()
+      await waitForMetaMaskPage(context)
       await metamask.confirmSignature()
     }
 
