@@ -22,6 +22,16 @@ function getProductFromTag(tagName: string): string {
       return "Near3 Swapping"
     case tags.WEB3_WALLET_TAG_TRANSFERING:
       return "Near3 Transferring"
+    case tags.NEAR_INTENTS_TAG:
+      return "Near-Intents"
+    case tags.NEAR_INTENTS_TAG_SWAP:
+      return "Near-Intents Swapping"
+    case tags.NEAR_INTENTS_TAG_OTC:
+      return "Near-Intents OTC Trade"
+    case tags.NEAR_INTENTS_TAG_DEPOSIT:
+      return "Near-Intents Depositing"
+    case tags.NEAR_INTENTS_TAG_WITHDRAW:
+      return "Near-Intents Witdrawing"
     default:
       return "All products - Near3 & Aurora+"
   }
