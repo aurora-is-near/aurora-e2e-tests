@@ -56,6 +56,10 @@ export default defineConfig({
                 "--disable-features=IsolateOrigins,site-per-process",
                 "--no-sandbox",
                 "--disable-setuid-sandbox",
+                "--disable-dev-shm-usage",
+                "--disable-background-networking",
+                "--disable-background-timer-throttling",
+                "--disable-renderer-backgrounding",
               ]
             : [],
         },
