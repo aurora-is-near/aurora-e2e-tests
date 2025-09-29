@@ -18,6 +18,7 @@ test.beforeEach(
   async ({ nearIntentsPreconditions }) => {
     await nearIntentsPreconditions.loginToNearIntents()
     await nearIntentsPreconditions.isSignatureCheckRequired()
+    await nearIntentsPreconditions.waitForAccountSync()
   },
 )
 

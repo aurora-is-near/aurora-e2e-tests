@@ -2,7 +2,7 @@ import { expect } from "@playwright/test"
 import { MetaMask, metaMaskFixtures } from "@synthetixio/synpress/playwright"
 import { testWithSynpress } from "@synthetixio/synpress"
 
-import { shortTimeout } from "../../helpers/constants/timeouts"
+import { longTimeout, shortTimeout } from "../../helpers/constants/timeouts"
 import nearWeb3ProdSetup from "../../wallet-setup/near-web3-prod.setup"
 import { waitForMetaMaskPage } from "../../helpers/functions/helper-functions"
 
@@ -13,6 +13,7 @@ export const test = testWithSynpress(
     loginToNearIntents: () => Promise<void>
     loginToNearIntentsAccount: (accountString: string) => Promise<void>
     isSignatureCheckRequired: () => Promise<void>
+    waitForAccountSync: () => Promise<void>
   }
 }>({
   nearIntentsPreconditions: async ({ page, context, extensionId }, use) => {
@@ -72,10 +73,65 @@ export const test = testWithSynpress(
       await metamask.confirmSignature()
     }
 
+    const getAccountAddress = async (
+      opts = { timeout: 5000, polling: 200 },
+    ) => {
+      const { timeout, polling } = opts
+
+      const address = await page.waitForFunction(
+        () => {
+          if (
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            !(window as any).ethereum ||
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            typeof (window as any).ethereum.request !== "function"
+          ) {
+            return null
+          }
+
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-explicit-any
+          return (window as any).ethereum
+            .request({ method: "eth_accounts" })
+            .then((accounts: string[]) => {
+              return accounts?.length ? accounts[0] : null
+            })
+            .catch(() => null)
+        },
+        { timeout, polling },
+      )
+
+      const currentAddress = await address.jsonValue()
+
+      if (currentAddress) {
+        return String(currentAddress).toLowerCase()
+      }
+
+      return ""
+    }
+
+    const waitForAccountSync = async (
+      opts = { timeout: 5000, polling: 200 },
+    ) => {
+      const accountIndicator = page
+        .locator('div[data-sentry-component="ConnectWallet"]')
+        .getByRole("button")
+      await expect(accountIndicator).toBeVisible(longTimeout)
+
+      const currentAddress = await getAccountAddress(opts)
+
+      const truncatedAddress = currentAddress.substring(0, 4)
+
+      const uiAccountIndicator = await accountIndicator.innerText()
+      expect(
+        uiAccountIndicator.toLocaleLowerCase().startsWith(truncatedAddress),
+      ).toBeTruthy()
+    }
+
     await use({
       loginToNearIntents,
       loginToNearIntentsAccount,
       isSignatureCheckRequired,
+      waitForAccountSync,
     })
   },
 })
