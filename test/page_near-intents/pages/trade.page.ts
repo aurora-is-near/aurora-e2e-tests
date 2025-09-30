@@ -47,7 +47,7 @@ export class TradePage extends BasePage {
     )
     this.swapInputField = page.locator('input[name="amountIn"]')
     this.swapOutputField = page.locator('input[name="amountOut"]')
-    this.transactionCompleted = page.getByText("Completed")
+    this.transactionCompleted = page.getByText("Success")
     this.otcSellTokenSelectionDropdown = page
       .locator('button[data-sentry-component="SelectAssets"]')
       .first()
