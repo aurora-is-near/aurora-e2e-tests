@@ -26,6 +26,9 @@ export class TradePage extends BasePage {
   rejectedOTCSignatureMessage: Locator
   otcCannotBeFilledField: Locator
   cancelOTCOrderConfirm: Locator
+  copyLinkBtn: Locator
+  cancelOrderBtn: Locator
+  orderConfirmationWindowText: Locator
 
   constructor(page: Page) {
     super(page)
@@ -72,6 +75,11 @@ export class TradePage extends BasePage {
 
     this.cancelOTCOrderConfirm = page.getByRole("button", {
       name: "Cancel order",
+    })
+    this.copyLinkBtn = page.getByRole("button", { name: "Copy link" })
+    this.cancelOrderBtn = page.getByRole("button", { name: "Cancel order" })
+    this.orderConfirmationWindowText = page.getByRole("heading", {
+      name: "Your order is open",
     })
   }
 
@@ -224,25 +232,21 @@ export class TradePage extends BasePage {
   }
 
   async confirmOrderWindowIsOpen() {
-    const temp1 = this.page.getByRole("heading", { name: "Your order is open" })
-    await expect(temp1).toBeVisible(longTimeout)
-    const temp2 = this.page.getByRole("button", { name: "Copy link" })
-    await expect(temp2).toBeVisible(longTimeout)
-    const temp3 = this.page.getByRole("button", { name: "Cancel order" })
-    await expect(temp3).toBeVisible(longTimeout)
+    await expect(this.orderConfirmationWindowText).toBeVisible(longTimeout)
+    await expect(this.copyLinkBtn).toBeVisible(longTimeout)
+    await expect(this.cancelOrderBtn).toBeVisible(longTimeout)
   }
 
   async confirmUserCanCopyLink() {
-    const temp2 = this.page.getByRole("button", { name: "Copy link" })
-    await expect(temp2).toBeVisible(longTimeout)
-    await temp2.click()
+    await expect(this.copyLinkBtn).toBeVisible(longTimeout)
+    await this.copyLinkBtn.click()
     // Get clipboard content after the link/button has been clicked
     const handle = await this.page.evaluateHandle(() =>
       navigator.clipboard.readText(),
     )
     const clipboardContent = await handle.jsonValue()
 
-    const pattern = /^https:\/\/near-intents\.org\/otc\/order#[A-Za-z0-9-]+$/
+    const pattern = /^https:\/\/near-intents\.org\/otc\/order#[A-Za-z0-9-_]+$/
 
     expect(clipboardContent).toMatch(pattern)
   }

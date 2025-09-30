@@ -1,5 +1,6 @@
 import { expect, type Locator, type Page } from "@playwright/test"
 import { NEAR_INTENTS_PAGE } from "../../helpers/constants/pages"
+import { midTimeout } from "../../helpers/constants/timeouts"
 
 export class BasePage {
   page: Page
@@ -31,6 +32,7 @@ export class BasePage {
     await expect(this.nearIntentsLogo, messageOnFail).toBeVisible()
     await this.nearIntentsLogo.click()
     await this.page.waitForLoadState("domcontentloaded")
+    await this.page.waitForURL(`${NEAR_INTENTS_PAGE.baseURL}${url}`, midTimeout)
     await this.confirmCorrectPageLoaded(this.page, url)
   }
 
@@ -41,6 +43,7 @@ export class BasePage {
 
     await this.depositTab.click()
     await this.page.waitForLoadState("domcontentloaded")
+    await this.page.waitForURL(`${NEAR_INTENTS_PAGE.baseURL}${url}`, midTimeout)
     await this.confirmCorrectPageLoaded(this.page, url)
   }
 
@@ -51,6 +54,7 @@ export class BasePage {
 
     await this.tradeTab.click()
     await this.page.waitForLoadState("domcontentloaded")
+    await this.page.waitForURL(`${NEAR_INTENTS_PAGE.baseURL}${url}`, midTimeout)
     await this.confirmCorrectPageLoaded(this.page, url)
   }
 
@@ -61,6 +65,7 @@ export class BasePage {
 
     await this.accountTab.click()
     await this.page.waitForLoadState("domcontentloaded")
+    await this.page.waitForURL(`${NEAR_INTENTS_PAGE.baseURL}${url}`, midTimeout)
     await this.confirmCorrectPageLoaded(this.page, url)
   }
 
