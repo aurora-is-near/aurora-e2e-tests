@@ -125,6 +125,8 @@ export const test = testWithSynpress(
       expect(
         uiAccountIndicator.toLocaleLowerCase().startsWith(truncatedAddress),
       ).toBeTruthy()
+
+      await page.waitForTimeout(1_000)
     }
 
     await use({
