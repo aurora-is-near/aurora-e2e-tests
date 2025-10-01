@@ -1,6 +1,5 @@
 import { expect, type Locator, type Page } from "@playwright/test"
 import { BasePage } from "./base.page"
-import { NEAR_INTENTS_PAGE } from "../../helpers/constants/pages"
 import {
   longTimeout,
   midTimeout,
@@ -47,10 +46,6 @@ export class DepositPage extends BasePage {
     this.rejectedSignatureMessage = page.getByText(
       "It seems the transaction was rejected in your wallet. Please try again.",
     )
-  }
-
-  async confirmDepositPageLoaded() {
-    await expect(this.page).toHaveURL(`${NEAR_INTENTS_PAGE.baseURL}/deposit`)
   }
 
   async selectAssetNetwork(searchNetwork: string | null) {

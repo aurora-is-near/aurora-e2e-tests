@@ -106,14 +106,13 @@ test.describe(
 
       await homePage.navigateToTradePage()
       await tradePage.switchToOTC()
-      await page.waitForTimeout(1_000)
+      await tradePage.waitForStableElement()
       await tradePage.selectSellToken("Aurora")
       await tradePage.selectBuyToken("Near")
       await tradePage.enterFromAmount(0.0001)
       await tradePage.enterToAmount(0.0001)
       await tradePage.pressCreateSwapLink()
       await metamask.rejectSignature()
-      // We need handling here for proper message
       await tradePage.confirmOTCRejectedSignature()
     })
 
@@ -133,14 +132,14 @@ test.describe(
 
       await homePage.navigateToTradePage()
       await tradePage.switchToOTC()
-      await page.waitForTimeout(1_000)
+      await tradePage.waitForStableElement()
       await tradePage.selectSellToken("Aurora")
       await tradePage.selectBuyToken("Near")
       await tradePage.enterFromAmount(10000)
       await tradePage.enterToAmount(10000)
       await tradePage.pressCreateSwapLink()
       await metamask.confirmSignature()
-      await page.waitForTimeout(2_000)
+      await tradePage.waitForMetamaskAction()
       await tradePage.closeOrderWindow()
 
       await tradePage.confirmOrderCannotBeFilled()
@@ -163,7 +162,7 @@ test.describe(
 
       await homePage.navigateToTradePage()
       await tradePage.switchToOTC()
-      await page.waitForTimeout(1_000)
+      await tradePage.waitForStableElement()
       await tradePage.selectSellToken("Aurora")
       await tradePage.selectBuyToken("Near")
       await tradePage.enterFromAmount(0.0001)
@@ -202,7 +201,7 @@ test.describe(
 
       await homePage.navigateToTradePage()
       await tradePage.switchToOTC()
-      await page.waitForTimeout(1_000)
+      await tradePage.waitForStableElement()
       await tradePage.selectSellToken("Aurora")
       await tradePage.selectBuyToken("Near")
       await tradePage.enterFromAmount(0.0001)

@@ -32,7 +32,6 @@ test.describe(
       const homePage = new HomePage(page)
       const depositPage = new DepositPage(page)
       await homePage.navigateToDepositPage()
-      await depositPage.confirmDepositPageLoaded()
       await depositPage.selectAssetToken("Aurora")
       await depositPage.selectAssetNetwork("Aurora")
       await depositPage.enterDepositValue(1000000)
@@ -53,14 +52,13 @@ test.describe(
         extensionId,
       )
       await homePage.navigateToDepositPage()
-      await depositPage.confirmDepositPageLoaded()
       await depositPage.selectAssetToken("Aurora")
       await depositPage.selectAssetNetwork("Aurora")
       await depositPage.enterDepositValue(0.001)
       await depositPage.clickDeposit()
       await metamask.approveNewNetwork()
       await metamask.approveSwitchNetwork()
-      await page.waitForTimeout(5_000)
+      await depositPage.waitForMetamaskAction()
       await metamask.rejectTransaction()
       await depositPage.confirmTransactionCancelled()
     })
@@ -75,20 +73,19 @@ test.describe(
         extensionId,
       )
       await homePage.navigateToDepositPage()
-      await depositPage.confirmDepositPageLoaded()
       await depositPage.selectAssetToken("Aurora")
       await depositPage.selectAssetNetwork("Aurora")
       await depositPage.enterDepositValue(0.001)
-      await page.waitForTimeout(1_000)
+      await depositPage.waitForStableElement()
       await depositPage.clickDeposit()
       await metamask.approveNewNetwork()
       await metamask.approveSwitchNetwork()
-      await page.waitForTimeout(5_000)
+      await depositPage.waitForMetamaskAction()
       await metamask.confirmTransaction()
 
       if (!(await depositPage.isTransactionProcessing())) {
         await metamask.confirmTransaction()
-        await page.waitForTimeout(5_000)
+        await depositPage.waitForMetamaskAction()
         await metamask.confirmTransaction()
       }
 
