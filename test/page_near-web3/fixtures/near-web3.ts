@@ -30,7 +30,7 @@ export const test = testWithSynpress(
     })
 
     const accountIndicator = page.locator(
-      '[id="headlessui-menu-button-\\:rc\\:"]',
+      'button[id="headlessui-menu-button-\\:rc\\:"]',
     )
 
     const loginToNearWeb3 = async () => {
