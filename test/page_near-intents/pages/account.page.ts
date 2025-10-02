@@ -12,6 +12,7 @@ export class AccountPage extends BasePage {
   withdrawBtn: Locator
   selectTokenSelectionDropdown: Locator
   selectTokenSearchBar: Locator
+  selectWithdrawTokenSearchBar: Locator
   withdrawAmountField: Locator
   withdrawTargetNetwork: Locator
   withdrawTargetAccountField: Locator
@@ -41,6 +42,7 @@ export class AccountPage extends BasePage {
     this.rejectedSignatureMessage = page.getByText(
       "It seems the message wasn’t signed in your wallet. Please try again",
     )
+    this.selectWithdrawTokenSearchBar = page.getByPlaceholder("Search coin")
   }
 
   async confirmAccountPageLoaded() {
@@ -73,6 +75,29 @@ export class AccountPage extends BasePage {
         .first()
       await expect(allVisibleNetworks).toBeVisible(midTimeout)
       await allVisibleNetworks.click()
+    }
+  }
+
+  async selectWithdrawToken(searchToken: string | null) {
+    await expect(this.selectTokenSelectionDropdown).toBeVisible(shortTimeout)
+    await this.selectTokenSelectionDropdown.click()
+
+    if (searchToken) {
+      await expect(this.selectWithdrawTokenSearchBar).toBeVisible(shortTimeout)
+      await this.selectWithdrawTokenSearchBar.fill(searchToken)
+      const targetToken = this.page.getByRole("button", {
+        name: searchToken,
+      })
+      await expect(targetToken).toBeVisible(shortTimeout)
+      await targetToken.click()
+    } else {
+      const allVisibleTokens = this.page
+        .locator('div[data-sentry-component="AssetList"]')
+        .first()
+        .getByRole("button")
+        .first()
+      await expect(allVisibleTokens).toBeVisible(midTimeout)
+      await allVisibleTokens.click()
     }
   }
 

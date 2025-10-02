@@ -45,9 +45,7 @@ export class TradePage extends BasePage {
       .locator('button[data-sentry-component="SelectAssets"]')
       .last()
 
-    this.selectTokenSearchBar = page.getByPlaceholder(
-      "Search name or paste address",
-    )
+    this.selectTokenSearchBar = page.getByPlaceholder("Search coin")
     this.swapInputField = page.locator('input[name="amountIn"]')
     this.swapOutputField = page.locator('input[name="amountOut"]')
     this.transactionCompleted = page.getByText("Success")
