@@ -2,7 +2,11 @@ import { expect } from "@playwright/test"
 import { MetaMask, metaMaskFixtures } from "@synthetixio/synpress/playwright"
 import { testWithSynpress } from "@synthetixio/synpress"
 
-import { longTimeout, shortTimeout } from "../../helpers/constants/timeouts"
+import {
+  longTimeout,
+  midTimeout,
+  shortTimeout,
+} from "../../helpers/constants/timeouts"
 import nearWeb3ProdSetup from "../../wallet-setup/near-web3-prod.setup"
 import { waitForMetaMaskPage } from "../../helpers/functions/helper-functions"
 
@@ -40,13 +44,21 @@ export const test = testWithSynpress(
       name: "Check Compatibility",
     })
 
+    const accountTypeDropdown = page.locator(
+      "div[data-radix-popper-content-wrapper]",
+    )
+
     const loginToNearIntents = async () => {
       let messageOnFail: string = '"Sign in" button is not visible'
       await expect(signInButton, messageOnFail).toBeVisible(shortTimeout)
+      await expect(signInButton, messageOnFail).toBeEnabled(shortTimeout)
       await signInButton.click()
+
+      await expect(accountTypeDropdown).toBeVisible(midTimeout)
 
       messageOnFail = "MetaMask login option is not visible in pop up"
       await expect(metamaskButton, messageOnFail).toBeVisible(shortTimeout)
+      await expect(metamaskButton, messageOnFail).toBeEnabled(shortTimeout)
       await metamaskButton.click()
 
       await metamask.connectToDapp()
