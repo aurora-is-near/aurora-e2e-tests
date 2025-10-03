@@ -23,8 +23,7 @@ export default defineConfig({
         [
           "./node_modules/playwright-slack-report/dist/src/SlackReporter.js",
           {
-            slackWebHookUrl:
-              "https://hooks.slack.com/services/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",
+            slackWebHookUrl: process.env.SLACK_WEBHOOK_URL,
             layout: generateCustomLayoutSimpleMeta,
             meta: [{ key: "Product", value: `${process.env.RUN_TAG}` }],
             sendResults:

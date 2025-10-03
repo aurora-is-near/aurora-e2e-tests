@@ -48,6 +48,7 @@ jobs:
       MM_PASSWORD: ${{ secrets.MM_PASSWORD }}
       NEAR_ACCOUNT_TOKEN : ${{ secrets.NEAR_ACCOUNT_TOKEN}}
       AURORA_ACCOUNT_TOKEN: ${{ secrets.AURORA_ACCOUNT_TOKEN}}
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
       RUN_TAG: ${{ inputs.tag }}
       MANUAL_TRIGGER: ${{ inputs.manual_trigger }}
       EXTENSION_LOAD_TIMEOUT: 60000
