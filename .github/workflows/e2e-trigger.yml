@@ -10,7 +10,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        tag: ['@aurora-plus', '@web3-wallet']
+        tag: ['@aurora-plus', '@web3-wallet', '@near-intents-wallet']
     uses: ./.github/workflows/e2e-worker.yml
     with:
       tag: ${{ matrix.tag }}

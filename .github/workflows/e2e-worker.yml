@@ -36,7 +36,15 @@ on:
           - '@web3-wallet-swapping'
           - '@web3-wallet-staking'
           - '@web3-wallet-transfering'
-
+          - '@near-intents-wallet'
+          - '@near-intents-wallet-swapping'
+          - '@near-intents-wallet-otc'
+          - '@near-intents-wallet-deposit'
+          - '@near-intents-wallet-withdraw'
+      manual_trigger:
+        required: false
+        type: boolean
+        default: false
 
 jobs:
   e2e-test:

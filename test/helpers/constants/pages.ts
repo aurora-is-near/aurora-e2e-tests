@@ -6,3 +6,7 @@ export const AURORA_PLUS_PAGE = {
 export const NEAR_WEB3_PAGE = {
   baseURL: "https://welcome-to-near.org",
 }
+
+export const NEAR_INTENTS_PAGE = {
+  baseURL: "https://near-intents.org",
+}
