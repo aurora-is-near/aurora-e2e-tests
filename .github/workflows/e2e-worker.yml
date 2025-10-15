@@ -48,7 +48,7 @@ on:
 
 jobs:
   e2e-test:
-    runs-on: ubuntu-8-core
+    runs-on: runs-on=${{ github.run_id }}/family=c6a.2xlarge/image=ubuntu24-full-x64
     timeout-minutes: 240
 
     env:
