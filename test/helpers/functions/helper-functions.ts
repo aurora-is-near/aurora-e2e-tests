@@ -43,7 +43,7 @@ export async function waitForMetaMaskPage(
 
 export async function waitForMetaMaskPageClosed(
   context: BrowserContext,
-  timeout = 30_000
+  timeout = 30_000,
 ) {
   const start = Date.now()
 
@@ -53,6 +53,7 @@ export async function waitForMetaMaskPageClosed(
     const extPages = allPages.filter((p) => {
       try {
         const u = p.url()
+
         return (
           u &&
           (u.startsWith("chrome-extension://") ||

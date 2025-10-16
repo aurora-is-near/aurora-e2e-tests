@@ -4,7 +4,10 @@ import { testWithSynpress } from "@synthetixio/synpress"
 
 import { shortTimeout } from "../../helpers/constants/timeouts"
 import nearWeb3ProdSetup from "../../wallet-setup/near-web3-prod.setup"
-import { truncateAddress, waitForMetaMaskPageClosed } from "../../helpers/functions/helper-functions"
+import {
+  truncateAddress,
+  waitForMetaMaskPageClosed,
+} from "../../helpers/functions/helper-functions"
 
 export const test = testWithSynpress(
   metaMaskFixtures(nearWeb3ProdSetup),
