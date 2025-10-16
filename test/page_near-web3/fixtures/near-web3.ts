@@ -4,7 +4,10 @@ import { testWithSynpress } from "@synthetixio/synpress"
 
 import { shortTimeout } from "../../helpers/constants/timeouts"
 import nearWeb3ProdSetup from "../../wallet-setup/near-web3-prod.setup"
-import { truncateAddress } from "../../helpers/functions/helper-functions"
+import {
+  truncateAddress,
+  waitForMetaMaskPageClosed,
+} from "../../helpers/functions/helper-functions"
 
 export const test = testWithSynpress(
   metaMaskFixtures(nearWeb3ProdSetup),
@@ -47,6 +50,8 @@ export const test = testWithSynpress(
       await metamaskOptionInPopUp.click()
 
       await metamask.connectToDapp()
+
+      await waitForMetaMaskPageClosed(context)
     }
 
     const loginToNearWeb3Account = async (accountString: string) => {
@@ -63,6 +68,8 @@ export const test = testWithSynpress(
       await metamaskOptionInPopUp.click()
 
       await metamask.connectToDapp([accountString])
+
+      await waitForMetaMaskPageClosed(context)
     }
 
     const getAccountAddress = async (
