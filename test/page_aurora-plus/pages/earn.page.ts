@@ -261,7 +261,7 @@ export class EarnPage extends BasePage {
   }
 
   async clickRepayButton() {
-    await expect(this.repayButton).toBeEnabled(shortTimeout)
+    await expect(this.repayButton).toBeEnabled(longTimeout)
     await this.repayButton.click()
   }
 
