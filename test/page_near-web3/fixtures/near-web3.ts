@@ -7,6 +7,7 @@ import nearWeb3ProdSetup from "../../wallet-setup/near-web3-prod.setup"
 import {
   truncateAddress,
   waitForMetaMaskPageClosed,
+  waitForSingleWagmiAccount,
 } from "../../helpers/functions/helper-functions"
 
 export const test = testWithSynpress(
@@ -52,6 +53,10 @@ export const test = testWithSynpress(
       await metamask.connectToDapp()
 
       await waitForMetaMaskPageClosed(context)
+
+      const wagmiAccount = await waitForSingleWagmiAccount(page)
+      expect(wagmiAccount.account).toBeDefined()
+      expect(wagmiAccount.connection).toBeDefined()
     }
 
     const loginToNearWeb3Account = async (accountString: string) => {

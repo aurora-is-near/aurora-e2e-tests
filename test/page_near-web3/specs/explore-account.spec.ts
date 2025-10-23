@@ -63,7 +63,7 @@ test.describe(
     test(`Disconnect user from app`, async ({ page }) => {
       const homePage = new HomePage(page)
       // confirm user is logged in
-      await homePage.confirmAccountLoggedIn(false)
+      await homePage.confirmAccountLoggedIn(true)
       // disconnect from account
       await homePage.openAccountDropdown()
       await homePage.disconnectAccount()
@@ -77,7 +77,7 @@ test.describe(
     }) => {
       const homePage = new HomePage(page)
       // confirm user is logged in
-      await homePage.confirmAccountLoggedIn(false)
+      await homePage.confirmAccountLoggedIn(true)
       const newTabPromise = context.waitForEvent("page")
       await homePage.openAccountDropdown()
       await homePage.clickInAccountButton()
@@ -92,7 +92,7 @@ test.describe(
     }) => {
       const homePage = new HomePage(page)
       const dashboardPage = new DashboardPage(page)
-      await homePage.confirmAccountLoggedIn(false)
+      await homePage.confirmAccountLoggedIn(true)
       const newTabPromise = context.waitForEvent("page")
       await dashboardPage.navigateToSupportPage()
       const newTab = await newTabPromise

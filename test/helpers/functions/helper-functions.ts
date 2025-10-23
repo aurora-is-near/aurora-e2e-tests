@@ -1,4 +1,4 @@
-import type { BrowserContext } from "playwright"
+import type { BrowserContext, Page } from "playwright"
 
 export function parseFloatWithRounding(
   str: string,
@@ -98,4 +98,94 @@ export function truncateAddress(addr: string, startChars = 6, endChars = 5) {
   }
 
   return `${addr.slice(0, startChars)}…${addr.slice(-endChars)}`
+}
+
+//
+type WagmiConnection = {
+  accounts?: string[]
+  chainId?: number
+  connector?: { id?: string; name?: string; type?: string; uid?: string }
+  [k: string]: any
+}
+
+type WagmiStore = {
+  state?: {
+    connections?: {
+      __type?: string
+      value?: [string, WagmiConnection][]
+    }
+    chainId?: number
+    current?: string
+  }
+  version?: number
+}
+
+export async function waitForSingleWagmiAccount(
+  page: Page,
+  timeoutMs = 30_000,
+  intervalMs = 1_000,
+): Promise<{ account: string; connection: WagmiConnection }> {
+  const deadline = Date.now() + timeoutMs
+
+  while (Date.now() <= deadline) {
+    // eslint-disable-next-line no-await-in-loop
+    const cookies = await page.context().cookies()
+    const wagmiCookie = cookies.find((c) => c.name === "wagmi.store")
+
+    if (wagmiCookie?.value) {
+      const tryValues: string[] = [wagmiCookie.value]
+
+      try {
+        const decoded = decodeURIComponent(wagmiCookie.value)
+
+        if (decoded !== wagmiCookie.value) {
+          tryValues.unshift(decoded)
+        }
+      } catch {
+        /* empty */
+      }
+
+      let parsed: WagmiStore | null = null
+
+      for (const raw of tryValues) {
+        try {
+          parsed = JSON.parse(raw)
+          break
+        } catch {
+          /* empty */
+        }
+      }
+
+      if (
+        parsed?.state?.connections?.__type === "Map" &&
+        Array.isArray(parsed.state.connections.value)
+      ) {
+        const foundAccounts: {
+          account: string
+          connection: WagmiConnection
+        }[] = []
+
+        for (const [, conn] of parsed.state.connections.value) {
+          if (Array.isArray(conn.accounts)) {
+            for (const acct of conn.accounts) {
+              if (acct != null) {
+                foundAccounts.push({ account: String(acct), connection: conn })
+              }
+            }
+          }
+        }
+
+        if (foundAccounts.length === 1) {
+          return foundAccounts[0]
+        }
+      }
+    }
+
+    // eslint-disable-next-line no-promise-executor-return, no-await-in-loop
+    await new Promise((res) => setTimeout(res, intervalMs))
+  }
+
+  throw new Error(
+    `Did not find exactly one account in cookies within ${timeoutMs}ms`,
+  )
 }
