@@ -100,7 +100,6 @@ export function truncateAddress(addr: string, startChars = 6, endChars = 5) {
   return `${addr.slice(0, startChars)}…${addr.slice(-endChars)}`
 }
 
-//
 type WagmiConnection = {
   accounts?: string[]
   chainId?: number
