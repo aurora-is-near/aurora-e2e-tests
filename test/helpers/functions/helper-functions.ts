@@ -104,7 +104,7 @@ type WagmiConnection = {
   accounts?: string[]
   chainId?: number
   connector?: { id?: string; name?: string; type?: string; uid?: string }
-  [k: string]: any
+  [k: string]: unknown
 }
 
 type WagmiStore = {
