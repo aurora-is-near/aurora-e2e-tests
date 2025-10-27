@@ -9,7 +9,10 @@ import auroraSetup from "../../wallet-setup/aurora-plus.setup"
 import { DashboardPage } from "../pages/dashboard.page"
 import { AURORA_PLUS_PAGE } from "../../helpers/constants/pages"
 import { EarnPage } from "../pages/earn.page"
-import { parseFloatWithRounding } from "../../helpers/functions/helper-functions"
+import {
+  parseFloatWithRounding,
+  waitForMetaMaskPageClosed,
+} from "../../helpers/functions/helper-functions"
 
 const { expect } = test
 
@@ -354,10 +357,10 @@ test.describe(
       await earnPage.enterAmount(amountToReturn)
       await earnPage.clickApproveButton()
       await metamask.approveTokenPermission()
-      await earnPage.waitForActionToComplete()
+      await waitForMetaMaskPageClosed(context, 30_000)
       await earnPage.clickRepayButton()
       await metamask.confirmTransaction()
-      await earnPage.waitForActionToComplete()
+      await waitForMetaMaskPageClosed(context, 30_000)
       await earnPage.confirmBorrowNotExists()
     })
   },
