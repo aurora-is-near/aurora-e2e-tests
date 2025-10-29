@@ -61,7 +61,6 @@ test.describe(
           nearWeb3ProdSetup.walletPassword,
           extensionId,
         )
-        const popupPromise = page.waitForEvent("popup")
         await homePage.confirmHomePageLoaded()
         await homePage.waitForActionToComplete()
         await homePage.scrollToSwapContainer()
@@ -80,8 +79,6 @@ test.describe(
 
         await homePage.clickSwapButton()
         await homePage.confirmTransactionPopup()
-        const popup = await popupPromise
-        console.log(await popup.title())
         await metamask.confirmTransaction()
 
         const isNotificationVisible =
