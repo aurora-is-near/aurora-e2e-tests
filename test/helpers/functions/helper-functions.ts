@@ -130,6 +130,7 @@ export async function waitForSingleWagmiAccount(
     // eslint-disable-next-line no-await-in-loop
     const cookies = await page.context().cookies()
     const wagmiCookie = cookies.find((c) => c.name === "wagmi.store")
+    console.log(wagmiCookie)
 
     if (wagmiCookie?.value) {
       const tryValues: string[] = [wagmiCookie.value]

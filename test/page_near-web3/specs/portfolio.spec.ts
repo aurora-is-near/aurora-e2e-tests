@@ -46,12 +46,12 @@ test.describe(
 
         await homePage.navigateToPortfolioPage()
         await portfolioPage.clickSendButton()
-        const currentBalance = await portfolioPage.selectAsset(asset)
-        test.skip(
-          currentBalance + 0.02 < transferAmount,
-          `Insufficient funds for sending (plus gas), balance: ${currentBalance}, transfer: ${transferAmount}`,
-        )
+        await portfolioPage.selectAsset(asset)
         await portfolioPage.enterTransferAmount(transferAmount)
+        test.skip(
+          !(await portfolioPage.canUserSendFunds(asset)),
+          `User does not have enough ${asset} to perform transfer`,
+        )
         await portfolioPage.clickContinueButton()
         await portfolioPage.enterNearAccountId(transferAccountAddress)
         await portfolioPage.clickContinueButton()
