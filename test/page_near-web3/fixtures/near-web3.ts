@@ -37,6 +37,17 @@ export const test = testWithSynpress(
       'button[id="headlessui-menu-button-\\:rc\\:"]',
     )
 
+    const closeTheInitialMetamaskTab = async () => {
+      const pages = context.pages()
+
+      for (const p of pages) {
+        if (p.url().includes("chrome-extension://")) {
+          // eslint-disable-next-line no-await-in-loop
+          await p.close()
+        }
+      }
+    }
+
     const loginToNearWeb3 = async () => {
       let messageOnFail: string = '"Log in with Ethereum" button is not visible'
       await expect(loginWithEthereumButton, messageOnFail).toBeVisible(
@@ -57,6 +68,8 @@ export const test = testWithSynpress(
       const wagmiAccount = await waitForSingleWagmiAccount(page)
       expect(wagmiAccount.account).toBeDefined()
       expect(wagmiAccount.connection).toBeDefined()
+
+      await closeTheInitialMetamaskTab()
     }
 
     const loginToNearWeb3Account = async (accountString: string) => {

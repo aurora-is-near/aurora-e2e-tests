@@ -108,17 +108,20 @@ export class PortfolioPage extends BasePage {
   }
 
   async getAvailableBalance(): Promise<number> {
-    // assuming initial animation starts from 0.00 and goes up
     await this.waitForBalanceToSettle(0.01, 2, 10_000).catch(() => {
       // ignore: perhaps it jumped straight to final value
     })
     const text = await this.balanceElement.innerText()
 
-    // strip commas, parse
     return parseFloat(text.replace(/,/g, ""))
   }
 
   async checkSenderBalance(expectedBalance: number): Promise<void> {
     await this.waitForBalanceToSettle(expectedBalance, 2, 10_000)
+  }
+  async canUserSendFunds(token: string): Promise<boolean> {
+    const lackFundsText = this.page.getByText(`You don’t have enough ${token}.`)
+
+    return !(await lackFundsText.isVisible())
   }
 }
