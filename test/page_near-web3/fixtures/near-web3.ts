@@ -41,7 +41,7 @@ export const test = testWithSynpress(
       const pages = context.pages()
 
       for (const p of pages) {
-        if (p.url().includes("chrome-extension://")) {
+        if (p.url().includes(`chrome-extension://${extensionId}`)) {
           // eslint-disable-next-line no-await-in-loop
           await p.close()
         }
