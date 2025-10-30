@@ -132,9 +132,13 @@ yarn report
 
 ## Pipelines
 All the pipeline configurations you can find in .github/workflows.
-For tests automation configuration file you can refer to [tests-automation.yml](./.github/workflows/tests-automation.yml)
+The pipelines follow triggerer-worker concept where:
+- Automatic pipeline trigger is done every 12 hours on Mondays-Fridays [e2e-trigger.yml](./.github/workflows/e2e-trigger.yml)
+- Manual trigger pipeline can be triggered manually by yourself and selecting which specific product/part of product you want to test [e2e-worker.yml](./.github/workflows/e2e-worker.yml)
 
-Pipeline triggered on push and every 12 hours.
+For checking result of pipeline run, you can go to repository -> Actions -> finished E2E job.
 
-For checking result of pipeline run, you can go to repository -> Actions -> finished Tests-Automation job.
-You can download pipeline run report in ended pipeline, by opening Upload-artifact step and clicking artifact URL.
+### Test reports
+You can check the test result in-place by scrolling down to Github Action run result section called `e2e-tests-summary`. It will show overall status of test run - how many passed/failed/skipped and a list of tests corresponding with the test result.
+
+If you want to go into more detailed results, scroll down to Job Artifacts section and download the compressed Playwright report folder - naming based on the tag used.
