@@ -27,7 +27,7 @@
     "@slack/types": "^2.14.0",
     "@synthetixio/synpress": "4.0.3",
     "dotenv": "16.4.5",
-    "playwright": "1.44.0",
+    "playwright": "1.55.1",
     "playwright-slack-report": "^1.1.89"
   },
   "devDependencies": {
